@@ -8,4 +8,10 @@ module.exports = {
     extend: {},
   },
   plugins: [],
+
+  "tailwindCSS.includeLanguages": {
+    plaintext: "html",
+    typescript: "typescript",
+    typescriptreact: "typescriptreact",
+  },
 };

@@ -1,25 +1,13 @@
 import React, { FC } from "react";
-import { useUsersQuery } from "../generated/graphql";
+import EventList from "../components/EventList";
 
 interface Props {}
 
 const HomePage: FC<Props> = () => {
-  const { data } = useUsersQuery({ fetchPolicy: "network-only" });
-
-  if (!data) return <div>Loading...</div>;
   return (
-    <div>
-      Home
-      <div>
-        <ul>
-          {data.users.map((x) => {
-            return (
-              <li key={x.id}>
-                {x.email}, {x.id}, {x.firstName}, {x.lastName}
-              </li>
-            );
-          })}
-        </ul>
+    <div className="m-4">
+      <div className="w-1/4">
+        <EventList />
       </div>
     </div>
   );
