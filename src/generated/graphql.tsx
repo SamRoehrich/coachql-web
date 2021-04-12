@@ -14,12 +14,23 @@ export type Scalars = {
   Float: number;
 };
 
+export type Athlete = {
+  __typename?: 'Athlete';
+  id: Scalars['Int'];
+  user: User;
+  age: Scalars['Int'];
+};
+
 export type Event = {
   __typename?: 'Event';
   id: Scalars['Int'];
   name: Scalars['String'];
   location: Scalars['String'];
   visible: Scalars['Boolean'];
+  startDate: Scalars['String'];
+  started: Scalars['Boolean'];
+  creator: User;
+  athletes: Array<Athlete>;
 };
 
 export type LoginResponse = {

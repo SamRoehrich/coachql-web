@@ -1,3 +1,4 @@
+import { useApolloClient } from "@apollo/client";
 import React, { FC } from "react";
 import { useEventsQuery } from "../generated/graphql";
 import Loading from "./Loading";
@@ -6,6 +7,7 @@ interface Props {}
 
 const EventList: FC<Props> = () => {
   const { data } = useEventsQuery();
+  const { cache } = useApolloClient();
 
   if (!data) return <Loading />;
 
