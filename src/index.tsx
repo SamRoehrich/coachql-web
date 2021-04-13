@@ -13,8 +13,21 @@ import reportWebVitals from "./reportWebVitals";
 import { getAccessToken, setAccessToken } from "./accessToken";
 import { TokenRefreshLink } from "apollo-link-token-refresh";
 import jwt_decode, { JwtPayload } from "jwt-decode";
+import { currentEventIdVar } from "./graphql/cache";
 
-const cache = new InMemoryCache();
+const cache = new InMemoryCache({
+  typePolicies: {
+    Query: {
+      fields: {
+        currentEvent: {
+          read() {
+            return currentEventIdVar();
+          },
+        },
+      },
+    },
+  },
+});
 
 const httpLink = createHttpLink({
   uri: "http://localhost:4000/graphql",

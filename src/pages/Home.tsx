@@ -1,28 +1,16 @@
-import { useApolloClient } from "@apollo/client";
 import React, { FC } from "react";
-import EventList from "../components/EventList";
-import { MeDocument } from "../generated/graphql";
+import { useMeQuery } from "../generated/graphql";
+import AuthenticatedHomePage from "../components/AuthenticatedHomePage";
+import PublicHomePage from "../components/PublicHomePage";
+import Loading from "../components/Loading";
 
 interface Props {}
 
 const HomePage: FC<Props> = () => {
-  const { cache } = useApolloClient();
+  const { data, loading } = useMeQuery({ fetchPolicy: "cache-first" });
 
-  if (
-    cache.readQuery({
-      query: MeDocument,
-    }) === null
-  ) {
-    return (
-      <div className="m-4">
-        <div className="w-1/4">
-          <EventList />
-        </div>
-      </div>
-    );
-  }
-
-  return <div>logged in</div>;
+  if (loading) return <Loading />;
+  return data?.me ? <AuthenticatedHomePage /> : <PublicHomePage />;
 };
 
 export default HomePage;

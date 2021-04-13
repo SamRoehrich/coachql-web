@@ -1,13 +1,12 @@
-import { useApolloClient } from "@apollo/client";
 import React, { FC } from "react";
 import { useEventsQuery } from "../generated/graphql";
+import { currentEventIdVar } from "../graphql/cache";
 import Loading from "./Loading";
 
 interface Props {}
 
 const EventList: FC<Props> = () => {
   const { data } = useEventsQuery();
-  const { cache } = useApolloClient();
 
   if (!data) return <Loading />;
 
@@ -16,7 +15,12 @@ const EventList: FC<Props> = () => {
       <ul>
         {data.events.map((x) => {
           return (
-            <li key={x.id}>
+            <li
+              key={x.id}
+              onClick={() => {
+                currentEventIdVar(x.id);
+              }}
+            >
               <p>{x.name}</p>
               <p>{x.location}</p>
             </li>

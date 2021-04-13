@@ -21,7 +21,7 @@ const Header: FC<Props> = () => {
               onClick={async () => {
                 await logout();
                 setAccessToken("");
-                client!.resetStore();
+                client.resetStore();
               }}
             >
               Log out: {data.me.firstName}

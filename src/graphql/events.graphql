@@ -5,3 +5,17 @@ query Events {
     id
   }
 }
+
+mutation CreateEvent(
+  $name: String!
+  $location: String!
+  $startDate: String!
+  $visible: Boolean!
+) {
+  createEvent(
+    name: $name
+    location: $location
+    startDate: $startDate
+    visible: $visible
+  )
+}
