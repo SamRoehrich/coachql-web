@@ -7,7 +7,7 @@ import Loading from "../components/Loading";
 interface Props {}
 
 const HomePage: FC<Props> = () => {
-  const { data, loading } = useMeQuery({ fetchPolicy: "cache-first" });
+  const { data, loading } = useMeQuery();
 
   if (loading) return <Loading />;
   return data?.me ? <AuthenticatedHomePage /> : <PublicHomePage />;

@@ -1,49 +1,100 @@
-import { Field, Form, Formik } from "formik";
-import { FC } from "react";
+import { useFormik } from "formik";
+import { FC, useState } from "react";
 import { useCreateEventMutation } from "../generated/graphql";
+import StackInput from "./StackInput";
 
 interface Props {}
 
 const CreateEventForm: FC<Props> = () => {
   const [createEvent] = useCreateEventMutation();
+  const [stacks, setStacks] = useState<JSX.Element[]>([]);
+  const onAddNewStack = () => {
+    setStacks(stacks.concat(<StackInput key={stacks.length} />));
+  };
+
+  const formik = useFormik({
+    initialValues: {
+      name: "",
+      location: "",
+      visible: true,
+      startDate: "",
+      selfScored: true,
+    },
+    onSubmit: (data) => {},
+  });
+
   return (
     <div>
-      <Formik
-        initialValues={{
-          name: "",
-          location: "",
-          visible: true,
-          startDate: "",
-        }}
-        onSubmit={async (data, { setSubmitting }) => {
-          setSubmitting(true);
-          await createEvent({
-            variables: {
-              location: data.location,
-              name: data.name,
-              visible: data.visible,
-              startDate: data.startDate,
-            },
-          });
-          setSubmitting(false);
-        }}
+      <form
+        onSubmit={formik.handleSubmit}
+        className="flex flex-col items-center"
       >
-        {({ isSubmitting }) => (
-          <Form>
-            <label htmlFor="name">Event Name</label>
-            <Field id="name" name="name" />
-            <label htmlFor="location">Event Location</label>
-            <Field id="location" name="location" />
-            <label htmlFor="visible">Public</label>
-            <Field id="visible" name="visible" />
-            <label htmlFor="startDate">Start Date</label>
-            <Field id="startDate" name="startDate" />
-            <button type="submit" disabled={isSubmitting}>
-              Create Event
-            </button>
-          </Form>
+        <input
+          type="text"
+          onChange={formik.handleChange}
+          value={formik.values.name}
+          id="name"
+          name="name"
+          placeholder="Event Name"
+        />
+        <input
+          type="text"
+          onChange={formik.handleChange}
+          value={formik.values.location}
+          id="location"
+          name="location"
+          placeholder="Event Location"
+        />
+        <label htmlFor="visible">Public</label>
+        <input
+          type="checkbox"
+          onChange={formik.handleChange}
+          id="visible"
+          name="visible"
+        />
+        <input
+          type="date"
+          onChange={formik.handleChange}
+          value={formik.values.startDate}
+          id="startDate"
+          name="startDate"
+        />
+        <input
+          type="time"
+          onChange={formik.handleChange}
+          value={formik.values.name}
+          id="name"
+          name="name"
+          placeholder="Event Name"
+        />
+        <div role="group">
+          <label>
+            Self Scored
+            <input
+              type="radio"
+              name="selfScored"
+              value="true"
+              id="selfScored"
+              onChange={formik.handleChange}
+            />
+          </label>
+          <label>
+            Score Keepers
+            <input
+              type="radio"
+              name="selfScored"
+              value="false"
+              id="selfScored"
+              onChange={formik.handleChange}
+            />
+          </label>
+        </div>
+        {formik.values.selfScored ? (
+          <div>Self Scored</div>
+        ) : (
+          <div>{stacks}</div>
         )}
-      </Formik>
+      </form>
     </div>
   );
 };

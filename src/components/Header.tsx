@@ -16,12 +16,12 @@ const Header: FC<Props> = () => {
           <Link to="/">Home </Link>
         </div>
         <div className="flex flex-row space-x-5">
-          {data && data.me?.firstName ? (
+          {!loading && data && data.me?.firstName ? (
             <button
               onClick={async () => {
                 await logout();
                 setAccessToken("");
-                client.resetStore();
+                await client.resetStore();
               }}
             >
               Log out: {data.me.firstName}

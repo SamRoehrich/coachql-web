@@ -1,12 +1,13 @@
 import { FC } from "react";
+import EventInfo from "./Dashboard/EventInfo";
+import EventList from "./EventList";
 
 interface Props {}
 
 const AuthenticatedHomePage: FC<Props> = () => {
   return (
-    <div>
-      <button>Create Event</button>
-      <button>View Past Events</button>
+    <div className="flex w-full">
+      <EventList />
     </div>
   );
 };
