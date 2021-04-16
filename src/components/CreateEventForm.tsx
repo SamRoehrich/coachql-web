@@ -1,7 +1,7 @@
 import { useFormik } from "formik";
 import { FC, useState } from "react";
 import { useCreateEventMutation } from "../generated/graphql";
-import StackInput from "./StackInput";
+import StackInput from "./Dashboard/StackInput";
 
 interface Props {}
 

@@ -19,3 +19,44 @@ mutation CreateEvent(
     visible: $visible
   )
 }
+
+
+Query EventData(
+  $eventId: String!
+) {
+  event(eventId: $eventId) {
+    id
+    name
+    athletes {
+      team
+      age
+      user {
+        firstName
+        lastName
+      }
+    }
+    stacks {
+      id
+      male
+      female
+      a
+      b
+      c
+      d
+      boudlers {
+        id
+        setter
+        style
+        grade
+        number
+        scorekeeper {
+          id
+          user {
+            lastName
+            firstName
+          }
+        }
+      }
+    }
+  }
+}

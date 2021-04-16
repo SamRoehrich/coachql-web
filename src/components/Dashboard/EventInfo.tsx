@@ -4,8 +4,6 @@ import { GET_CURRENT_EVENT } from "../../graphql/cache";
 interface Props {}
 
 const EventInfo: FC<Props> = () => {
-  const { data, loading } = useQuery(GET_CURRENT_EVENT);
-  if (!loading) console.log(data);
   return (
     <div className="flex ml-4">
       <div className="flex justify-center ">
