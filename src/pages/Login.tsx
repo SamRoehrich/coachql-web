@@ -12,7 +12,6 @@ const Login: React.FC<RouteComponentProps> = ({ history }) => {
     <form
       onSubmit={async (e) => {
         e.preventDefault();
-        console.log("form submitted");
         const response = await login({
           variables: {
             email,
@@ -34,13 +33,13 @@ const Login: React.FC<RouteComponentProps> = ({ history }) => {
           setAccessToken(response.data?.login.accessToken);
         }
 
-        history.push("/");
+        history.push("/home");
       }}
     >
       <div>
         <input
           value={email}
-          placeholder="email"
+          placeholder='email'
           onChange={(e) => {
             setEmail(e.target.value);
           }}
@@ -48,16 +47,16 @@ const Login: React.FC<RouteComponentProps> = ({ history }) => {
       </div>
       <div>
         <input
-          className=""
-          type="password"
+          className=''
+          type='password'
           value={password}
-          placeholder="password"
+          placeholder='password'
           onChange={(e) => {
             setPassword(e.target.value);
           }}
         />
       </div>
-      <button type="submit">login</button>
+      <button type='submit'>login</button>
     </form>
   );
 };

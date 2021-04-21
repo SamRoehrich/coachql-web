@@ -1,5 +1,6 @@
 import React from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
+import AuthenticatedHomePage from "./pages/AuthenticatedHomePage";
 import CreateEventForm from "./components/CreateEventForm";
 import Header from "./components/Header";
 import ByePage from "./pages/bye";
@@ -15,13 +16,14 @@ const Routes: React.FC = () => {
       <div>
         <Header />
         <Switch>
-          <Route exact path="/" component={HomePage} />
-          <Route exact path="/register" component={RegisterPage} />
-          <Route exact path="/login" component={LoginPage} />
-          <Route exact path="/bye" component={ByePage} />
-          <Route exact path="/coach_register" component={CoachRegisterPage} />
-          <Route exact path="/events/create" component={CreateEventForm} />
-          <Route exact path="/event/:id" component={Dashboard} />
+          <Route exact path='/' component={HomePage} />
+          <Route exact path='/home' component={AuthenticatedHomePage} />
+          <Route exact path='/register' component={RegisterPage} />
+          <Route exact path='/login' component={LoginPage} />
+          <Route exact path='/bye' component={ByePage} />
+          <Route exact path='/coach_register' component={CoachRegisterPage} />
+          <Route exact path='/events/create' component={CreateEventForm} />
+          <Route exact path='/event/:id' component={Dashboard} />
           {/* <Route exact path="/events" component={EventsHome} /> */}
         </Switch>
       </div>

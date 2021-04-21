@@ -1,16 +1,10 @@
-import React, { FC } from "react";
-import { useMeQuery } from "../generated/graphql";
-import AuthenticatedHomePage from "../components/AuthenticatedHomePage";
+import { FC } from "react";
 import PublicHomePage from "../components/PublicHomePage";
-import Loading from "../components/Loading";
 
 interface Props {}
 
 const HomePage: FC<Props> = () => {
-  const { data, loading } = useMeQuery();
-
-  if (loading) return <Loading />;
-  return data?.me ? <AuthenticatedHomePage /> : <PublicHomePage />;
+  return <PublicHomePage />;
 };
 
 export default HomePage;

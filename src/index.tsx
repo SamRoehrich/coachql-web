@@ -13,15 +13,20 @@ import reportWebVitals from "./reportWebVitals";
 import { getAccessToken, setAccessToken } from "./accessToken";
 import { TokenRefreshLink } from "apollo-link-token-refresh";
 import jwt_decode, { JwtPayload } from "jwt-decode";
-import { currentEventIdVar } from "./graphql/cache";
+import { currentEventIdVar, currentEventVar } from "./graphql/cache";
 
 const cache = new InMemoryCache({
   typePolicies: {
     Query: {
       fields: {
-        currentEvent: {
+        currentEventId: {
           read() {
             return currentEventIdVar();
+          },
+        },
+        currentEvent: {
+          read() {
+            return currentEventVar();
           },
         },
       },
