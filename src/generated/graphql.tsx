@@ -17,8 +17,19 @@ export type Scalars = {
 export type Athlete = {
   __typename?: 'Athlete';
   id: Scalars['Int'];
+  male: Scalars['Boolean'];
+  female: Scalars['Boolean'];
   user: User;
-  age: Scalars['Int'];
+  birthYear: Scalars['Int'];
+  team: Scalars['String'];
+};
+
+export type Boulder = {
+  __typename?: 'Boulder';
+  id: Scalars['Int'];
+  scoreKeeper: User;
+  boulderNumber: Scalars['Int'];
+  stack: Stack;
 };
 
 export type Event = {
@@ -29,8 +40,10 @@ export type Event = {
   visible: Scalars['Boolean'];
   startDate: Scalars['String'];
   started: Scalars['Boolean'];
+  numBoulders: Scalars['Int'];
   creator: User;
-  athletes: Array<Athlete>;
+  athletes?: Maybe<Array<Athlete>>;
+  stacks?: Maybe<Array<Stack>>;
 };
 
 export type LoginResponse = {
@@ -45,7 +58,12 @@ export type Mutation = {
   logout: Scalars['Boolean'];
   login: LoginResponse;
   createEvent: Scalars['Boolean'];
+  registerAthlete: Scalars['Boolean'];
   registerTeam: Scalars['Boolean'];
+  createAthlete: Scalars['Boolean'];
+  addAthleteToEvent: Scalars['Boolean'];
+  createStack: Scalars['Boolean'];
+  createBoulder: Scalars['Boolean'];
 };
 
 
@@ -64,6 +82,7 @@ export type MutationLoginArgs = {
 
 
 export type MutationCreateEventArgs = {
+  numBoulders: Scalars['Float'];
   startDate: Scalars['String'];
   visible: Scalars['Boolean'];
   location: Scalars['String'];
@@ -71,8 +90,49 @@ export type MutationCreateEventArgs = {
 };
 
 
+export type MutationRegisterAthleteArgs = {
+  evnetId: Scalars['String'];
+};
+
+
 export type MutationRegisterTeamArgs = {
   teamName: Scalars['String'];
+};
+
+
+export type MutationCreateAthleteArgs = {
+  female: Scalars['Boolean'];
+  male: Scalars['Boolean'];
+  team: Scalars['String'];
+  birthYear: Scalars['Float'];
+  lastName: Scalars['String'];
+  firstName: Scalars['String'];
+  password: Scalars['String'];
+  email: Scalars['String'];
+};
+
+
+export type MutationAddAthleteToEventArgs = {
+  eventId: Scalars['String'];
+  athleteId: Scalars['String'];
+};
+
+
+export type MutationCreateStackArgs = {
+  d: Scalars['Boolean'];
+  c: Scalars['Boolean'];
+  b: Scalars['Boolean'];
+  a: Scalars['Boolean'];
+  jr: Scalars['Boolean'];
+  female: Scalars['Boolean'];
+  male: Scalars['Boolean'];
+  eventId: Scalars['String'];
+};
+
+
+export type MutationCreateBoulderArgs = {
+  boulderNumber: Scalars['Float'];
+  stackId: Scalars['Float'];
 };
 
 export type Query = {
@@ -82,7 +142,47 @@ export type Query = {
   me?: Maybe<User>;
   bye: Scalars['String'];
   events: Array<Event>;
+  event: Event;
+  getAuthenticatedEvents: Array<Event>;
   teams: Array<Team>;
+  athletes: Array<Athlete>;
+  getStacks: Array<Stack>;
+  getBoulders: Array<Boulder>;
+  getBoulder: Boulder;
+};
+
+
+export type QueryEventArgs = {
+  eventId: Scalars['String'];
+};
+
+
+export type QueryAthletesArgs = {
+  eventId: Scalars['String'];
+};
+
+
+export type QueryGetStacksArgs = {
+  eventId: Scalars['String'];
+};
+
+
+export type QueryGetBoulderArgs = {
+  boulderId: Scalars['Float'];
+};
+
+export type Stack = {
+  __typename?: 'Stack';
+  id: Scalars['Int'];
+  male: Scalars['Boolean'];
+  female: Scalars['Boolean'];
+  jr: Scalars['Boolean'];
+  a: Scalars['Boolean'];
+  b: Scalars['Boolean'];
+  c: Scalars['Boolean'];
+  d: Scalars['Boolean'];
+  event: Event;
+  athletes: Array<Athlete>;
 };
 
 export type Team = {
@@ -125,12 +225,45 @@ export type CreateEventMutationVariables = Exact<{
   location: Scalars['String'];
   startDate: Scalars['String'];
   visible: Scalars['Boolean'];
+  numBoulders: Scalars['Float'];
 }>;
 
 
 export type CreateEventMutation = (
   { __typename?: 'Mutation' }
   & Pick<Mutation, 'createEvent'>
+);
+
+export type GetAuthenticatedEventsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetAuthenticatedEventsQuery = (
+  { __typename?: 'Query' }
+  & { getAuthenticatedEvents: Array<(
+    { __typename?: 'Event' }
+    & Pick<Event, 'id' | 'name' | 'location' | 'visible' | 'started' | 'startDate' | 'numBoulders'>
+    & { creator: (
+      { __typename?: 'User' }
+      & Pick<User, 'id' | 'email' | 'lastName' | 'firstName'>
+    ), athletes?: Maybe<Array<(
+      { __typename?: 'Athlete' }
+      & Pick<Athlete, 'male' | 'female' | 'id' | 'birthYear'>
+      & { user: (
+        { __typename?: 'User' }
+        & Pick<User, 'lastName' | 'firstName'>
+      ) }
+    )>>, stacks?: Maybe<Array<(
+      { __typename?: 'Stack' }
+      & Pick<Stack, 'id' | 'male' | 'female' | 'a' | 'b' | 'c' | 'd' | 'jr'>
+      & { athletes: Array<(
+        { __typename?: 'Athlete' }
+        & { user: (
+          { __typename?: 'User' }
+          & Pick<User, 'firstName' | 'lastName' | 'id'>
+        ) }
+      )> }
+    )>> }
+  )> }
 );
 
 export type HelloQueryVariables = Exact<{ [key: string]: never; }>;
@@ -272,12 +405,13 @@ export type EventsQueryHookResult = ReturnType<typeof useEventsQuery>;
 export type EventsLazyQueryHookResult = ReturnType<typeof useEventsLazyQuery>;
 export type EventsQueryResult = Apollo.QueryResult<EventsQuery, EventsQueryVariables>;
 export const CreateEventDocument = gql`
-    mutation CreateEvent($name: String!, $location: String!, $startDate: String!, $visible: Boolean!) {
+    mutation CreateEvent($name: String!, $location: String!, $startDate: String!, $visible: Boolean!, $numBoulders: Float!) {
   createEvent(
     name: $name
     location: $location
     startDate: $startDate
     visible: $visible
+    numBoulders: $numBoulders
   )
 }
     `;
@@ -300,6 +434,7 @@ export type CreateEventMutationFn = Apollo.MutationFunction<CreateEventMutation,
  *      location: // value for 'location'
  *      startDate: // value for 'startDate'
  *      visible: // value for 'visible'
+ *      numBoulders: // value for 'numBoulders'
  *   },
  * });
  */
@@ -310,6 +445,79 @@ export function useCreateEventMutation(baseOptions?: Apollo.MutationHookOptions<
 export type CreateEventMutationHookResult = ReturnType<typeof useCreateEventMutation>;
 export type CreateEventMutationResult = Apollo.MutationResult<CreateEventMutation>;
 export type CreateEventMutationOptions = Apollo.BaseMutationOptions<CreateEventMutation, CreateEventMutationVariables>;
+export const GetAuthenticatedEventsDocument = gql`
+    query GetAuthenticatedEvents {
+  getAuthenticatedEvents {
+    id
+    name
+    location
+    visible
+    started
+    startDate
+    numBoulders
+    creator {
+      id
+      email
+      lastName
+      firstName
+    }
+    athletes {
+      male
+      female
+      id
+      birthYear
+      user {
+        lastName
+        firstName
+      }
+    }
+    stacks {
+      id
+      male
+      female
+      a
+      b
+      c
+      d
+      jr
+      athletes {
+        user {
+          firstName
+          lastName
+          id
+        }
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetAuthenticatedEventsQuery__
+ *
+ * To run a query within a React component, call `useGetAuthenticatedEventsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAuthenticatedEventsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetAuthenticatedEventsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetAuthenticatedEventsQuery(baseOptions?: Apollo.QueryHookOptions<GetAuthenticatedEventsQuery, GetAuthenticatedEventsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetAuthenticatedEventsQuery, GetAuthenticatedEventsQueryVariables>(GetAuthenticatedEventsDocument, options);
+      }
+export function useGetAuthenticatedEventsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetAuthenticatedEventsQuery, GetAuthenticatedEventsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetAuthenticatedEventsQuery, GetAuthenticatedEventsQueryVariables>(GetAuthenticatedEventsDocument, options);
+        }
+export type GetAuthenticatedEventsQueryHookResult = ReturnType<typeof useGetAuthenticatedEventsQuery>;
+export type GetAuthenticatedEventsLazyQueryHookResult = ReturnType<typeof useGetAuthenticatedEventsLazyQuery>;
+export type GetAuthenticatedEventsQueryResult = Apollo.QueryResult<GetAuthenticatedEventsQuery, GetAuthenticatedEventsQueryVariables>;
 export const HelloDocument = gql`
     query Hello {
   hello

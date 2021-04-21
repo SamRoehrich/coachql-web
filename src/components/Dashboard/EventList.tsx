@@ -1,34 +1,40 @@
 import React, { FC } from "react";
-import { useEventsQuery } from "../../generated/graphql";
-import { currentEventIdVar } from "../../graphql/cache";
+import { useGetAuthenticatedEventsQuery } from "../../generated/graphql";
+import { currentEventIdVar, currentEventVar } from "../../graphql/cache";
 import Loading from "./../Loading";
 
 interface Props {}
 
 const EventList: FC<Props> = () => {
-  const { data } = useEventsQuery();
+  const { data } = useGetAuthenticatedEventsQuery();
 
   if (!data) return <Loading />;
 
-  return (
-    <div>
-      <ul>
-        {data.events.map((x) => {
-          return (
-            <li
-              key={x.id}
-              onClick={() => {
-                currentEventIdVar(x.id);
-              }}
-            >
-              <p>{x.name}</p>
-              <p>{x.location}</p>
-            </li>
-          );
-        })}
-      </ul>
-    </div>
-  );
+  if (data && data.getAuthenticatedEvents) {
+    currentEventIdVar(data.getAuthenticatedEvents[0].id);
+    currentEventVar(data.getAuthenticatedEvents[0]);
+    return (
+      <div>
+        <ul>
+          {data.getAuthenticatedEvents.map((x) => {
+            return (
+              <li
+                key={x.id}
+                onClick={() => {
+                  currentEventIdVar(x.id);
+                  currentEventVar(x);
+                }}
+              >
+                <p>{x.name}</p>
+                <p>{x.location}</p>
+              </li>
+            );
+          })}
+        </ul>
+      </div>
+    );
+  }
+  return <div>No Events</div>;
 };
 
 export default EventList;

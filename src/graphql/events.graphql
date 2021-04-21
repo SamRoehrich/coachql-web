@@ -11,28 +11,40 @@ mutation CreateEvent(
   $location: String!
   $startDate: String!
   $visible: Boolean!
+  $numBoulders: Float!
 ) {
   createEvent(
     name: $name
     location: $location
     startDate: $startDate
     visible: $visible
+    numBoulders: $numBoulders
   )
 }
 
-
-Query EventData(
-  $eventId: String!
-) {
-  event(eventId: $eventId) {
+query GetAuthenticatedEvents {
+  getAuthenticatedEvents {
     id
     name
+    location
+    visible
+    started
+    startDate
+    numBoulders
+    creator {
+      id
+      email
+      lastName
+      firstName
+    }
     athletes {
-      team
-      age
+      male
+      female
+      id
+      birthYear
       user {
-        firstName
         lastName
+        firstName
       }
     }
     stacks {
@@ -43,18 +55,12 @@ Query EventData(
       b
       c
       d
-      boudlers {
-        id
-        setter
-        style
-        grade
-        number
-        scorekeeper {
+      jr
+      athletes {
+        user {
+          firstName
+          lastName
           id
-          user {
-            lastName
-            firstName
-          }
         }
       }
     }
