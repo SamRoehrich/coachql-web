@@ -1,6 +1,4 @@
 import { FC } from "react";
-import AthleteList from "./AthleteList";
-import BoulderList from "./BoulderList";
 import EventInfo from "./EventInfo";
 import { useGetEventQuery } from "../../generated/graphql";
 import Loading from "../Loading";
