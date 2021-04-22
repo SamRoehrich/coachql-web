@@ -13,7 +13,11 @@ import reportWebVitals from "./reportWebVitals";
 import { getAccessToken, setAccessToken } from "./accessToken";
 import { TokenRefreshLink } from "apollo-link-token-refresh";
 import jwt_decode, { JwtPayload } from "jwt-decode";
-import { currentEventIdVar, currentEventVar } from "./graphql/cache";
+import {
+  currentEventIdVar,
+  currentEventVar,
+  currentTab,
+} from "./graphql/cache";
 
 const cache = new InMemoryCache({
   typePolicies: {
@@ -27,6 +31,11 @@ const cache = new InMemoryCache({
         currentEvent: {
           read() {
             return currentEventVar();
+          },
+        },
+        currentTab: {
+          read() {
+            return currentTab();
           },
         },
       },

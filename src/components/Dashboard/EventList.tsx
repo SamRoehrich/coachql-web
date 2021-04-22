@@ -14,7 +14,7 @@ const EventList: FC<Props> = () => {
     currentEventIdVar(data.getAuthenticatedEvents[0].id);
     currentEventVar(data.getAuthenticatedEvents[0]);
     return (
-      <div>
+      <div className='ml-8'>
         <ul>
           {data.getAuthenticatedEvents.map((x) => {
             return (

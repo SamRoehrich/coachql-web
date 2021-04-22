@@ -1,7 +1,7 @@
 import { useQuery } from "@apollo/client";
 import React, { FC } from "react";
 import { GET_CURRENT_EVENT } from "../../graphql/cache";
-import { Athlete, Event } from "../../generated/graphql";
+import { Athlete } from "../../generated/graphql";
 
 interface Props {}
 

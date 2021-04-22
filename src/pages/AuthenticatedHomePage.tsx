@@ -5,8 +5,6 @@ import EventList from "../components/Dashboard/EventList";
 import Loading from "../components/Loading";
 import { useMeQuery } from "../generated/graphql";
 
-interface Props {}
-
 const AuthenticateHomePage: FC = (props) => {
   const { data, loading } = useMeQuery();
   let history = useHistory();

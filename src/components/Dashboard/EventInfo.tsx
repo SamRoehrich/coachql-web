@@ -1,17 +1,17 @@
 import { useQuery } from "@apollo/client";
 import React, { FC } from "react";
+import { useLocation } from "react-router";
 import { useMeQuery } from "../../generated/graphql";
 import { GET_CURRENT_EVENT } from "../../graphql/cache";
-import AthleteList from "./AthleteList";
 interface Props {}
 
 const EventInfo: FC<Props> = () => {
+  const location = useLocation();
   const { data } = useQuery(GET_CURRENT_EVENT);
   const { data: meResult } = useMeQuery();
   if (data && data.currentEvent && data.currentEvent.creator) {
-    console.log(data);
     return (
-      <div className='flex ml-4 flex-col w-full mr-8'>
+      <div className='flex flex-col w-full'>
         <div className='flex justify-between'>
           <p>{data.currentEvent.name}</p>
           <p>{data.currentEvent.location}</p>
@@ -25,14 +25,14 @@ const EventInfo: FC<Props> = () => {
           <p>Contact: {data.currentEvent.creator.email}</p>
         </div>
         <div className='flex justify-between'>
-          <button>Register for Event</button>
-          {data.currentEvent.creator.id === meResult?.me?.id ? (
+          {location.pathname.includes("dashboard") ? (
+            <button>Scoring</button>
+          ) : data.currentEvent.creator.id === meResult?.me?.id ? (
             <button>Manage Event</button>
           ) : (
-            <div></div>
+            <button>Register for Event</button>
           )}
         </div>
-        <AthleteList />
       </div>
     );
   }

@@ -66,3 +66,32 @@ query GetAuthenticatedEvents {
     }
   }
 }
+
+query GetEvent($eventId: String!) {
+  event(eventId: $eventId) {
+    id
+    name
+    creator {
+      lastName
+      firstName
+      id
+      email
+    }
+    stacks {
+      id
+      female
+      male
+      a
+      b
+      c
+      d
+      jr
+    }
+    athletes {
+      user {
+        lastName
+        firstName
+      }
+    }
+  }
+}
