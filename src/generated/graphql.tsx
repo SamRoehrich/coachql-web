@@ -276,7 +276,7 @@ export type GetEventQuery = (
   { __typename?: 'Query' }
   & { event: (
     { __typename?: 'Event' }
-    & Pick<Event, 'id' | 'name'>
+    & Pick<Event, 'id' | 'name' | 'startDate'>
     & { creator: (
       { __typename?: 'User' }
       & Pick<User, 'lastName' | 'firstName' | 'id' | 'email'>
@@ -550,6 +550,7 @@ export const GetEventDocument = gql`
   event(eventId: $eventId) {
     id
     name
+    startDate
     creator {
       lastName
       firstName

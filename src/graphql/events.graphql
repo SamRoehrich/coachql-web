@@ -71,6 +71,7 @@ query GetEvent($eventId: String!) {
   event(eventId: $eventId) {
     id
     name
+    startDate
     creator {
       lastName
       firstName

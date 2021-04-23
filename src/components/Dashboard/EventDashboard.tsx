@@ -1,10 +1,11 @@
-import { FC } from "react";
+import { FC, useState } from "react";
 import EventInfo from "./EventInfo";
 import { useGetEventQuery } from "../../generated/graphql";
 import Loading from "../Loading";
-import { currentEventVar, GET_CURRENT_TAB } from "../../graphql/cache";
-import { useQuery } from "@apollo/client";
-import Tabs from "./Tabs/TabsContainer";
+import { currentEventVar } from "../../graphql/cache";
+import StackTab from "./Tabs/StackTab";
+import BouldersTab from "./Tabs/BoudlersTab";
+import AthletesTab from "./Tabs/AthletesTab";
 
 interface Props {
   eventId: string;
@@ -16,21 +17,38 @@ const EventDashboard: FC<Props> = ({ eventId }) => {
       eventId,
     },
   });
-  const { data: currentTab } = useQuery(GET_CURRENT_TAB);
+
+  const [currentTab, setCurrentTab] = useState(<StackTab />);
+  const handleTabClick = (tab: string) => {
+    switch (tab) {
+      case "stacks":
+        setCurrentTab(<StackTab />);
+        break;
+      case "boulders":
+        setCurrentTab(<BouldersTab />);
+        break;
+      case "athletes":
+        setCurrentTab(<AthletesTab />);
+        break;
+      default:
+        setCurrentTab(<StackTab />);
+        break;
+    }
+  };
 
   if (loading) return <Loading />;
   if (eventQuery && eventQuery.event) {
     currentEventVar(eventQuery.event);
     return (
-      <div className='flex flex-col'>
+      <div className="flex flex-col">
         <EventInfo />
-        <div className='flex'>
-          <div className='h-12 flex items-start space-x-8'>
-            <button>Stacks</button>
-            <button>Athletes</button>
-            <button>Boulders</button>
+        <div className="flex flex-col">
+          <div className="h-12 flex items-start space-x-8">
+            <button onClick={() => handleTabClick("stacks")}>Stacks</button>
+            <button onClick={() => handleTabClick("athletes")}>Athletes</button>
+            <button onClick={() => handleTabClick("boulders")}>Boulders</button>
           </div>
-          <Tabs />
+          {currentTab}
         </div>
       </div>
     );
