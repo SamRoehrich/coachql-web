@@ -9,6 +9,7 @@ import HomePage from "./pages/Home";
 import LoginPage from "./pages/Login";
 import RegisterPage from "./pages/Register";
 import EventPage from "./pages/EventDashboard";
+import RegisterSuccessPage from "./pages/RegisterSuccessPage";
 
 const Routes: React.FC = () => {
   return (
@@ -16,16 +17,21 @@ const Routes: React.FC = () => {
       <div>
         <Header />
         <Switch>
-          <Route exact path='/' component={HomePage} />
-          <Route exact path='/home' component={AuthenticatedHomePage} />
-          <Route exact path='/register' component={RegisterPage} />
-          <Route exact path='/login' component={LoginPage} />
-          <Route exact path='/bye' component={ByePage} />
-          <Route exact path='/coach_register' component={CoachRegisterPage} />
-          <Route exact path='/events/create' component={CreateEventForm} />
+          <Route exact path="/" component={HomePage} />
+          <Route exact path="/home" component={AuthenticatedHomePage} />
+          <Route exact path="/register" component={RegisterPage} />
+          <Route exact path="/login" component={LoginPage} />
+          <Route exact path="/bye" component={ByePage} />
+          <Route exact path="/coach_register" component={CoachRegisterPage} />
+          <Route exact path="/events/create" component={CreateEventForm} />
           <Route
             exact
-            path='/event/dashboard/:eventId/:userId'
+            path="/register/success"
+            component={RegisterSuccessPage}
+          />
+          <Route
+            exact
+            path="/event/dashboard/:eventId/:userId"
             component={EventPage}
           />
         </Switch>

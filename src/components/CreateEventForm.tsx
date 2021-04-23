@@ -1,16 +1,13 @@
 import { useFormik } from "formik";
-import { FC, useState } from "react";
+import { FC } from "react";
+import { useHistory } from "react-router";
 import { useCreateEventMutation } from "../generated/graphql";
-import StackInput from "./Dashboard/StackInput";
 
 interface Props {}
 
 const CreateEventForm: FC<Props> = () => {
   const [createEvent] = useCreateEventMutation();
-  const [stacks, setStacks] = useState<JSX.Element[]>([]);
-  const onAddNewStack = () => {
-    setStacks(stacks.concat(<StackInput key={stacks.length} />));
-  };
+  const history = useHistory();
 
   const formik = useFormik({
     initialValues: {
@@ -18,9 +15,20 @@ const CreateEventForm: FC<Props> = () => {
       location: "",
       visible: true,
       startDate: "",
-      selfScored: true,
+      numBoulders: 4,
     },
-    onSubmit: (data) => {},
+    onSubmit: (data) => {
+      createEvent({
+        variables: {
+          location: data.location,
+          name: data.name,
+          visible: data.visible,
+          startDate: data.startDate,
+          numBoulders: data.numBoulders,
+        },
+      });
+      history.push("/home");
+    },
   });
 
   return (
@@ -59,41 +67,15 @@ const CreateEventForm: FC<Props> = () => {
           id="startDate"
           name="startDate"
         />
+        <label htmlFor="numBoulders">Number of Boulders in Stack</label>
         <input
-          type="time"
+          type="text"
           onChange={formik.handleChange}
-          value={formik.values.name}
-          id="name"
-          name="name"
-          placeholder="Event Name"
+          value={formik.values.numBoulders}
+          id="numBoulders"
+          name="numBoulders"
         />
-        <div role="group">
-          <label>
-            Self Scored
-            <input
-              type="radio"
-              name="selfScored"
-              value="true"
-              id="selfScored"
-              onChange={formik.handleChange}
-            />
-          </label>
-          <label>
-            Score Keepers
-            <input
-              type="radio"
-              name="selfScored"
-              value="false"
-              id="selfScored"
-              onChange={formik.handleChange}
-            />
-          </label>
-        </div>
-        {formik.values.selfScored ? (
-          <div>Self Scored</div>
-        ) : (
-          <div>{stacks}</div>
-        )}
+        <button type="submit">Create Event</button>
       </form>
     </div>
   );

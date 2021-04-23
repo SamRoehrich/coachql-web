@@ -1,9 +1,11 @@
 import { Form, Field, Formik } from "formik";
 import { FC } from "react";
+import { useHistory } from "react-router";
 import { useRegisterMutation } from "../generated/graphql";
 
 const RegisterForm: FC = () => {
   const [register] = useRegisterMutation();
+  const history = useHistory();
   return (
     <div>
       <Formik
@@ -25,8 +27,8 @@ const RegisterForm: FC = () => {
               password: data.password,
             },
           });
-          console.log(data);
           setSubmitting(false);
+          history.push("/register/success");
         }}
       >
         {({ isSubmitting }) => (

@@ -1,4 +1,5 @@
-import React, { FC } from "react";
+import { FC } from "react";
+import { useHistory } from "react-router";
 import { useGetAuthenticatedEventsQuery } from "../../generated/graphql";
 import { currentEventIdVar, currentEventVar } from "../../graphql/cache";
 import Loading from "./../Loading";
@@ -6,15 +7,25 @@ import Loading from "./../Loading";
 interface Props {}
 
 const EventList: FC<Props> = () => {
-  const { data } = useGetAuthenticatedEventsQuery();
+  const history = useHistory();
+  const { data, loading } = useGetAuthenticatedEventsQuery({
+    fetchPolicy: "network-only",
+  });
 
-  if (!data) return <Loading />;
+  const handleCreateEventClick = () => {
+    history.push("/events/create");
+  };
 
-  if (data && data.getAuthenticatedEvents) {
+  if (loading) return <Loading />;
+  if (
+    data &&
+    data.getAuthenticatedEvents &&
+    data.getAuthenticatedEvents.length > 0
+  ) {
     currentEventIdVar(data.getAuthenticatedEvents[0].id);
     currentEventVar(data.getAuthenticatedEvents[0]);
     return (
-      <div className='ml-8'>
+      <div className="ml-8">
         <ul>
           {data.getAuthenticatedEvents.map((x) => {
             return (
@@ -31,10 +42,16 @@ const EventList: FC<Props> = () => {
             );
           })}
         </ul>
+        <button onClick={handleCreateEventClick}>Create Event</button>
       </div>
     );
   }
-  return <div>No Events</div>;
+  return (
+    <div>
+      <p>No Events</p>
+      <button onClick={handleCreateEventClick}>Create Event</button>
+    </div>
+  );
 };
 
 export default EventList;
