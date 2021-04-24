@@ -18,11 +18,11 @@ const EventDashboard: FC<Props> = ({ eventId }) => {
     },
   });
 
-  const [currentTab, setCurrentTab] = useState(<StackTab />);
+  const [currentTab, setCurrentTab] = useState(<StackTab eventId={eventId} />);
   const handleTabClick = (tab: string) => {
     switch (tab) {
       case "stacks":
-        setCurrentTab(<StackTab />);
+        setCurrentTab(<StackTab eventId={eventId} />);
         break;
       case "boulders":
         setCurrentTab(<BouldersTab />);
@@ -31,7 +31,7 @@ const EventDashboard: FC<Props> = ({ eventId }) => {
         setCurrentTab(<AthletesTab />);
         break;
       default:
-        setCurrentTab(<StackTab />);
+        setCurrentTab(<StackTab eventId={eventId} />);
         break;
     }
   };

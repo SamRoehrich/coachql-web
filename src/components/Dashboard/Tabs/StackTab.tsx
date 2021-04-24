@@ -1,21 +1,25 @@
-import { useQuery } from "@apollo/client";
 import { FC } from "react";
-import { GET_CURRENT_EVENT } from "../../../graphql/cache";
 import Loading from "../../Loading";
+import StackList from "../StackList";
 import Modal from "../StackModal";
+import { useGetStacksForEventQuery } from "../../../generated/graphql";
 
-const StackTab: FC = (props) => {
-  const { data, loading } = useQuery(GET_CURRENT_EVENT);
+interface Props {
+  eventId: string;
+}
 
+const StackTab: FC<Props> = ({ eventId }) => {
+  const { data, loading } = useGetStacksForEventQuery({
+    variables: {
+      eventId,
+    },
+  });
   if (loading) return <Loading />;
 
-  if (data && data.currentEvent.stacks !== null) {
-    console.log(data);
+  if (data && data.getStacks !== null) {
     return (
-      <div>
-        <div>Stack List</div>
-        <div>Stack Info</div>
-        <Modal />
+      <div className="w-full">
+        <StackList stacks={data.getStacks} />
       </div>
     );
   }

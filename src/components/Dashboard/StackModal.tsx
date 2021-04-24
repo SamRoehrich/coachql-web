@@ -47,7 +47,6 @@ export default function Modal() {
           eventId: currentParams.eventId,
         },
       });
-
       setShowModal(false);
     },
   });

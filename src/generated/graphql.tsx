@@ -368,6 +368,19 @@ export type CreateStackMutation = (
   & Pick<Mutation, 'createStack'>
 );
 
+export type GetStacksForEventQueryVariables = Exact<{
+  eventId: Scalars['String'];
+}>;
+
+
+export type GetStacksForEventQuery = (
+  { __typename?: 'Query' }
+  & { getStacks: Array<(
+    { __typename?: 'Stack' }
+    & Pick<Stack, 'id' | 'male' | 'female' | 'a' | 'b' | 'c' | 'd' | 'jr'>
+  )> }
+);
+
 export type UsersQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -846,6 +859,48 @@ export function useCreateStackMutation(baseOptions?: Apollo.MutationHookOptions<
 export type CreateStackMutationHookResult = ReturnType<typeof useCreateStackMutation>;
 export type CreateStackMutationResult = Apollo.MutationResult<CreateStackMutation>;
 export type CreateStackMutationOptions = Apollo.BaseMutationOptions<CreateStackMutation, CreateStackMutationVariables>;
+export const GetStacksForEventDocument = gql`
+    query GetStacksForEvent($eventId: String!) {
+  getStacks(eventId: $eventId) {
+    id
+    male
+    female
+    a
+    b
+    c
+    d
+    jr
+  }
+}
+    `;
+
+/**
+ * __useGetStacksForEventQuery__
+ *
+ * To run a query within a React component, call `useGetStacksForEventQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetStacksForEventQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetStacksForEventQuery({
+ *   variables: {
+ *      eventId: // value for 'eventId'
+ *   },
+ * });
+ */
+export function useGetStacksForEventQuery(baseOptions: Apollo.QueryHookOptions<GetStacksForEventQuery, GetStacksForEventQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetStacksForEventQuery, GetStacksForEventQueryVariables>(GetStacksForEventDocument, options);
+      }
+export function useGetStacksForEventLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetStacksForEventQuery, GetStacksForEventQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetStacksForEventQuery, GetStacksForEventQueryVariables>(GetStacksForEventDocument, options);
+        }
+export type GetStacksForEventQueryHookResult = ReturnType<typeof useGetStacksForEventQuery>;
+export type GetStacksForEventLazyQueryHookResult = ReturnType<typeof useGetStacksForEventLazyQuery>;
+export type GetStacksForEventQueryResult = Apollo.QueryResult<GetStacksForEventQuery, GetStacksForEventQueryVariables>;
 export const UsersDocument = gql`
     query Users {
   users {

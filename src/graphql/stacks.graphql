@@ -19,3 +19,16 @@ mutation CreateStack(
     eventId: $eventId
   )
 }
+
+query GetStacksForEvent($eventId: String!) {
+  getStacks(eventId: $eventId) {
+    id
+    male
+    female
+    a
+    b
+    c
+    d
+    jr
+  }
+}
