@@ -351,6 +351,23 @@ export type RegisterMutation = (
   & Pick<Mutation, 'register'>
 );
 
+export type CreateStackMutationVariables = Exact<{
+  male: Scalars['Boolean'];
+  female: Scalars['Boolean'];
+  jr: Scalars['Boolean'];
+  a: Scalars['Boolean'];
+  b: Scalars['Boolean'];
+  c: Scalars['Boolean'];
+  d: Scalars['Boolean'];
+  eventId: Scalars['String'];
+}>;
+
+
+export type CreateStackMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'createStack'>
+);
+
 export type UsersQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -782,6 +799,53 @@ export function useRegisterMutation(baseOptions?: Apollo.MutationHookOptions<Reg
 export type RegisterMutationHookResult = ReturnType<typeof useRegisterMutation>;
 export type RegisterMutationResult = Apollo.MutationResult<RegisterMutation>;
 export type RegisterMutationOptions = Apollo.BaseMutationOptions<RegisterMutation, RegisterMutationVariables>;
+export const CreateStackDocument = gql`
+    mutation CreateStack($male: Boolean!, $female: Boolean!, $jr: Boolean!, $a: Boolean!, $b: Boolean!, $c: Boolean!, $d: Boolean!, $eventId: String!) {
+  createStack(
+    male: $male
+    female: $female
+    jr: $jr
+    a: $a
+    b: $b
+    c: $c
+    d: $d
+    eventId: $eventId
+  )
+}
+    `;
+export type CreateStackMutationFn = Apollo.MutationFunction<CreateStackMutation, CreateStackMutationVariables>;
+
+/**
+ * __useCreateStackMutation__
+ *
+ * To run a mutation, you first call `useCreateStackMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateStackMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createStackMutation, { data, loading, error }] = useCreateStackMutation({
+ *   variables: {
+ *      male: // value for 'male'
+ *      female: // value for 'female'
+ *      jr: // value for 'jr'
+ *      a: // value for 'a'
+ *      b: // value for 'b'
+ *      c: // value for 'c'
+ *      d: // value for 'd'
+ *      eventId: // value for 'eventId'
+ *   },
+ * });
+ */
+export function useCreateStackMutation(baseOptions?: Apollo.MutationHookOptions<CreateStackMutation, CreateStackMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateStackMutation, CreateStackMutationVariables>(CreateStackDocument, options);
+      }
+export type CreateStackMutationHookResult = ReturnType<typeof useCreateStackMutation>;
+export type CreateStackMutationResult = Apollo.MutationResult<CreateStackMutation>;
+export type CreateStackMutationOptions = Apollo.BaseMutationOptions<CreateStackMutation, CreateStackMutationVariables>;
 export const UsersDocument = gql`
     query Users {
   users {

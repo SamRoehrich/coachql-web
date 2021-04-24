@@ -1,0 +1,21 @@
+mutation CreateStack(
+  $male: Boolean!
+  $female: Boolean!
+  $jr: Boolean!
+  $a: Boolean!
+  $b: Boolean!
+  $c: Boolean!
+  $d: Boolean!
+  $eventId: String!
+) {
+  createStack(
+    male: $male
+    female: $female
+    jr: $jr
+    a: $a
+    b: $b
+    c: $c
+    d: $d
+    eventId: $eventId
+  )
+}

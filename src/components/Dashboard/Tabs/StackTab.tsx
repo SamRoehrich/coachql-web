@@ -15,6 +15,7 @@ const StackTab: FC = (props) => {
       <div>
         <div>Stack List</div>
         <div>Stack Info</div>
+        <Modal />
       </div>
     );
   }

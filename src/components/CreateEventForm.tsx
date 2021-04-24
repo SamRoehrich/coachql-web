@@ -17,8 +17,8 @@ const CreateEventForm: FC<Props> = () => {
       startDate: "",
       numBoulders: 4,
     },
-    onSubmit: (data) => {
-      createEvent({
+    onSubmit: async (data) => {
+      await createEvent({
         variables: {
           location: data.location,
           name: data.name,

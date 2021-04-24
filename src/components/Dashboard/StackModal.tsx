@@ -1,11 +1,61 @@
+import { useFormik } from "formik";
 import React from "react";
+import { useParams } from "react-router";
+
+import { useCreateStackMutation } from "../../generated/graphql";
+
+interface Params {
+  eventId: string;
+  userId: string;
+}
 
 export default function Modal() {
   const [showModal, setShowModal] = React.useState(false);
+  const [createStack] = useCreateStackMutation();
+  const params = useParams<Params>();
+  const formik = useFormik({
+    initialValues: {
+      male: 0,
+      female: 0,
+      jr: 0,
+      a: 0,
+      b: 0,
+      c: 0,
+      d: 0,
+      eventId: "",
+    },
+    onSubmit: async (data) => {
+      const currentParams = params;
+      console.log(currentParams);
+      function isFalse(x: number) {
+        if (!x) {
+          return false;
+        }
+        return true;
+      }
+
+      console.log(isFalse(data.female));
+      await createStack({
+        variables: {
+          male: isFalse(data.male),
+          female: isFalse(data.female),
+          a: isFalse(data.a),
+          b: isFalse(data.b),
+          c: isFalse(data.c),
+          d: isFalse(data.d),
+          jr: isFalse(data.jr),
+          eventId: currentParams.eventId,
+        },
+      });
+
+      setShowModal(false);
+    },
+  });
+
   return (
     <>
       <button
-        className="bg-pink-500 text-white active:bg-pink-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+        className="bg-gray-500 text-white active:bg-pink-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
         type="button"
         onClick={() => setShowModal(true)}
       >
@@ -30,43 +80,86 @@ export default function Modal() {
                   </button>
                 </div>
                 {/*body*/}
-                <div className="relative p-6 flex-row">
-                  <div className="flex flex-col">
-                    <label htmlFor="male">Male</label>
-                    <input type="checkbox" id="male" />
-                    <label htmlFor="female">Female</label>
-                    <input type="checkbox" id="female" />
+                <form onSubmit={formik.handleSubmit}>
+                  <div className="relative p-6 flex-row">
+                    <div className="flex flex-col">
+                      <label htmlFor="male">Male</label>
+                      <input
+                        type="checkbox"
+                        id="male"
+                        name="male"
+                        onChange={formik.handleChange}
+                        value={formik.values.male}
+                      />
+                      <label htmlFor="female">Female</label>
+                      <input
+                        type="checkbox"
+                        id="female"
+                        name="female"
+                        onChange={formik.handleChange}
+                        value={formik.values.female}
+                      />
+                    </div>
+                    <div>
+                      <label htmlFor="JR">JR</label>
+                      <input
+                        type="checkbox"
+                        id="jr"
+                        name="jr"
+                        onChange={formik.handleChange}
+                        value={formik.values.jr}
+                      />
+                      <label htmlFor="A">A</label>
+                      <input
+                        type="checkbox"
+                        id="a"
+                        name="a"
+                        onChange={formik.handleChange}
+                        value={formik.values.a}
+                      />
+                      <label htmlFor="B">B</label>
+                      <input
+                        type="checkbox"
+                        id="b"
+                        name="b"
+                        onChange={formik.handleChange}
+                        value={formik.values.b}
+                      />
+                      <label htmlFor="C">C</label>
+                      <input
+                        type="checkbox"
+                        id="c"
+                        name="c"
+                        onChange={formik.handleChange}
+                        value={formik.values.c}
+                      />
+                      <label htmlFor="D">D</label>
+                      <input
+                        type="checkbox"
+                        id="d"
+                        name="d"
+                        onChange={formik.handleChange}
+                        value={formik.values.d}
+                      />
+                    </div>
                   </div>
-                  <div>
-                    <label htmlFor="JR">JR</label>
-                    <input type="checkbox" id="JR" />
-                    <label htmlFor="A">A</label>
-                    <input type="checkbox" id="A" />
-                    <label htmlFor="B">B</label>
-                    <input type="checkbox" id="B" />
-                    <label htmlFor="C">C</label>
-                    <input type="checkbox" id="C" />
-                    <label htmlFor="D">D</label>
-                    <input type="checkbox" id="D" />
+                  {/*footer*/}
+                  <div className="flex items-center justify-end p-6 border-t border-solid border-blueGray-200 rounded-b">
+                    <button
+                      className="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                      type="button"
+                      onClick={() => setShowModal(false)}
+                    >
+                      Close
+                    </button>
+                    <button
+                      className="bg-emerald-500 text-black active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                      type="submit"
+                    >
+                      Save Changes
+                    </button>
                   </div>
-                </div>
-                {/*footer*/}
-                <div className="flex items-center justify-end p-6 border-t border-solid border-blueGray-200 rounded-b">
-                  <button
-                    className="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
-                    type="button"
-                    onClick={() => setShowModal(false)}
-                  >
-                    Close
-                  </button>
-                  <button
-                    className="bg-emerald-500 text-black active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
-                    type="button"
-                    onClick={() => setShowModal(false)}
-                  >
-                    Save Changes
-                  </button>
-                </div>
+                </form>
               </div>
             </div>
           </div>
