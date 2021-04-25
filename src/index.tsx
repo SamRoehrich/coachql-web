@@ -16,7 +16,8 @@ import jwt_decode, { JwtPayload } from "jwt-decode";
 import {
   currentEventIdVar,
   currentEventVar,
-  currentTab,
+  currentTabVar,
+  currentStackVar,
 } from "./graphql/cache";
 
 const cache = new InMemoryCache({
@@ -33,9 +34,14 @@ const cache = new InMemoryCache({
             return currentEventVar();
           },
         },
+        currentStack: {
+          read() {
+            return currentStackVar();
+          },
+        },
         currentTab: {
           read() {
-            return currentTab();
+            return currentTabVar();
           },
         },
       },

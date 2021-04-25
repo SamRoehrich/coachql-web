@@ -48,6 +48,7 @@ export default function Modal() {
         },
       });
       setShowModal(false);
+      window.location.reload();
     },
   });
 
