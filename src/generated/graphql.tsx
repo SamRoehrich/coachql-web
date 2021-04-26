@@ -58,7 +58,7 @@ export type Mutation = {
   logout: Scalars['Boolean'];
   login: LoginResponse;
   createEvent: Scalars['Boolean'];
-  registerAthlete: Scalars['Boolean'];
+  registerForEvent: Scalars['Boolean'];
   registerTeam: Scalars['Boolean'];
   createAthlete: Scalars['Boolean'];
   addAthleteToEvent: Scalars['Boolean'];
@@ -90,8 +90,16 @@ export type MutationCreateEventArgs = {
 };
 
 
-export type MutationRegisterAthleteArgs = {
-  evnetId: Scalars['String'];
+export type MutationRegisterForEventArgs = {
+  male: Scalars['Boolean'];
+  female: Scalars['Boolean'];
+  birthYear: Scalars['Float'];
+  team: Scalars['String'];
+  lastName: Scalars['String'];
+  firstName: Scalars['String'];
+  password: Scalars['String'];
+  email: Scalars['String'];
+  eventId: Scalars['String'];
 };
 
 
@@ -276,7 +284,7 @@ export type GetEventQuery = (
   { __typename?: 'Query' }
   & { event: (
     { __typename?: 'Event' }
-    & Pick<Event, 'id' | 'name' | 'startDate'>
+    & Pick<Event, 'id' | 'name' | 'startDate' | 'location'>
     & { creator: (
       { __typename?: 'User' }
       & Pick<User, 'lastName' | 'firstName' | 'id' | 'email'>
@@ -349,6 +357,24 @@ export type RegisterMutationVariables = Exact<{
 export type RegisterMutation = (
   { __typename?: 'Mutation' }
   & Pick<Mutation, 'register'>
+);
+
+export type RegisterForEventMutationVariables = Exact<{
+  firstName: Scalars['String'];
+  lastName: Scalars['String'];
+  email: Scalars['String'];
+  password: Scalars['String'];
+  male: Scalars['Boolean'];
+  female: Scalars['Boolean'];
+  birthYear: Scalars['Float'];
+  team: Scalars['String'];
+  eventId: Scalars['String'];
+}>;
+
+
+export type RegisterForEventMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'registerForEvent'>
 );
 
 export type CreateStackMutationVariables = Exact<{
@@ -581,6 +607,7 @@ export const GetEventDocument = gql`
     id
     name
     startDate
+    location
     creator {
       lastName
       firstName
@@ -812,6 +839,55 @@ export function useRegisterMutation(baseOptions?: Apollo.MutationHookOptions<Reg
 export type RegisterMutationHookResult = ReturnType<typeof useRegisterMutation>;
 export type RegisterMutationResult = Apollo.MutationResult<RegisterMutation>;
 export type RegisterMutationOptions = Apollo.BaseMutationOptions<RegisterMutation, RegisterMutationVariables>;
+export const RegisterForEventDocument = gql`
+    mutation RegisterForEvent($firstName: String!, $lastName: String!, $email: String!, $password: String!, $male: Boolean!, $female: Boolean!, $birthYear: Float!, $team: String!, $eventId: String!) {
+  registerForEvent(
+    male: $male
+    female: $female
+    firstName: $firstName
+    lastName: $lastName
+    birthYear: $birthYear
+    team: $team
+    email: $email
+    password: $password
+    eventId: $eventId
+  )
+}
+    `;
+export type RegisterForEventMutationFn = Apollo.MutationFunction<RegisterForEventMutation, RegisterForEventMutationVariables>;
+
+/**
+ * __useRegisterForEventMutation__
+ *
+ * To run a mutation, you first call `useRegisterForEventMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useRegisterForEventMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [registerForEventMutation, { data, loading, error }] = useRegisterForEventMutation({
+ *   variables: {
+ *      firstName: // value for 'firstName'
+ *      lastName: // value for 'lastName'
+ *      email: // value for 'email'
+ *      password: // value for 'password'
+ *      male: // value for 'male'
+ *      female: // value for 'female'
+ *      birthYear: // value for 'birthYear'
+ *      team: // value for 'team'
+ *      eventId: // value for 'eventId'
+ *   },
+ * });
+ */
+export function useRegisterForEventMutation(baseOptions?: Apollo.MutationHookOptions<RegisterForEventMutation, RegisterForEventMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<RegisterForEventMutation, RegisterForEventMutationVariables>(RegisterForEventDocument, options);
+      }
+export type RegisterForEventMutationHookResult = ReturnType<typeof useRegisterForEventMutation>;
+export type RegisterForEventMutationResult = Apollo.MutationResult<RegisterForEventMutation>;
+export type RegisterForEventMutationOptions = Apollo.BaseMutationOptions<RegisterForEventMutation, RegisterForEventMutationVariables>;
 export const CreateStackDocument = gql`
     mutation CreateStack($male: Boolean!, $female: Boolean!, $jr: Boolean!, $a: Boolean!, $b: Boolean!, $c: Boolean!, $d: Boolean!, $eventId: String!) {
   createStack(

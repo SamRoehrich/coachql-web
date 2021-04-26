@@ -10,6 +10,7 @@ import LoginPage from "./pages/Login";
 import RegisterPage from "./pages/Register";
 import EventPage from "./pages/EventDashboard";
 import RegisterSuccessPage from "./pages/RegisterSuccessPage";
+import EventSignup from "./pages/EventSignup";
 
 const Routes: React.FC = () => {
   return (
@@ -25,14 +26,23 @@ const Routes: React.FC = () => {
           <Route exact path="/coach_register" component={CoachRegisterPage} />
           <Route exact path="/events/create" component={CreateEventForm} />
           <Route
-            exact
-            path="/register/success"
+            path="/account/register/success"
             component={RegisterSuccessPage}
           />
           <Route
             exact
             path="/event/dashboard/:eventId/:userId"
             component={EventPage}
+          />
+          <Route
+            exact
+            path="/event/register/success"
+            component={RegisterSuccessPage}
+          />
+          <Route
+            exact
+            path="/event/register/:eventId"
+            component={EventSignup}
           />
         </Switch>
       </div>

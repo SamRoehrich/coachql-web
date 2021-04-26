@@ -11,3 +11,27 @@ mutation Register(
     lastName: $lastName
   )
 }
+
+mutation RegisterForEvent(
+  $firstName: String!
+  $lastName: String!
+  $email: String!
+  $password: String!
+  $male: Boolean!
+  $female: Boolean!
+  $birthYear: Float!
+  $team: String!
+  $eventId: String!
+) {
+  registerForEvent(
+    male: $male
+    female: $female
+    firstName: $firstName
+    lastName: $lastName
+    birthYear: $birthYear
+    team: $team
+    email: $email
+    password: $password
+    eventId: $eventId
+  )
+}

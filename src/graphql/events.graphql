@@ -72,6 +72,7 @@ query GetEvent($eventId: String!) {
     id
     name
     startDate
+    location
     creator {
       lastName
       firstName
