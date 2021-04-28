@@ -8,17 +8,25 @@ import {
   InMemoryCache,
   createHttpLink,
   ApolloLink,
+  Observable,
+  HttpLink,
 } from "@apollo/client";
 import reportWebVitals from "./reportWebVitals";
 import { getAccessToken, setAccessToken } from "./accessToken";
 import { TokenRefreshLink } from "apollo-link-token-refresh";
-import jwt_decode, { JwtPayload } from "jwt-decode";
+import jwt_decode from "jwt-decode";
 import {
   currentEventIdVar,
   currentEventVar,
   currentTabVar,
   currentStackVar,
 } from "./graphql/cache";
+
+interface DecodedToken {
+  user: number;
+  iat: number;
+  exp: number;
+}
 
 const cache = new InMemoryCache({
   typePolicies: {
@@ -49,20 +57,35 @@ const cache = new InMemoryCache({
   },
 });
 
-const httpLink = createHttpLink({
-  uri: "http://localhost:4000/graphql",
-  credentials: "include",
-});
+const requestLink = new ApolloLink(
+  (operation, forward) =>
+    new Observable((observer) => {
+      let handle: any;
+      Promise.resolve(operation)
+        .then((operation) => {
+          const accessToken = getAccessToken();
+          if (accessToken) {
+            operation.setContext({
+              headers: {
+                authorization: `bearer ${accessToken}`,
+              },
+            });
+          }
+        })
+        .then(() => {
+          handle = forward(operation).subscribe({
+            next: observer.next.bind(observer),
+            error: observer.error.bind(observer),
+            complete: observer.complete.bind(observer),
+          });
+        })
+        .catch(observer.error.bind(observer));
 
-const authMiddleware = new ApolloLink((operation, forward) => {
-  const token = getAccessToken();
-  operation.setContext({
-    headers: {
-      authorization: "bearer " + token,
-    },
-  });
-  return forward(operation);
-});
+      return () => {
+        if (handle) handle.unsubscribe();
+      };
+    })
+);
 
 const client = new ApolloClient({
   link: ApolloLink.from([
@@ -76,8 +99,8 @@ const client = new ApolloClient({
         }
 
         try {
-          const { exp } = jwt_decode<JwtPayload>(token);
-          if (Date.now() >= exp! * 1000) {
+          const { exp } = jwt_decode<DecodedToken>(token);
+          if (Date.now() >= exp * 1000) {
             return false;
           } else {
             return true;
@@ -100,8 +123,15 @@ const client = new ApolloClient({
         console.error(err);
       },
     }),
-    authMiddleware,
-    httpLink,
+    // onerror(({ graphQLErrors, networkError }) => {
+    //   console.log(graphQLErrors);
+    //   console.log(networkError);
+    // }),
+    requestLink,
+    new HttpLink({
+      uri: "http://localhost:4000/graphql",
+      credentials: "include",
+    }),
   ]),
   cache,
 });

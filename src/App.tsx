@@ -6,8 +6,6 @@ import Routes from "./Routes";
 interface Props {}
 
 const App: FC<Props> = () => {
-  const [loading, setLoading] = useState(true);
-
   useEffect(() => {
     fetch("http://localhost:4000/refresh_token", {
       method: "POST",
@@ -15,10 +13,8 @@ const App: FC<Props> = () => {
     }).then(async (x) => {
       const { accessToken } = await x.json();
       setAccessToken(accessToken);
-      setLoading(false);
     });
   }, []);
-  if (loading) return <Loading />;
   return <Routes />;
 };
 

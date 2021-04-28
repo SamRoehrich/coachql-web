@@ -15,12 +15,15 @@ const AuthenticateHomePage: FC = (props) => {
     history.push("/");
   }
 
-  return (
-    <div className='flex'>
-      <EventList />
-      <EventInfo />
-    </div>
-  );
+  if (data && data.me) {
+    return (
+      <div className="flex">
+        <EventList />
+        <EventInfo />
+      </div>
+    );
+  }
+  return null;
 };
 
 export default AuthenticateHomePage;

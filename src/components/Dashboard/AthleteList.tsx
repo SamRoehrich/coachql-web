@@ -7,13 +7,16 @@ interface Props {}
 
 const AthleteList: FC<Props> = () => {
   const { data } = useQuery(GET_CURRENT_EVENT);
-  if (data && data.currentEvent.athletes) {
+  if (data.currentEvent.athletes) {
     return (
       <div>
-        Athletes
-        {data.event.athletes.map((athlete: Athlete) => (
-          <li>{athlete.user.firstName}</li>
-        ))}
+        <ul>
+          {data.currentEvent.athletes.map((athlete: Athlete) => (
+            <li key={athlete.id}>
+              <p>{athlete.user.lastName}</p>
+            </li>
+          ))}
+        </ul>
       </div>
     );
   }

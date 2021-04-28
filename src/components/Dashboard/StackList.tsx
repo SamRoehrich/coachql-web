@@ -34,7 +34,7 @@ const StackList: FC<Props> = ({ stacks }) => {
     <div className="w-1/5">
       <ul>
         {stacks.map((stack: Stack) => (
-          <StackItem stack={stack} />
+          <StackItem stack={stack} key={stack.id} />
         ))}
       </ul>
       <Modal />

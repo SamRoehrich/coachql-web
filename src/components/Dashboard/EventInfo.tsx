@@ -16,6 +16,12 @@ const EventInfo: FC<Props> = () => {
         `/event/dashboard/${data.currentEvent.id}/${meResult?.me?.id}`
       );
     };
+    const handleRegistrationLinkClick = async () => {
+      await navigator.clipboard.writeText(
+        "/event/register/" + data.currentEvent.id
+      );
+      alert("Link copied to clipboard.");
+    };
     return (
       <div className="flex flex-col w-full">
         <div className="flex justify-between">
@@ -34,7 +40,12 @@ const EventInfo: FC<Props> = () => {
           {location.pathname.includes("dashboard") ? (
             <button>Scoring</button>
           ) : data.currentEvent.creator.id === meResult?.me?.id ? (
-            <button onClick={handleManageClick}>Manage Event</button>
+            <>
+              <button onClick={handleManageClick}>Manage Event</button>
+              <button onClick={handleRegistrationLinkClick}>
+                Registration Link
+              </button>
+            </>
           ) : (
             <button>Register for Event</button>
           )}

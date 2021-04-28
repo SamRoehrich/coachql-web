@@ -156,6 +156,7 @@ export type Query = {
   athletes: Array<Athlete>;
   getStacks: Array<Stack>;
   getBoulders: Array<Boulder>;
+  getBouldersForEvent: Array<Boulder>;
   getBoulder: Boulder;
 };
 
@@ -171,6 +172,11 @@ export type QueryAthletesArgs = {
 
 
 export type QueryGetStacksArgs = {
+  eventId: Scalars['String'];
+};
+
+
+export type QueryGetBouldersForEventArgs = {
   eventId: Scalars['String'];
 };
 
@@ -209,6 +215,19 @@ export type User = {
   lastName: Scalars['String'];
   email: Scalars['String'];
 };
+
+export type GetBouldersInEventQueryVariables = Exact<{
+  eventId: Scalars['String'];
+}>;
+
+
+export type GetBouldersInEventQuery = (
+  { __typename?: 'Query' }
+  & { getBouldersForEvent: Array<(
+    { __typename?: 'Boulder' }
+    & Pick<Boulder, 'id' | 'boulderNumber'>
+  )> }
+);
 
 export type ByeQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -291,6 +310,10 @@ export type GetEventQuery = (
     ), stacks?: Maybe<Array<(
       { __typename?: 'Stack' }
       & Pick<Stack, 'id' | 'female' | 'male' | 'a' | 'b' | 'c' | 'd' | 'jr'>
+      & { boulders: Array<(
+        { __typename?: 'Boulder' }
+        & Pick<Boulder, 'id' | 'boulderNumber'>
+      )> }
     )>>, athletes?: Maybe<Array<(
       { __typename?: 'Athlete' }
       & { user: (
@@ -419,6 +442,42 @@ export type UsersQuery = (
 );
 
 
+export const GetBouldersInEventDocument = gql`
+    query GetBouldersInEvent($eventId: String!) {
+  getBouldersForEvent(eventId: $eventId) {
+    id
+    boulderNumber
+  }
+}
+    `;
+
+/**
+ * __useGetBouldersInEventQuery__
+ *
+ * To run a query within a React component, call `useGetBouldersInEventQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetBouldersInEventQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetBouldersInEventQuery({
+ *   variables: {
+ *      eventId: // value for 'eventId'
+ *   },
+ * });
+ */
+export function useGetBouldersInEventQuery(baseOptions: Apollo.QueryHookOptions<GetBouldersInEventQuery, GetBouldersInEventQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetBouldersInEventQuery, GetBouldersInEventQueryVariables>(GetBouldersInEventDocument, options);
+      }
+export function useGetBouldersInEventLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetBouldersInEventQuery, GetBouldersInEventQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetBouldersInEventQuery, GetBouldersInEventQueryVariables>(GetBouldersInEventDocument, options);
+        }
+export type GetBouldersInEventQueryHookResult = ReturnType<typeof useGetBouldersInEventQuery>;
+export type GetBouldersInEventLazyQueryHookResult = ReturnType<typeof useGetBouldersInEventLazyQuery>;
+export type GetBouldersInEventQueryResult = Apollo.QueryResult<GetBouldersInEventQuery, GetBouldersInEventQueryVariables>;
 export const ByeDocument = gql`
     query Bye {
   bye
@@ -623,6 +682,10 @@ export const GetEventDocument = gql`
       c
       d
       jr
+      boulders {
+        id
+        boulderNumber
+      }
     }
     athletes {
       user {

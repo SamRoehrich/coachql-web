@@ -1,10 +1,10 @@
 import { useFormik } from "formik";
 import { FC } from "react";
 import { useHistory } from "react-router";
-import { useCreateEventMutation } from "../generated/graphql";
-import { FormikStepper } from "./Forms/FormikStepper";
+import { useCreateEventMutation } from "../../../generated/graphql";
+import { FormikStepper } from "../FormikStepper";
 
-const CreateEventForm: FC = () => {
+const BasicInformationForm: FC = () => {
   const [createEvent] = useCreateEventMutation();
   const history = useHistory();
   const formik = useFormik({
@@ -30,8 +30,7 @@ const CreateEventForm: FC = () => {
     validationSchema: {},
   });
   return (
-    // <FormikStepper initialValues={{ firstName: "" }} onSubmit={() => {}}>
-    <>
+    <FormikStepper initialValues={{ firstName: "" }} onSubmit={() => {}}>
       <div>
         <input
           type="text"
@@ -74,9 +73,8 @@ const CreateEventForm: FC = () => {
           name="numBoulders"
         />
       </div>
-    </>
-    // </FormikStepper>
+    </FormikStepper>
   );
 };
 
-export default CreateEventForm;
+export default BasicInformationForm;

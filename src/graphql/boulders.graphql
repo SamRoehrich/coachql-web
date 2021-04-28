@@ -1,0 +1,6 @@
+query GetBouldersInEvent($eventId: String!) {
+  getBouldersForEvent(eventId: $eventId) {
+    id
+    boulderNumber
+  }
+}

@@ -88,6 +88,10 @@ query GetEvent($eventId: String!) {
       c
       d
       jr
+      boulders {
+        id
+        boulderNumber
+      }
     }
     athletes {
       user {

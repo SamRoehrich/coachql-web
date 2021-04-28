@@ -1,17 +1,24 @@
-import React, { useState } from "react";
+import React from "react";
 import { RouteComponentProps } from "react-router";
 import { setAccessToken } from "../accessToken";
 import { MeDocument, MeQuery, useLoginMutation } from "../generated/graphql";
+import * as Yup from "yup";
+import { ErrorMessage, Field, Form, Formik } from "formik";
+import {
+  CustomInputComponent,
+  CustomPasswordInputComponent,
+} from "../components/Forms/Inputs";
 
 const Login: React.FC<RouteComponentProps> = ({ history }) => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const [login] = useLoginMutation();
 
   return (
-    <form
-      onSubmit={async (e) => {
-        e.preventDefault();
+    <Formik
+      initialValues={{
+        email: "",
+        password: "",
+      }}
+      onSubmit={async ({ email, password }) => {
         const response = await login({
           variables: {
             email,
@@ -35,29 +42,38 @@ const Login: React.FC<RouteComponentProps> = ({ history }) => {
 
         history.push("/home");
       }}
+      validationSchema={Yup.object({
+        email: Yup.string()
+          .email("Not a valid email address.")
+          .required("Email is Required."),
+        password: Yup.string().required("Password is required"),
+      })}
     >
-      <div>
-        <input
-          value={email}
-          placeholder='email'
-          onChange={(e) => {
-            setEmail(e.target.value);
-          }}
+      <Form className="flex flex-col p-0 p-5 mt-5 space-y-4 text-black bg-white rounded-lglg:p-10 lg:space-y-6">
+        <Field name="email" placeholder="Email" as={CustomInputComponent} />
+        <ErrorMessage
+          name="email"
+          component="div"
+          className="text-xs italic text-right text-primary-red"
         />
-      </div>
-      <div>
-        <input
-          className=''
-          type='password'
-          value={password}
-          placeholder='password'
-          onChange={(e) => {
-            setPassword(e.target.value);
-          }}
+        <Field
+          name="password"
+          placeholder="Password"
+          as={CustomPasswordInputComponent}
         />
-      </div>
-      <button type='submit'>login</button>
-    </form>
+        <ErrorMessage
+          name="password"
+          component="div"
+          className="text-xs italic text-right text-primary-red"
+        />
+        <button
+          className="py-4 text-sm tracking-wide text-black uppercase rounded-lg shadow-xl outline-none lg:text-base bg-primary-green hover:bg-opacity-75 focus:outline-none "
+          type="submit"
+        >
+          Sign In
+        </button>
+      </Form>
+    </Formik>
   );
 };
 

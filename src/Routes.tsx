@@ -24,7 +24,7 @@ const Routes: React.FC = () => {
           <Route exact path="/login" component={LoginPage} />
           <Route exact path="/bye" component={ByePage} />
           <Route exact path="/coach_register" component={CoachRegisterPage} />
-          <Route exact path="/events/create" component={CreateEventForm} />
+          <Route exact path="/event/create" component={CreateEventForm} />
           <Route
             path="/account/register/success"
             component={RegisterSuccessPage}
