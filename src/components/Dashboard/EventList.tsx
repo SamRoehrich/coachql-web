@@ -13,7 +13,7 @@ const EventList: FC<Props> = () => {
   });
 
   const handleCreateEventClick = () => {
-    history.push("/events/create");
+    history.push("/event/create");
   };
 
   if (loading) return <Loading />;

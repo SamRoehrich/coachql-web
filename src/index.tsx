@@ -6,7 +6,6 @@ import {
   ApolloClient,
   ApolloProvider,
   InMemoryCache,
-  createHttpLink,
   ApolloLink,
   Observable,
   HttpLink,
@@ -123,9 +122,8 @@ const client = new ApolloClient({
         console.error(err);
       },
     }),
-    // onerror(({ graphQLErrors, networkError }) => {
-    //   console.log(graphQLErrors);
-    //   console.log(networkError);
+    // onError((ev) => {
+    //   console.log(ev)
     // }),
     requestLink,
     new HttpLink({
