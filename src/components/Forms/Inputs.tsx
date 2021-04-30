@@ -1,6 +1,19 @@
 import { FieldProps } from "formik";
 import { FC } from "react";
 
+export const CustomInputComponentNoBorder: React.ComponentType<
+  FieldProps["field"]
+> = (props) => (
+  <div>
+    <input
+      className="form-select w-full p-4 font-semibold placeholder-gray-500 border-l-2 rounded outline-none lg:px-4 focus:ring-accent-blue focus:ring-1"
+      type="select"
+      autoComplete="off"
+      {...props}
+    />
+  </div>
+);
+
 export const CustomInputComponent: React.ComponentType<FieldProps["field"]> = (
   props
 ) => (

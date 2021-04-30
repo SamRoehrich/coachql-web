@@ -3,6 +3,9 @@ query Events {
     name
     location
     id
+    creator {
+      id
+    }
   }
 }
 

@@ -20,7 +20,11 @@ const AthleteList: FC<Props> = () => {
       </div>
     );
   }
-  return <div>Athlete List: Empty</div>;
+  return (
+    <div className="text-center mt-10">
+      No Athletes Have Registered For This Event.
+    </div>
+  );
 };
 
 export default AthleteList;
