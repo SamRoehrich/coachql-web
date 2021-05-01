@@ -47,7 +47,7 @@ export const CustomCheckboxComponent: React.ComponentType<
     <input
       {...props}
       type="checkbox"
-      className="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-offset-0 focus:ring-indigo-200 focus:ring-opacity-50"
+      className="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-offset-0 focus:ring-indigo-200 focus:ring-opacity-50 cursor-pointer"
     />
   </div>
 );
@@ -59,6 +59,7 @@ export const CustomDateInputComponent: React.ComponentType<
     <input
       className="form-input w-full rounded-lg placeholder-gray-500 text-gray-500"
       type="date"
+      {...props}
     />
   </div>
 );

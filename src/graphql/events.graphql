@@ -15,6 +15,7 @@ mutation CreateEvent(
   $startDate: String!
   $visible: Boolean!
   $numBoulders: Float!
+  $stacks: [MinimalStack!]!
 ) {
   createEvent(
     name: $name
@@ -22,6 +23,7 @@ mutation CreateEvent(
     startDate: $startDate
     visible: $visible
     numBoulders: $numBoulders
+    stacks: $stacks
   )
 }
 
