@@ -10,14 +10,14 @@ interface Params {
 }
 
 const EventPage: FC = (props) => {
-  const { eventId, userId } = useParams<Params>();
+  const { userId } = useParams<Params>();
   const { data, loading } = useMeQuery();
 
   if (loading) return <Loading />;
 
   if (data && data.me) {
     if (data.me.id.toString() === userId) {
-      return <EventDashboard eventId={eventId} />;
+      return <EventDashboard />;
     }
   }
 

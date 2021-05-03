@@ -3,8 +3,11 @@ query Events {
     name
     location
     id
+    startDate
+    numBoulders
     creator {
       id
+      email
     }
   }
 }
@@ -78,6 +81,7 @@ query GetEvent($eventId: String!) {
     name
     startDate
     location
+    numBoulders
     creator {
       lastName
       firstName

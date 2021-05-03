@@ -255,10 +255,10 @@ export type EventsQuery = (
   { __typename?: 'Query' }
   & { events: Array<(
     { __typename?: 'Event' }
-    & Pick<Event, 'name' | 'location' | 'id'>
+    & Pick<Event, 'name' | 'location' | 'id' | 'startDate' | 'numBoulders'>
     & { creator: (
       { __typename?: 'User' }
-      & Pick<User, 'id'>
+      & Pick<User, 'id' | 'email'>
     ) }
   )> }
 );
@@ -319,7 +319,7 @@ export type GetEventQuery = (
   { __typename?: 'Query' }
   & { event: (
     { __typename?: 'Event' }
-    & Pick<Event, 'id' | 'name' | 'startDate' | 'location'>
+    & Pick<Event, 'id' | 'name' | 'startDate' | 'location' | 'numBoulders'>
     & { creator: (
       { __typename?: 'User' }
       & Pick<User, 'lastName' | 'firstName' | 'id' | 'email'>
@@ -532,8 +532,11 @@ export const EventsDocument = gql`
     name
     location
     id
+    startDate
+    numBoulders
     creator {
       id
+      email
     }
   }
 }
@@ -688,6 +691,7 @@ export const GetEventDocument = gql`
     name
     startDate
     location
+    numBoulders
     creator {
       lastName
       firstName

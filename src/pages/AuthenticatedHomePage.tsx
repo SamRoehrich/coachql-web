@@ -6,7 +6,7 @@ import Loading from "../components/Loading";
 import { useMeQuery } from "../generated/graphql";
 
 const AuthenticateHomePage: FC = (props) => {
-  const { data, loading } = useMeQuery();
+  const { data, loading, error } = useMeQuery();
   let history = useHistory();
   const handleCreateEventClick = () => {
     history.push("/event/create");
@@ -16,6 +16,11 @@ const AuthenticateHomePage: FC = (props) => {
   }
   if (!loading && data && data.me === null) {
     history.push("/");
+  }
+
+  if (error) {
+    history.push("/");
+    return null;
   }
 
   if (data && data.me) {

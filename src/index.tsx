@@ -31,6 +31,14 @@ const cache = new InMemoryCache({
   typePolicies: {
     Query: {
       fields: {
+        // event: {
+        //   read(_, { args, toReference }) {
+        //     return toReference(
+        //       __typename: "Events",
+        //       id: args?.id,
+        //     });
+        //   },
+        // },
         currentEventId: {
           read() {
             return currentEventIdVar();

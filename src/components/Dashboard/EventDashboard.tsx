@@ -6,18 +6,20 @@ import { currentEventVar } from "../../graphql/cache";
 import StackTab from "./Tabs/StackTab";
 import BouldersTab from "./Tabs/BoudlersTab";
 import AthletesTab from "./Tabs/AthletesTab";
+import { useParams } from "react-router";
 
-interface Props {
+interface Params {
+  userId: string;
   eventId: string;
 }
 
-const EventDashboard: FC<Props> = ({ eventId }) => {
-  const { loading, data: eventQuery } = useGetEventQuery({
+const EventDashboard: FC = () => {
+  const { eventId } = useParams<Params>();
+  const { loading, data } = useGetEventQuery({
     variables: {
       eventId,
     },
   });
-
   const [currentTab, setCurrentTab] = useState(<StackTab eventId={eventId} />);
   const handleTabClick = (tab: string) => {
     switch (tab) {
@@ -35,25 +37,47 @@ const EventDashboard: FC<Props> = ({ eventId }) => {
         break;
     }
   };
-
   if (loading) return <Loading />;
-  if (eventQuery && eventQuery.event) {
-    currentEventVar(eventQuery.event);
+  if (data && data.event) {
+    currentEventVar(data.event);
     return (
-      <div className="flex flex-col">
-        <EventInfo />
-        <div className="flex flex-col">
-          <div className="h-12 flex items-start space-x-8">
-            <button onClick={() => handleTabClick("stacks")}>Stacks</button>
-            <button onClick={() => handleTabClick("athletes")}>Athletes</button>
-            <button onClick={() => handleTabClick("boulders")}>Boulders</button>
+      <div className="flex flex-col max-w-full">
+        <div className="max-w-full m-8">
+          <EventInfo />
+        </div>
+        <div className="flex flex-col max-w-full m-8">
+          <div className="h-12 flex items-center justify-center space-x-16 -mt-5">
+            <button
+              className="rounded-lg p-2 text-lg hover:bg-gray-100 hover:shadow-lg hover:border-none shadow-sm active:border-blue-300"
+              onClick={() => handleTabClick("stacks")}
+            >
+              Stacks
+            </button>
+            <button
+              className="rounded-lg p-2 text-lg hover:bg-gray-100 hover:shadow-lg hover:border-none shadow-sm"
+              onClick={() => handleTabClick("athletes")}
+            >
+              Athletes
+            </button>
+            <button
+              className="rounded-lg p-2 text-lg hover:bg-gray-100 hover:shadow-lg hover:border-none shadow-sm"
+              onClick={() => handleTabClick("boulders")}
+            >
+              Boulders
+            </button>
+            <button className="rounded-lg p-2 text-lg hover:bg-gray-100 hover:shadow-lg hover:border-none shadow-sm">
+              Scoring
+            </button>
           </div>
           {currentTab}
         </div>
       </div>
     );
   }
-  return <div>No Event with the id: {eventId}</div>;
+  if (data?.event === null) {
+    return <div>No Event with the id: {eventId}</div>;
+  }
+  return <div>Something went wrong</div>;
 };
 
 export default EventDashboard;

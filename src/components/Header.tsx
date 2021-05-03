@@ -6,13 +6,12 @@ import { useLogoutMutation, useMeQuery } from "../generated/graphql";
 interface Props {}
 
 const Header: FC<Props> = () => {
-  const { loading, data, error } = useMeQuery();
+  const { loading, data } = useMeQuery();
   const [logout, { client }] = useLogoutMutation();
   const history = useHistory();
-  if (error) {
-    console.log(error);
+  if (loading) {
+    return <div className="max-w-full h-20 items-center m-8"></div>;
   }
-  if (loading) return null;
   return (
     <div className="max-w-full h-20 items-center m-8">
       <header className="flex flex-row justify-between">
@@ -33,6 +32,7 @@ const Header: FC<Props> = () => {
                 setAccessToken("");
                 await client.resetStore();
                 history.push("/");
+                window.location.reload();
               }}
             >
               Log out: {data.me.firstName}

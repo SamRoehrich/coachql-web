@@ -1,6 +1,5 @@
-import React, { FC, useEffect, useState } from "react";
+import React, { FC, useEffect } from "react";
 import { setAccessToken } from "./accessToken";
-import Loading from "./components/Loading";
 import Routes from "./Routes";
 
 interface Props {}
