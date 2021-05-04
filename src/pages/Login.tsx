@@ -38,6 +38,7 @@ const Login: React.FC<RouteComponentProps> = ({ history }) => {
         }
 
         history.push("/home");
+        window.location.reload();
       }}
       validationSchema={Yup.object({
         email: Yup.string()

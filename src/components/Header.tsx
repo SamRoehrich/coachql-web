@@ -40,7 +40,7 @@ const Header: FC<Props> = () => {
           ) : (
             <div className="flex flex-row space-x-5">
               <div>
-                <Link to="/register">Register</Link>
+                <Link to="/register">Create Account</Link>
               </div>
               <p>|</p>
               <div>
