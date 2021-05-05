@@ -69,6 +69,7 @@ export type Mutation = {
   login: LoginResponse;
   createStack: Scalars['Boolean'];
   createEvent: Scalars['Boolean'];
+  seedEvent: Scalars['Boolean'];
   registerForEvent: Scalars['Boolean'];
   registerTeam: Scalars['Boolean'];
   createAthlete: Scalars['Boolean'];
@@ -110,6 +111,11 @@ export type MutationCreateEventArgs = {
   visible: Scalars['Boolean'];
   location: Scalars['String'];
   name: Scalars['String'];
+};
+
+
+export type MutationSeedEventArgs = {
+  eventId: Scalars['String'];
 };
 
 
@@ -319,7 +325,7 @@ export type GetEventQuery = (
   { __typename?: 'Query' }
   & { event: (
     { __typename?: 'Event' }
-    & Pick<Event, 'id' | 'name' | 'startDate' | 'location' | 'numBoulders'>
+    & Pick<Event, 'id' | 'name' | 'startDate' | 'visible' | 'location' | 'numBoulders'>
     & { creator: (
       { __typename?: 'User' }
       & Pick<User, 'lastName' | 'firstName' | 'id' | 'email'>
@@ -690,6 +696,7 @@ export const GetEventDocument = gql`
     id
     name
     startDate
+    visible
     location
     numBoulders
     creator {

@@ -80,6 +80,7 @@ query GetEvent($eventId: String!) {
     id
     name
     startDate
+    visible
     location
     numBoulders
     creator {

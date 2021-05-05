@@ -1,5 +1,4 @@
-import { FC, MouseEventHandler, useState } from "react";
-import EventInfo from "./EventInfo";
+import { FC, useState } from "react";
 import { useGetEventQuery } from "../../generated/graphql";
 import Loading from "../Loading";
 import { currentEventVar } from "../../graphql/cache";
@@ -9,6 +8,7 @@ import AthletesTab from "./Tabs/AthletesTab";
 import { useHistory, useParams } from "react-router";
 import { MainButton } from "../Styled/Buttons";
 import GeneralTab from "./Tabs/GeneralTab";
+import RunningOrderTab from "../RunningOrder";
 
 interface Params {
   userId: string;
@@ -17,7 +17,7 @@ interface Params {
 
 const EventDashboard: FC = () => {
   const { eventId } = useParams<Params>();
-  const history = useHistory();
+  // const history = useHistory();
   const { loading, data } = useGetEventQuery({
     variables: {
       eventId,
@@ -29,6 +29,9 @@ const EventDashboard: FC = () => {
     switch (tab) {
       case "general":
         setCurrentTab(<GeneralTab />);
+        break;
+      case "ro":
+        setCurrentTab(<RunningOrderTab />);
         break;
       case "stacks":
         setCurrentTab(<StackTab eventId={eventId} />);
@@ -53,6 +56,9 @@ const EventDashboard: FC = () => {
           <div className="h-12 flex items-center justify-center space-x-16 -mt-5">
             <div onClick={() => handleTabClick("general")}>
               <MainButton text="General" />
+            </div>
+            <div onClick={() => handleTabClick("ro")}>
+              <MainButton text="Running Order" />
             </div>
             <div onClick={() => handleTabClick("stacks")}>
               <MainButton text="Stacks" />

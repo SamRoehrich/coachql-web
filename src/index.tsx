@@ -20,6 +20,8 @@ import {
   currentTabVar,
   currentStackVar,
 } from "./graphql/cache";
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
 
 interface DecodedToken {
   user: number;
@@ -144,7 +146,9 @@ const client = new ApolloClient({
 
 ReactDOM.render(
   <ApolloProvider client={client}>
-    <App />
+    <DndProvider backend={HTML5Backend}>
+      <App />
+    </DndProvider>
   </ApolloProvider>,
   document.getElementById("root")
 );

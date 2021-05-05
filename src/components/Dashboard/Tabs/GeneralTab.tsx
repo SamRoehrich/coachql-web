@@ -1,77 +1,63 @@
+import { useQuery } from "@apollo/client";
 import { FC } from "react";
+import { GET_CURRENT_EVENT } from "../../../graphql/cache";
+import Loading from "../../Loading";
+import RunningOrderEditor from "../../RunningOrder";
 import { SecondaryButton } from "../../Styled/Buttons";
 import EventInfo from "../EventInfo";
 
 const GeneralTab: FC = () => {
+  const { data, loading } = useQuery(GET_CURRENT_EVENT);
+  console.log(data);
   const handleClick = () => {};
-  return (
-    <div className="flex flex-col w-full">
-      <div className="max-w-full m-8">
-        <EventInfo />
+  if (loading) return <Loading />;
+  if (data) {
+    return (
+      <div className="flex flex-col w-full">
+        <div className="flex flex-col text-center">
+          <div className="flex justify-center space-x-10">
+            <SecondaryButton text="Print Scores" onClick={handleClick} />
+            <SecondaryButton text="Scorekeeper Link" onClick={handleClick} />
+            <SecondaryButton text="Delete Event" onClick={handleClick} />
+          </div>
+          <div className="flex justify-center space-x-20 items-center mt-10">
+            <div role="group">
+              <p>Public Event</p>
+              <span>True</span>
+              <input
+                checked={data.currentEvent.visible === true ? true : false}
+                onClick={() =>
+                  alert("This is a publicly listed event. Anyone can register.")
+                }
+                type="radio"
+                name="public"
+                value="false"
+                className="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-offset-0 focus:ring-indigo-200 focus:ring-opacity-50 cursor-pointer"
+              />
+              <span>Fasle</span>
+              <input
+                checked={data.currentEvent.visible === false ? true : false}
+                onClick={() =>
+                  alert(
+                    "This is a private event, you must share the invite link with all participants."
+                  )
+                }
+                type="radio"
+                name="public"
+                value="true"
+                className="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-offset-0 focus:ring-indigo-200 focus:ring-opacity-50 cursor-pointer"
+              />
+            </div>
+            <p>Registered Athletes: {data.currentEvent.athletes.length}</p>
+          </div>
+        </div>
+        <div className="max-w-full m-8">
+          <EventInfo />
+        </div>
       </div>
-      <div className="flex flex-col text-center">
-        <div className="flex justify-center space-x-10">
-          <SecondaryButton text="Print Scores" onClick={handleClick} />
-          <SecondaryButton text="Edit Stacks" onClick={handleClick} />
-
-          <SecondaryButton text="Scorekeeper Link" onClick={handleClick} />
-
-          <SecondaryButton text="Delete Event" onClick={handleClick} />
-        </div>
-        <div role="group">
-          <p>Public Event</p>
-          <span>True</span>
-          <input
-            onClick={() =>
-              alert("This is a publicly listed event. Anyone can register.")
-            }
-            type="radio"
-            name="public"
-            value="false"
-            className="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-offset-0 focus:ring-indigo-200 focus:ring-opacity-50 cursor-pointer"
-          />
-          <span>Fasle</span>
-          <input
-            onClick={() =>
-              alert(
-                "This is a private event, you must share the invite link with all participants."
-              )
-            }
-            type="radio"
-            name="public"
-            value="true"
-            className="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-offset-0 focus:ring-indigo-200 focus:ring-opacity-50 cursor-pointer"
-          />
-        </div>
-        <div role="group">
-          <p>Score Keepers</p>
-          <span>True</span>
-          <input
-            onClick={() =>
-              alert("Confirm: You will have scorekeepers for every boulder.")
-            }
-            type="radio"
-            name="scorekeepers"
-            value="true"
-            className="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-offset-0 focus:ring-indigo-200 focus:ring-opacity-50 cursor-pointer"
-          />
-          <span>False</span>
-          <input
-            onClick={() =>
-              alert(
-                "With this set to fasle you will have to score the entire event in the scoring dashboard. Multiple individulals are able to score through the scoring window. If you are hosting an event where you have scorekeeprs for every boulder set this to true and share the scorekeeper link with your scorekeeprs so they can register for the event."
-              )
-            }
-            type="radio"
-            name="scorekeepers"
-            value="false"
-            className="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-offset-0 focus:ring-indigo-200 focus:ring-opacity-50 cursor-pointer"
-          />
-        </div>
-        <p>Registered Athletes: 10</p>
-      </div>
-    </div>
-  );
+    );
+  }
+  return <div>Error: Refresh the page.</div>;
 };
 
 export default GeneralTab;
