@@ -1,171 +1,136 @@
 import { FC, useRef, useState } from "react";
-import { useDrag, useDrop } from "react-dnd";
-import {
-  RunningOrderContext,
-  RunningOrderState,
-  initialState,
-} from "./RunningOrderContext";
-import { useRunningOrderState } from "./RunningOrderContext";
-import { InitialStateType } from "../types/RunningOrder";
 
-interface StackContainerProps {
+interface Stack {
   id: number;
-}
-
-interface ItemProps {
-  onDropItem?: (item: string) => {};
   gender: string;
-  index: number;
   catagory: string;
-  group: number;
 }
 
-interface DragStart {
-  stackNumber: number;
-  groupNumber: number;
+interface Group {
+  id: number;
+  title: string;
+  items: Stack[];
 }
 
-const StackContainer: FC<StackContainerProps> = ({ id }) => {
-  return (
-    <div className="w-1/5 h-32 border">
-      <ul></ul>
-    </div>
-  );
-};
+const initialState: Group[] = [
+  {
+    id: 0,
+    title: "Unordered",
+    items: [
+      {
+        id: 0,
+        gender: "Male",
+        catagory: "JR",
+      },
+      {
+        id: 1,
+        gender: "Female",
+        catagory: "JR",
+      },
+    ],
+  },
+  {
+    id: 1,
+    title: "Group One",
+    items: [
+      {
+        id: 2,
+        gender: "Male",
+        catagory: "A",
+      },
+      {
+        id: 2,
+        gender: "Female",
+        catagory: "A",
+      },
+    ],
+  },
+];
 
-const Item: FC<ItemProps> = ({ gender, catagory, index, group }) => {
-  const handleDragStart = (
-    e: React.DragEvent<HTMLDivElement>,
-    { stackNumber, groupNumber }: DragStart
-  ) => {
-    console.log("drag started");
-    console.log(stackNumber, groupNumber);
-  };
-  return (
-    <div
-      draggable
-      onDragStart={(e) =>
-        handleDragStart(e, { stackNumber: index, groupNumber: group })
-      }
-      key={gender + catagory + index}
-    >
-      <li>
-        <div className="flex">
-          <p>{gender}</p>
-          <p>{catagory}</p>
-        </div>
-      </li>
-    </div>
-  );
-};
+interface Params {
+  groupIndex: number;
+  stackIndex: number;
+}
 
 const RunningOrderTab: FC = () => {
-  const { state, dispatch } = useRunningOrderState();
   const [dragging, setDragging] = useState(false);
   const [runningOrder, setRunningOrder] = useState(initialState);
   const dragNode = useRef<EventTarget>();
-  const dragItem = useRef<DragStart>();
+  const dragItem = useRef<Params>();
 
   const handleDragStart = (
     e: React.DragEvent<HTMLDivElement>,
-    { stackNumber, groupNumber }: DragStart
+    params: Params
   ) => {
+    console.log("Drag Started");
     setDragging(true);
     dragNode.current = e.target;
     dragNode.current.addEventListener("dragend", handleDragEnd);
-    dragItem.current = {
-      stackNumber,
-      groupNumber,
-    };
+    dragItem.current = params;
+  };
+
+  const handleDragEnd = () => {
+    setDragging(false);
+    dragItem.current = undefined;
+    dragNode.current?.removeEventListener("dragend", handleDragEnd);
+    dragNode.current = undefined;
   };
 
   const handleDragEnter = (
     e: React.DragEvent<HTMLDivElement>,
-    { stackNumber, groupNumber }: DragStart
+    params: Params
   ) => {
-    if (dragNode.current !== e.target && dragItem && dragItem.current) {
-      console.log("Target is NOT the same as dragged item");
-      setRunningOrder((oldList) => {
-        let newList: InitialStateType = JSON.parse(JSON.stringify(oldList));
-        newList.orderedStacks[groupNumber].stacks.splice(
-          stackNumber,
+    console.log("Entering a drag target");
+    if (dragNode.current !== e.target) {
+      console.log("Target is different from original");
+      setRunningOrder((oldRO) => {
+        let newRO: Group[] = JSON.parse(JSON.stringify(oldRO));
+        newRO[params.groupIndex].items.splice(
+          params.stackIndex,
           0,
-          newList.orderedStacks[groupNumber].stacks.splice(
-            dragItem.current!.stackNumber,
+          newRO[dragItem.current!.groupIndex].items.splice(
+            dragItem.current!.stackIndex,
             1
           )[0]
         );
-        dragItem.current = { stackNumber, groupNumber };
-        localStorage.setItem("List", JSON.stringify(newList));
-        return newList;
+        dragItem.current = params;
+        return newRO;
       });
     }
   };
 
-  const handleDragEnd = () => {
-    console.log("drag ended");
-    setDragging(false);
-    dragNode.current?.removeEventListener("dragend", handleDragEnd);
-    dragNode.current = undefined;
-  };
   return (
-    <RunningOrderState>
-      <div className="max-w-full m-8 max-h-screen flex">
-        <div className="flex">
-          <ul>
-            {runningOrder.unorderedStacks.map((stack) => (
+    <div className="max-w-full m-8">
+      <div className="dran-n-drop flex text-center">
+        {runningOrder.map((group, gIdx) => (
+          <div key={group.title} className="m-8 border" onDragEnter={dragging && !group.items.length ? (e) => handleDragEnter(e, { groupIndex: gIdx, stackIndex: 0}) : () => {}}>
+            <p>{group.title}</p>
+            {group.items.map((stack, sIdx) => (
               <div
-                className="m-8"
-                draggable={true}
+                draggable
+                key={stack.gender + stack.catagory}
+                className="m-8 flex flex-col text-center border"
                 onDragStart={(e) =>
-                  handleDragStart(e, { stackNumber: stack.id, groupNumber: 0 })
+                  handleDragStart(e, { groupIndex: gIdx, stackIndex: sIdx })
                 }
                 onDragEnter={
                   dragging
                     ? (e) =>
                         handleDragEnter(e, {
-                          stackNumber: stack.id,
-                          groupNumber: 0,
+                          groupIndex: gIdx,
+                          stackIndex: sIdx,
                         })
                     : () => {}
                 }
               >
-                <li key={"stack" + stack.gender + stack.id}>
-                  <Item
-                    index={stack.id}
-                    gender={stack.gender}
-                    catagory={stack.catagory}
-                    group={0}
-                  />
-                </li>
+                <p>{stack.gender}</p>
+                <p>{stack.catagory}</p>
               </div>
             ))}
-          </ul>
-        </div>
-        <div className="w-full">
-          {runningOrder.orderedStacks.map((group, idx) => (
-            <StackContainer id={idx}>
-              <div>
-                <p>{group.title}</p>
-                {group.stacks.length > 0 ? (
-                  <ul>
-                    {group.stacks.map((stack) => (
-                      <li key={group.title + "group"} draggable>
-                        <div></div>
-                      </li>
-                    ))}
-                  </ul>
-                ) : (
-                  <div>
-                    <p>Drag a stack to get started</p>
-                  </div>
-                )}
-              </div>
-            </StackContainer>
-          ))}
-        </div>
+          </div>
+        ))}
       </div>
-    </RunningOrderState>
+    </div>
   );
 };
 
