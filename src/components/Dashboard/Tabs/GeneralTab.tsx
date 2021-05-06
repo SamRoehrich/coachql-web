@@ -48,7 +48,12 @@ const GeneralTab: FC = () => {
                 className="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-offset-0 focus:ring-indigo-200 focus:ring-opacity-50 cursor-pointer"
               />
             </div>
-            <p>Registered Athletes: {data.currentEvent.athletes.length}</p>
+            <p>
+              Registered Athletes:{" "}
+              {data.currentEvent.athletes
+                ? data.currentEvent.athletes.length
+                : 0}
+            </p>
           </div>
         </div>
         <div className="max-w-full m-8">

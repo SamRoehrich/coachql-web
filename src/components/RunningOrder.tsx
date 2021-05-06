@@ -62,17 +62,20 @@ const RunningOrderTab: FC = () => {
     e: React.DragEvent<HTMLDivElement>,
     params: Params
   ) => {
-    console.log("Drag Started");
     setDragging(true);
     dragNode.current = e.target;
-    dragNode.current.addEventListener("dragend", handleDragEnd);
+    dragNode.current.addEventListener("dragend", () => handleDragEnd(e));
+    dragNode.current.addEventListener("dragover", (e) => e.preventDefault());
     dragItem.current = params;
   };
 
-  const handleDragEnd = () => {
+  const handleDragEnd = (e: React.DragEvent<HTMLDivElement>) => {
     setDragging(false);
     dragItem.current = undefined;
-    dragNode.current?.removeEventListener("dragend", handleDragEnd);
+    dragNode.current?.removeEventListener("dragend", () => handleDragEnd(e));
+    dragNode.current?.removeEventListener("dragover", (e) =>
+      e.preventDefault()
+    );
     dragNode.current = undefined;
   };
 
@@ -80,9 +83,7 @@ const RunningOrderTab: FC = () => {
     e: React.DragEvent<HTMLDivElement>,
     params: Params
   ) => {
-    console.log("Entering a drag target");
     if (dragNode.current !== e.target) {
-      console.log("Target is different from original");
       setRunningOrder((oldRO) => {
         let newRO: Group[] = JSON.parse(JSON.stringify(oldRO));
         newRO[params.groupIndex].items.splice(
@@ -99,11 +100,33 @@ const RunningOrderTab: FC = () => {
     }
   };
 
+  const handleAddGroupClick = () => {
+    setRunningOrder((runningOrder) => {
+      let newGroup: Group = {
+        id: runningOrder.length,
+        title: "Group " + runningOrder.length,
+        items: [],
+      };
+      return [...runningOrder, newGroup];
+    });
+  };
+
   return (
     <div className="max-w-full m-8">
       <div className="dran-n-drop flex text-center">
+        <button type="button" onClick={handleAddGroupClick}>
+          Add Group
+        </button>
         {runningOrder.map((group, gIdx) => (
-          <div key={group.title} className="m-8 border" onDragEnter={dragging && !group.items.length ? (e) => handleDragEnter(e, { groupIndex: gIdx, stackIndex: 0}) : () => {}}>
+          <div
+            key={group.title}
+            className="m-8 border"
+            onDragEnter={
+              dragging && !group.items.length
+                ? (e) => handleDragEnter(e, { groupIndex: gIdx, stackIndex: 0 })
+                : () => {}
+            }
+          >
             <p>{group.title}</p>
             {group.items.map((stack, sIdx) => (
               <div
@@ -127,6 +150,9 @@ const RunningOrderTab: FC = () => {
                 <p>{stack.catagory}</p>
               </div>
             ))}
+            <button type="button" onClick={() => {}}>
+              Delete Group
+            </button>
           </div>
         ))}
       </div>
