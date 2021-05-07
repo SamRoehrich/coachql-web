@@ -1,8 +1,6 @@
 import { FC } from "react";
 import { Stack } from "../../generated/graphql";
 import { currentStackVar } from "../../graphql/cache";
-import Modal from "./StackModal";
-
 interface Props {
   stacks: any;
 }
@@ -16,14 +14,8 @@ const StackItem: FC<StackItemProps> = ({ stack }) => {
   return (
     <li key={stack.id} onClick={handleClick}>
       <div className="flex justify-between">
-        {stack.male ? <p>Male</p> : <p>Female</p>}
-        <div className="flex space-x-5">
-          {stack.jr ? <p>JR</p> : ""}
-          {stack.a ? <p>A</p> : ""}
-          {stack.b ? <p>B</p> : ""}
-          {stack.c ? <p>C</p> : ""}
-          {stack.d ? <p>D</p> : ""}
-        </div>
+        {stack.gender}
+        <div className="flex space-x-5">{stack.catagory}</div>
       </div>
     </li>
   );
@@ -37,7 +29,6 @@ const StackList: FC<Props> = ({ stacks }) => {
           <StackItem stack={stack} key={stack.id} />
         ))}
       </ul>
-      <Modal />
     </div>
   );
 };

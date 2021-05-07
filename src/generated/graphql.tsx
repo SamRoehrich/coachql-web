@@ -17,8 +17,7 @@ export type Scalars = {
 export type Athlete = {
   __typename?: 'Athlete';
   id: Scalars['Int'];
-  male: Scalars['Boolean'];
-  female: Scalars['Boolean'];
+  gender: Gender;
   user: User;
   birthYear: Scalars['Int'];
   team: Scalars['String'];
@@ -32,6 +31,15 @@ export type Boulder = {
   stack: Stack;
 };
 
+/** Age Catagory */
+export enum Catagory {
+  Jr = 'JR',
+  A = 'A',
+  B = 'B',
+  C = 'C',
+  D = 'D'
+}
+
 export type Event = {
   __typename?: 'Event';
   id: Scalars['Int'];
@@ -44,6 +52,21 @@ export type Event = {
   creator: User;
   athletes?: Maybe<Array<Athlete>>;
   stacks?: Maybe<Array<Stack>>;
+  runningOrder: RunningOrder;
+};
+
+/** Athlete Gender */
+export enum Gender {
+  Male = 'Male',
+  Female = 'Female'
+}
+
+export type Group = {
+  __typename?: 'Group';
+  id: Scalars['Int'];
+  event: Event;
+  title: Scalars['String'];
+  stacks: Group;
 };
 
 export type LoginResponse = {
@@ -52,28 +75,18 @@ export type LoginResponse = {
   user: User;
 };
 
-export type MinimalStack = {
-  male: Scalars['Boolean'];
-  female: Scalars['Boolean'];
-  a: Scalars['Boolean'];
-  b: Scalars['Boolean'];
-  c: Scalars['Boolean'];
-  d: Scalars['Boolean'];
-  jr: Scalars['Boolean'];
-};
-
 export type Mutation = {
   __typename?: 'Mutation';
   register: Scalars['Boolean'];
   logout: Scalars['Boolean'];
   login: LoginResponse;
-  createStack: Scalars['Boolean'];
   createEvent: Scalars['Boolean'];
   seedEvent: Scalars['Boolean'];
   registerForEvent: Scalars['Boolean'];
   registerTeam: Scalars['Boolean'];
   createAthlete: Scalars['Boolean'];
   addAthleteToEvent: Scalars['Boolean'];
+  createStack: Scalars['Boolean'];
   createBoulder: Scalars['Boolean'];
 };
 
@@ -92,20 +105,7 @@ export type MutationLoginArgs = {
 };
 
 
-export type MutationCreateStackArgs = {
-  d: Scalars['Boolean'];
-  c: Scalars['Boolean'];
-  b: Scalars['Boolean'];
-  a: Scalars['Boolean'];
-  jr: Scalars['Boolean'];
-  female: Scalars['Boolean'];
-  male: Scalars['Boolean'];
-  eventId: Scalars['String'];
-};
-
-
 export type MutationCreateEventArgs = {
-  stacks: Array<MinimalStack>;
   numBoulders: Scalars['Float'];
   startDate: Scalars['String'];
   visible: Scalars['Boolean'];
@@ -120,8 +120,7 @@ export type MutationSeedEventArgs = {
 
 
 export type MutationRegisterForEventArgs = {
-  male: Scalars['Boolean'];
-  female: Scalars['Boolean'];
+  gender: Scalars['String'];
   birthYear: Scalars['Float'];
   team: Scalars['String'];
   lastName: Scalars['String'];
@@ -138,8 +137,7 @@ export type MutationRegisterTeamArgs = {
 
 
 export type MutationCreateAthleteArgs = {
-  female: Scalars['Boolean'];
-  male: Scalars['Boolean'];
+  gender: Scalars['String'];
   team: Scalars['String'];
   birthYear: Scalars['Float'];
   lastName: Scalars['String'];
@@ -155,6 +153,13 @@ export type MutationAddAthleteToEventArgs = {
 };
 
 
+export type MutationCreateStackArgs = {
+  catagory: Catagory;
+  gender: Gender;
+  eventId: Scalars['String'];
+};
+
+
 export type MutationCreateBoulderArgs = {
   boulderNumber: Scalars['Float'];
   stackId: Scalars['Float'];
@@ -166,20 +171,15 @@ export type Query = {
   users: Array<User>;
   me?: Maybe<User>;
   bye: Scalars['String'];
-  getStacks: Array<Stack>;
   events: Array<Event>;
   event: Event;
   getAuthenticatedEvents: Array<Event>;
   teams: Array<Team>;
   athletes: Array<Athlete>;
+  getStacks: Array<Stack>;
   getBoulders: Array<Boulder>;
   getBouldersForEvent: Array<Boulder>;
   getBoulder: Boulder;
-};
-
-
-export type QueryGetStacksArgs = {
-  eventId: Scalars['String'];
 };
 
 
@@ -193,6 +193,11 @@ export type QueryAthletesArgs = {
 };
 
 
+export type QueryGetStacksArgs = {
+  eventId: Scalars['String'];
+};
+
+
 export type QueryGetBouldersForEventArgs = {
   eventId: Scalars['String'];
 };
@@ -202,16 +207,17 @@ export type QueryGetBoulderArgs = {
   boulderId: Scalars['Float'];
 };
 
+export type RunningOrder = {
+  __typename?: 'RunningOrder';
+  id: Scalars['Int'];
+  groups: Group;
+};
+
 export type Stack = {
   __typename?: 'Stack';
   id: Scalars['Int'];
-  male: Scalars['Boolean'];
-  female: Scalars['Boolean'];
-  jr: Scalars['Boolean'];
-  a: Scalars['Boolean'];
-  b: Scalars['Boolean'];
-  c: Scalars['Boolean'];
-  d: Scalars['Boolean'];
+  gender: Gender;
+  catagory: Catagory;
   event: Event;
   athletes: Array<Athlete>;
   boulders: Array<Boulder>;
@@ -275,7 +281,6 @@ export type CreateEventMutationVariables = Exact<{
   startDate: Scalars['String'];
   visible: Scalars['Boolean'];
   numBoulders: Scalars['Float'];
-  stacks: Array<MinimalStack> | MinimalStack;
 }>;
 
 
@@ -297,14 +302,14 @@ export type GetAuthenticatedEventsQuery = (
       & Pick<User, 'id' | 'email' | 'lastName' | 'firstName'>
     ), athletes?: Maybe<Array<(
       { __typename?: 'Athlete' }
-      & Pick<Athlete, 'male' | 'female' | 'id' | 'birthYear'>
+      & Pick<Athlete, 'gender' | 'id' | 'birthYear'>
       & { user: (
         { __typename?: 'User' }
         & Pick<User, 'lastName' | 'firstName'>
       ) }
     )>>, stacks?: Maybe<Array<(
       { __typename?: 'Stack' }
-      & Pick<Stack, 'id' | 'male' | 'female' | 'a' | 'b' | 'c' | 'd' | 'jr'>
+      & Pick<Stack, 'id' | 'gender' | 'catagory'>
       & { athletes: Array<(
         { __typename?: 'Athlete' }
         & { user: (
@@ -331,7 +336,7 @@ export type GetEventQuery = (
       & Pick<User, 'lastName' | 'firstName' | 'id' | 'email'>
     ), stacks?: Maybe<Array<(
       { __typename?: 'Stack' }
-      & Pick<Stack, 'id' | 'female' | 'male' | 'a' | 'b' | 'c' | 'd' | 'jr'>
+      & Pick<Stack, 'id' | 'gender' | 'catagory'>
       & { boulders: Array<(
         { __typename?: 'Boulder' }
         & Pick<Boulder, 'id' | 'boulderNumber'>
@@ -409,8 +414,7 @@ export type RegisterForEventMutationVariables = Exact<{
   lastName: Scalars['String'];
   email: Scalars['String'];
   password: Scalars['String'];
-  male: Scalars['Boolean'];
-  female: Scalars['Boolean'];
+  gender: Scalars['String'];
   birthYear: Scalars['Float'];
   team: Scalars['String'];
   eventId: Scalars['String'];
@@ -423,13 +427,8 @@ export type RegisterForEventMutation = (
 );
 
 export type CreateStackMutationVariables = Exact<{
-  male: Scalars['Boolean'];
-  female: Scalars['Boolean'];
-  jr: Scalars['Boolean'];
-  a: Scalars['Boolean'];
-  b: Scalars['Boolean'];
-  c: Scalars['Boolean'];
-  d: Scalars['Boolean'];
+  gender: Gender;
+  catagory: Catagory;
   eventId: Scalars['String'];
 }>;
 
@@ -448,7 +447,7 @@ export type GetStacksForEventQuery = (
   { __typename?: 'Query' }
   & { getStacks: Array<(
     { __typename?: 'Stack' }
-    & Pick<Stack, 'id' | 'male' | 'female' | 'a' | 'b' | 'c' | 'd' | 'jr'>
+    & Pick<Stack, 'id' | 'gender' | 'catagory'>
   )> }
 );
 
@@ -575,14 +574,13 @@ export type EventsQueryHookResult = ReturnType<typeof useEventsQuery>;
 export type EventsLazyQueryHookResult = ReturnType<typeof useEventsLazyQuery>;
 export type EventsQueryResult = Apollo.QueryResult<EventsQuery, EventsQueryVariables>;
 export const CreateEventDocument = gql`
-    mutation CreateEvent($name: String!, $location: String!, $startDate: String!, $visible: Boolean!, $numBoulders: Float!, $stacks: [MinimalStack!]!) {
+    mutation CreateEvent($name: String!, $location: String!, $startDate: String!, $visible: Boolean!, $numBoulders: Float!) {
   createEvent(
     name: $name
     location: $location
     startDate: $startDate
     visible: $visible
     numBoulders: $numBoulders
-    stacks: $stacks
   )
 }
     `;
@@ -606,7 +604,6 @@ export type CreateEventMutationFn = Apollo.MutationFunction<CreateEventMutation,
  *      startDate: // value for 'startDate'
  *      visible: // value for 'visible'
  *      numBoulders: // value for 'numBoulders'
- *      stacks: // value for 'stacks'
  *   },
  * });
  */
@@ -634,8 +631,7 @@ export const GetAuthenticatedEventsDocument = gql`
       firstName
     }
     athletes {
-      male
-      female
+      gender
       id
       birthYear
       user {
@@ -645,13 +641,8 @@ export const GetAuthenticatedEventsDocument = gql`
     }
     stacks {
       id
-      male
-      female
-      a
-      b
-      c
-      d
-      jr
+      gender
+      catagory
       athletes {
         user {
           firstName
@@ -707,13 +698,8 @@ export const GetEventDocument = gql`
     }
     stacks {
       id
-      female
-      male
-      a
-      b
-      c
-      d
-      jr
+      gender
+      catagory
       boulders {
         id
         boulderNumber
@@ -935,10 +921,9 @@ export type RegisterMutationHookResult = ReturnType<typeof useRegisterMutation>;
 export type RegisterMutationResult = Apollo.MutationResult<RegisterMutation>;
 export type RegisterMutationOptions = Apollo.BaseMutationOptions<RegisterMutation, RegisterMutationVariables>;
 export const RegisterForEventDocument = gql`
-    mutation RegisterForEvent($firstName: String!, $lastName: String!, $email: String!, $password: String!, $male: Boolean!, $female: Boolean!, $birthYear: Float!, $team: String!, $eventId: String!) {
+    mutation RegisterForEvent($firstName: String!, $lastName: String!, $email: String!, $password: String!, $gender: String!, $birthYear: Float!, $team: String!, $eventId: String!) {
   registerForEvent(
-    male: $male
-    female: $female
+    gender: $gender
     firstName: $firstName
     lastName: $lastName
     birthYear: $birthYear
@@ -968,8 +953,7 @@ export type RegisterForEventMutationFn = Apollo.MutationFunction<RegisterForEven
  *      lastName: // value for 'lastName'
  *      email: // value for 'email'
  *      password: // value for 'password'
- *      male: // value for 'male'
- *      female: // value for 'female'
+ *      gender: // value for 'gender'
  *      birthYear: // value for 'birthYear'
  *      team: // value for 'team'
  *      eventId: // value for 'eventId'
@@ -984,17 +968,8 @@ export type RegisterForEventMutationHookResult = ReturnType<typeof useRegisterFo
 export type RegisterForEventMutationResult = Apollo.MutationResult<RegisterForEventMutation>;
 export type RegisterForEventMutationOptions = Apollo.BaseMutationOptions<RegisterForEventMutation, RegisterForEventMutationVariables>;
 export const CreateStackDocument = gql`
-    mutation CreateStack($male: Boolean!, $female: Boolean!, $jr: Boolean!, $a: Boolean!, $b: Boolean!, $c: Boolean!, $d: Boolean!, $eventId: String!) {
-  createStack(
-    male: $male
-    female: $female
-    jr: $jr
-    a: $a
-    b: $b
-    c: $c
-    d: $d
-    eventId: $eventId
-  )
+    mutation CreateStack($gender: Gender!, $catagory: Catagory!, $eventId: String!) {
+  createStack(gender: $gender, catagory: $catagory, eventId: $eventId)
 }
     `;
 export type CreateStackMutationFn = Apollo.MutationFunction<CreateStackMutation, CreateStackMutationVariables>;
@@ -1012,13 +987,8 @@ export type CreateStackMutationFn = Apollo.MutationFunction<CreateStackMutation,
  * @example
  * const [createStackMutation, { data, loading, error }] = useCreateStackMutation({
  *   variables: {
- *      male: // value for 'male'
- *      female: // value for 'female'
- *      jr: // value for 'jr'
- *      a: // value for 'a'
- *      b: // value for 'b'
- *      c: // value for 'c'
- *      d: // value for 'd'
+ *      gender: // value for 'gender'
+ *      catagory: // value for 'catagory'
  *      eventId: // value for 'eventId'
  *   },
  * });
@@ -1034,13 +1004,8 @@ export const GetStacksForEventDocument = gql`
     query GetStacksForEvent($eventId: String!) {
   getStacks(eventId: $eventId) {
     id
-    male
-    female
-    a
-    b
-    c
-    d
-    jr
+    gender
+    catagory
   }
 }
     `;

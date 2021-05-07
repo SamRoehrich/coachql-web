@@ -10,15 +10,11 @@ import {
 import { HiTrash } from "react-icons/hi";
 import { useCreateEventMutation } from "../generated/graphql";
 import * as Yup from "yup";
+import { Catagory, Gender } from "../utils/enums";
 
 interface Stack {
-  male: boolean;
-  female: boolean;
-  a: boolean;
-  b: boolean;
-  c: boolean;
-  d: boolean;
-  jr: boolean;
+  gender: Gender;
+  catagory: Catagory;
 }
 
 interface InitialValues {
@@ -26,27 +22,9 @@ interface InitialValues {
   eventLocation: string;
   publicEvent: boolean;
   startDate: string;
-  stacks: Stack[];
   numBoulders: string;
-  male: boolean;
-  female: boolean;
-  a: boolean;
-  b: boolean;
-  c: boolean;
-  d: boolean;
-  jr: boolean;
   stackType: string;
 }
-
-const defaultStacks: Stack[] = [
-  { female: true, jr: true, a: true, b: true, c: true, d: true, male: false },
-  { female: false, jr: true, a: true, b: true, c: true, d: true, male: true },
-];
-
-const emptyStacks: Stack[] = [
-  { female: false, jr: true, a: true, b: true, c: true, d: true, male: false },
-  { female: false, jr: true, a: true, b: true, c: true, d: true, male: false },
-];
 
 const CreateEventForm: FC = () => {
   const [
@@ -55,18 +33,10 @@ const CreateEventForm: FC = () => {
   ] = useCreateEventMutation();
   const history = useHistory();
   const initialValues: InitialValues = {
-    male: false,
-    female: false,
-    a: false,
-    b: false,
-    c: false,
-    d: false,
-    jr: false,
     eventName: "",
     eventLocation: "",
     publicEvent: false,
     startDate: "",
-    stacks: [],
     numBoulders: "4",
     stackType: "default",
   };
@@ -78,7 +48,6 @@ const CreateEventForm: FC = () => {
         if (values.stackType === "default") {
           newE = await createEvent({
             variables: {
-              stacks: defaultStacks,
               name: values.eventName,
               startDate: values.startDate,
               location: values.eventLocation,
@@ -90,7 +59,6 @@ const CreateEventForm: FC = () => {
         if (values.stackType === "custom") {
           newE = await createEvent({
             variables: {
-              stacks: values.stacks,
               name: values.eventName,
               startDate: values.startDate,
               location: values.eventLocation,
@@ -102,7 +70,6 @@ const CreateEventForm: FC = () => {
         if (values.stackType === "none") {
           newE = await createEvent({
             variables: {
-              stacks: emptyStacks,
               name: values.eventName,
               startDate: values.startDate,
               location: values.eventLocation,
@@ -139,33 +106,7 @@ const CreateEventForm: FC = () => {
       {(props) => {
         const { values, errors, touched } = props;
         console.log(values);
-        const handleSaveStack = () => {
-          let newStack: Stack = {
-            male: props.values.male,
-            female: props.values.female,
-            a: props.values.a,
-            b: props.values.b,
-            c: props.values.c,
-            d: props.values.d,
-            jr: props.values.jr,
-          };
-          resetStackInputs(newStack);
-        };
         // Arg : New Stack
-        function resetStackInputs(x: Stack) {
-          props.setFieldValue("male", false);
-          props.setFieldValue("female", false);
-          props.setFieldValue("a", false);
-          props.setFieldValue("b", false);
-          props.setFieldValue("c", false);
-          props.setFieldValue("d", false);
-          props.setFieldValue("jr", false);
-          props.setFieldValue("stacks", [...props.values.stacks, x]);
-        }
-        const handleTrashCanClick = (index: number) => {
-          props.values.stacks.splice(index, 1);
-          props.setFieldValue("stacks", props.values.stacks);
-        };
         return (
           <div className="max-w-full flex text-center justify-center ml-8 mr-8 -mt-8">
             <Form autoComplete="off" className="w-full flex flex-col">
@@ -231,7 +172,7 @@ const CreateEventForm: FC = () => {
                   />
                 </div>
               </div>
-              <div className="border flex flex-col w-full text-center rounded border-gray-300 min-h-16">
+              {/* <div className="border flex flex-col w-full text-center rounded border-gray-300 min-h-16">
                 <div role="group" className="justify-center flex space-x-5">
                   <div>
                     <span>Default Stacks</span>
@@ -245,8 +186,8 @@ const CreateEventForm: FC = () => {
                     <span>No Stacks</span>
                     <Field type="radio" name="stackType" value="none" />
                   </div>
-                </div>
-                <div>
+                </div> */}
+              {/* <div>
                   {props.values.stackType === "default" ? (
                     <div className="items-center">
                       <p>Defualt Stacks</p>
@@ -382,7 +323,7 @@ const CreateEventForm: FC = () => {
                     </div>
                   )}
                 </div>
-              </div>
+              </div> */}
               <button
                 type="submit"
                 className="items-center hover:border-blue-700 cursor-pointer border border-white rounded-lg p-5"

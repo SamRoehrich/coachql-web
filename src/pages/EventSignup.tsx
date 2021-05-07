@@ -5,6 +5,7 @@ import PublicEventInfo from "../components/PublicEventInfo";
 import { MainButton } from "../components/Styled/Buttons";
 
 import { useRegisterForEventMutation } from "../generated/graphql";
+import { Gender } from "../utils/enums";
 
 interface Params {
   eventId: string;
@@ -15,13 +16,6 @@ const EventSignup: FC = () => {
   const [registerForEvent, { loading, error }] = useRegisterForEventMutation();
   const params = useParams<Params>();
   const history = useHistory();
-
-  function isFalse(x: string) {
-    if (!x) {
-      return false;
-    }
-    return true;
-  }
   const formik = useFormik({
     initialValues: {
       firstName: "",
@@ -30,18 +24,16 @@ const EventSignup: FC = () => {
       password: "",
       team: "",
       birthYear: "2000",
-      male: "",
-      female: "",
+      gender: Gender.Male,
     },
     onSubmit: async ({
-      female,
+      gender,
       firstName,
       lastName,
       email,
       password,
       team,
       birthYear,
-      male,
     }) => {
       try {
         const registerResult = await registerForEvent({
@@ -52,8 +44,7 @@ const EventSignup: FC = () => {
             password,
             team,
             birthYear: parseFloat(birthYear),
-            male: isFalse(male),
-            female: isFalse(female),
+            gender,
             eventId: params.eventId,
           },
         });
@@ -116,16 +107,16 @@ const EventSignup: FC = () => {
                 <div role="group">
                   <label htmlFor="gender">Male</label>
                   <input
-                    type="checkbox"
+                    type="radio"
                     name="male"
-                    value={formik.values.male}
+                    value={formik.values.gender}
                     onChange={formik.handleChange}
                   />
                   <label htmlFor="gender">Female</label>
                   <input
-                    type="checkbox"
+                    type="radio"
                     name="female"
-                    value={formik.values.female}
+                    value={formik.values.gender}
                     onChange={formik.handleChange}
                   />
                 </div>

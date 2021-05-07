@@ -17,15 +17,13 @@ mutation RegisterForEvent(
   $lastName: String!
   $email: String!
   $password: String!
-  $male: Boolean!
-  $female: Boolean!
+  $gender: String!
   $birthYear: Float!
   $team: String!
   $eventId: String!
 ) {
   registerForEvent(
-    male: $male
-    female: $female
+    gender: $gender
     firstName: $firstName
     lastName: $lastName
     birthYear: $birthYear

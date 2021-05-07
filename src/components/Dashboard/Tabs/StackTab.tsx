@@ -1,7 +1,6 @@
 import { FC, useEffect } from "react";
 import Loading from "../../Loading";
 import StackList from "../StackList";
-import Modal from "../StackModal";
 import { useGetStacksForEventQuery } from "../../../generated/graphql";
 import StackInfo from "../StackInfo";
 import { currentStackVar } from "../../../graphql/cache";
@@ -32,11 +31,7 @@ const StackTab: FC<Props> = ({ eventId }) => {
     );
   }
 
-  return (
-    <div>
-      <Modal />
-    </div>
-  );
+  return <div></div>;
 };
 
 export default StackTab;

@@ -1,34 +1,15 @@
 mutation CreateStack(
-  $male: Boolean!
-  $female: Boolean!
-  $jr: Boolean!
-  $a: Boolean!
-  $b: Boolean!
-  $c: Boolean!
-  $d: Boolean!
+  $gender: Gender!
+  $catagory: Catagory!
   $eventId: String!
 ) {
-  createStack(
-    male: $male
-    female: $female
-    jr: $jr
-    a: $a
-    b: $b
-    c: $c
-    d: $d
-    eventId: $eventId
-  )
+  createStack(gender: $gender, catagory: $catagory, eventId: $eventId)
 }
 
 query GetStacksForEvent($eventId: String!) {
   getStacks(eventId: $eventId) {
     id
-    male
-    female
-    a
-    b
-    c
-    d
-    jr
+    gender
+    catagory
   }
 }
