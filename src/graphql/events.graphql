@@ -81,6 +81,29 @@ query GetEvent($eventId: String!) {
       id
       email
     }
+    runningOrder {
+      id
+      unordered {
+        id
+        gender
+        catagory
+      }
+      first {
+        id
+        gender
+        catagory
+      }
+      second {
+        id
+        gender
+        catagory
+      }
+      third {
+        id
+        gender
+        catagory
+      }
+    }
     stacks {
       id
       gender
@@ -95,6 +118,32 @@ query GetEvent($eventId: String!) {
         lastName
         firstName
       }
+    }
+  }
+}
+
+fragment runningOrder on Event {
+  runningOrder {
+    id
+    unordered {
+      id
+      gender
+      catagory
+    }
+    first {
+      id
+      gender
+      catagory
+    }
+    second {
+      id
+      gender
+      catagory
+    }
+    third {
+      id
+      gender
+      catagory
     }
   }
 }

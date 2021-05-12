@@ -1,4 +1,7 @@
+import { gql, useApolloClient } from "@apollo/client";
 import { FC, useRef, useState } from "react";
+import { RunningOrder } from "../generated/graphql";
+import Loading from "./Loading";
 
 interface Stack {
   id: number;
@@ -6,55 +9,49 @@ interface Stack {
   catagory: string;
 }
 
-interface Group {
-  id: number;
-  title: string;
-  items: Stack[];
-}
-
-const initialState: Group[] = [
-  {
-    id: 0,
-    title: "Unordered",
-    items: [
-      {
-        id: 0,
-        gender: "Male",
-        catagory: "JR",
-      },
-      {
-        id: 1,
-        gender: "Female",
-        catagory: "JR",
-      },
-    ],
-  },
-  {
-    id: 1,
-    title: "Group One",
-    items: [
-      {
-        id: 2,
-        gender: "Male",
-        catagory: "A",
-      },
-      {
-        id: 2,
-        gender: "Female",
-        catagory: "A",
-      },
-    ],
-  },
-];
-
 interface Params {
-  groupIndex: number;
+  group: string;
   stackIndex: number;
 }
 
 const RunningOrderTab: FC = () => {
+  const client = useApolloClient();
+
+  const ro = client.readFragment({
+    id: "Event:15",
+    fragment: gql`
+      fragment runningOrder on Event {
+        runningOrder {
+          id
+          unordered {
+            id
+            gender
+            catagory
+          }
+          first {
+            id
+            gender
+            catagory
+          }
+          second {
+            id
+            gender
+            catagory
+          }
+          third {
+            id
+            gender
+            catagory
+          }
+        }
+      }
+    `,
+  });
+
   const [dragging, setDragging] = useState(false);
-  const [runningOrder, setRunningOrder] = useState(initialState);
+  const [runningOrder, setRunningOrder] = useState<RunningOrder>(
+    ro.runningOrder
+  );
   const dragNode = useRef<EventTarget>();
   const dragItem = useRef<Params>();
 
@@ -85,11 +82,12 @@ const RunningOrderTab: FC = () => {
   ) => {
     if (dragNode.current !== e.target) {
       setRunningOrder((oldRO) => {
-        let newRO: Group[] = JSON.parse(JSON.stringify(oldRO));
-        newRO[params.groupIndex].items.splice(
+        let newRO = JSON.parse(JSON.stringify(oldRO));
+        console.log(dragItem.current);
+        newRO[params.group].splice(
           params.stackIndex,
           0,
-          newRO[dragItem.current!.groupIndex].items.splice(
+          newRO[dragItem.current!.group].splice(
             dragItem.current!.stackIndex,
             1
           )[0]
@@ -100,61 +98,74 @@ const RunningOrderTab: FC = () => {
     }
   };
 
-  const handleAddGroupClick = () => {
-    setRunningOrder((runningOrder) => {
-      let newGroup: Group = {
-        id: runningOrder.length,
-        title: "Group " + runningOrder.length,
-        items: [],
-      };
-      return [...runningOrder, newGroup];
-    });
-  };
+  if (runningOrder.first === undefined) {
+    return <Loading />;
+  }
 
   return (
     <div className="max-w-full m-8">
       <div className="dran-n-drop flex text-center">
-        <button type="button" onClick={handleAddGroupClick}>
-          Add Group
-        </button>
-        {runningOrder.map((group, gIdx) => (
-          <div
-            key={group.title}
-            className="m-8 border"
-            onDragEnter={
-              dragging && !group.items.length
-                ? (e) => handleDragEnter(e, { groupIndex: gIdx, stackIndex: 0 })
-                : () => {}
-            }
-          >
-            <p>{group.title}</p>
-            {group.items.map((stack, sIdx) => (
-              <div
-                draggable
-                key={stack.gender + stack.catagory}
-                className="m-8 flex flex-col text-center border"
-                onDragStart={(e) =>
-                  handleDragStart(e, { groupIndex: gIdx, stackIndex: sIdx })
-                }
-                onDragEnter={
-                  dragging
-                    ? (e) =>
-                        handleDragEnter(e, {
-                          groupIndex: gIdx,
-                          stackIndex: sIdx,
-                        })
-                    : () => {}
-                }
-              >
-                <p>{stack.gender}</p>
-                <p>{stack.catagory}</p>
-              </div>
-            ))}
-            <button type="button" onClick={() => {}}>
-              Delete Group
-            </button>
-          </div>
-        ))}
+        <div
+          id="container"
+          onDragEnter={
+            dragging && !runningOrder.unordered.length
+              ? (e) => handleDragEnter(e, { group: "unordered", stackIndex: 0 })
+              : undefined
+          }
+        >
+          <p>Unordered</p>
+          {runningOrder.unordered.map((stack, idx) => (
+            <div
+              key={stack.id}
+              draggable="true"
+              onDragStart={(e) =>
+                handleDragStart(e, { group: "unordered", stackIndex: idx })
+              }
+              onDragEnter={
+                dragging
+                  ? (e) =>
+                      handleDragEnter(e, {
+                        group: "unordered",
+                        stackIndex: idx,
+                      })
+                  : undefined
+              }
+            >
+              <p>
+                {stack.catagory} {stack.gender}
+              </p>
+            </div>
+          ))}
+        </div>
+        <div
+          id="container"
+          onDragEnter={
+            dragging && !runningOrder.first.length
+              ? (e) => handleDragEnter(e, { group: "first", stackIndex: 0 })
+              : undefined
+          }
+        >
+          <p>Group 1</p>
+          {runningOrder.first.map((stack: Stack, idx) => (
+            <div
+              draggable
+              onDragStart={(e) =>
+                handleDragStart(e, { group: "first", stackIndex: idx })
+              }
+              onDragEnter={
+                dragging
+                  ? (e) =>
+                      handleDragEnter(e, { group: "first", stackIndex: idx })
+                  : undefined
+              }
+              key={stack.id}
+            >
+              <p>
+                {stack.gender} {stack.catagory}
+              </p>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );

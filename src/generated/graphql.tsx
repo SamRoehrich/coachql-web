@@ -61,14 +61,6 @@ export enum Gender {
   Female = 'Female'
 }
 
-export type Group = {
-  __typename?: 'Group';
-  id: Scalars['Int'];
-  event: Event;
-  title: Scalars['String'];
-  stacks: Group;
-};
-
 export type LoginResponse = {
   __typename?: 'LoginResponse';
   accessToken: Scalars['String'];
@@ -80,6 +72,7 @@ export type Mutation = {
   register: Scalars['Boolean'];
   logout: Scalars['Boolean'];
   login: LoginResponse;
+  createRunningOrder: Scalars['Boolean'];
   createEvent: Scalars['Boolean'];
   seedEvent: Scalars['Boolean'];
   registerForEvent: Scalars['Boolean'];
@@ -102,6 +95,11 @@ export type MutationRegisterArgs = {
 export type MutationLoginArgs = {
   password: Scalars['String'];
   email: Scalars['String'];
+};
+
+
+export type MutationCreateRunningOrderArgs = {
+  eventId: Scalars['String'];
 };
 
 
@@ -171,6 +169,7 @@ export type Query = {
   users: Array<User>;
   me?: Maybe<User>;
   bye: Scalars['String'];
+  getRunningOrder: RunningOrder;
   events: Array<Event>;
   event: Event;
   getAuthenticatedEvents: Array<Event>;
@@ -180,6 +179,11 @@ export type Query = {
   getBoulders: Array<Boulder>;
   getBouldersForEvent: Array<Boulder>;
   getBoulder: Boulder;
+};
+
+
+export type QueryGetRunningOrderArgs = {
+  eventId: Scalars['String'];
 };
 
 
@@ -210,7 +214,10 @@ export type QueryGetBoulderArgs = {
 export type RunningOrder = {
   __typename?: 'RunningOrder';
   id: Scalars['Int'];
-  groups: Group;
+  unordered: Array<Stack>;
+  first: Array<Stack>;
+  second: Array<Stack>;
+  third: Array<Stack>;
 };
 
 export type Stack = {
@@ -334,6 +341,22 @@ export type GetEventQuery = (
     & { creator: (
       { __typename?: 'User' }
       & Pick<User, 'lastName' | 'firstName' | 'id' | 'email'>
+    ), runningOrder: (
+      { __typename?: 'RunningOrder' }
+      & Pick<RunningOrder, 'id'>
+      & { unordered: Array<(
+        { __typename?: 'Stack' }
+        & Pick<Stack, 'id' | 'gender' | 'catagory'>
+      )>, first: Array<(
+        { __typename?: 'Stack' }
+        & Pick<Stack, 'id' | 'gender' | 'catagory'>
+      )>, second: Array<(
+        { __typename?: 'Stack' }
+        & Pick<Stack, 'id' | 'gender' | 'catagory'>
+      )>, third: Array<(
+        { __typename?: 'Stack' }
+        & Pick<Stack, 'id' | 'gender' | 'catagory'>
+      )> }
     ), stacks?: Maybe<Array<(
       { __typename?: 'Stack' }
       & Pick<Stack, 'id' | 'gender' | 'catagory'>
@@ -348,6 +371,27 @@ export type GetEventQuery = (
         & Pick<User, 'lastName' | 'firstName'>
       ) }
     )>> }
+  ) }
+);
+
+export type RunningOrderFragment = (
+  { __typename?: 'Event' }
+  & { runningOrder: (
+    { __typename?: 'RunningOrder' }
+    & Pick<RunningOrder, 'id'>
+    & { unordered: Array<(
+      { __typename?: 'Stack' }
+      & Pick<Stack, 'id' | 'gender' | 'catagory'>
+    )>, first: Array<(
+      { __typename?: 'Stack' }
+      & Pick<Stack, 'id' | 'gender' | 'catagory'>
+    )>, second: Array<(
+      { __typename?: 'Stack' }
+      & Pick<Stack, 'id' | 'gender' | 'catagory'>
+    )>, third: Array<(
+      { __typename?: 'Stack' }
+      & Pick<Stack, 'id' | 'gender' | 'catagory'>
+    )> }
   ) }
 );
 
@@ -462,7 +506,33 @@ export type UsersQuery = (
   )> }
 );
 
-
+export const RunningOrderFragmentDoc = gql`
+    fragment runningOrder on Event {
+  runningOrder {
+    id
+    unordered {
+      id
+      gender
+      catagory
+    }
+    first {
+      id
+      gender
+      catagory
+    }
+    second {
+      id
+      gender
+      catagory
+    }
+    third {
+      id
+      gender
+      catagory
+    }
+  }
+}
+    `;
 export const GetBouldersInEventDocument = gql`
     query GetBouldersInEvent($eventId: String!) {
   getBouldersForEvent(eventId: $eventId) {
@@ -695,6 +765,29 @@ export const GetEventDocument = gql`
       firstName
       id
       email
+    }
+    runningOrder {
+      id
+      unordered {
+        id
+        gender
+        catagory
+      }
+      first {
+        id
+        gender
+        catagory
+      }
+      second {
+        id
+        gender
+        catagory
+      }
+      third {
+        id
+        gender
+        catagory
+      }
     }
     stacks {
       id
