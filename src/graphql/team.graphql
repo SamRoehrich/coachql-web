@@ -1,0 +1,9 @@
+query Teams {
+  teams {
+    teamName
+    headCoach {
+      firstName
+      lastName
+    }
+  }
+}

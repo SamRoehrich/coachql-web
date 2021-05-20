@@ -1,0 +1,15 @@
+mutation editRunningOrder(
+  $runningOrderId: String!
+  $unordered: [Int!]!
+  $first: [Int!]!
+  $second: [Int!]!
+  $third: [Int!]!
+) {
+  editRunningOrder(
+    unordered: $unordered
+    third: $third
+    second: $second
+    first: $first
+    runningOrderId: $runningOrderId
+  )
+}

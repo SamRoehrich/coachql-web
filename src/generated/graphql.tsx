@@ -52,7 +52,7 @@ export type Event = {
   creator: User;
   athletes?: Maybe<Array<Athlete>>;
   stacks?: Maybe<Array<Stack>>;
-  runningOrder: RunningOrder;
+  runningOrder?: Maybe<RunningOrder>;
 };
 
 /** Athlete Gender */
@@ -73,13 +73,14 @@ export type Mutation = {
   logout: Scalars['Boolean'];
   login: LoginResponse;
   createRunningOrder: Scalars['Boolean'];
+  editRunningOrder: Scalars['Boolean'];
+  resetRunningOrder: Scalars['Boolean'];
   createEvent: Scalars['Boolean'];
   seedEvent: Scalars['Boolean'];
   registerForEvent: Scalars['Boolean'];
   registerTeam: Scalars['Boolean'];
   createAthlete: Scalars['Boolean'];
   addAthleteToEvent: Scalars['Boolean'];
-  createStack: Scalars['Boolean'];
   createBoulder: Scalars['Boolean'];
 };
 
@@ -99,6 +100,21 @@ export type MutationLoginArgs = {
 
 
 export type MutationCreateRunningOrderArgs = {
+  eventId: Scalars['String'];
+};
+
+
+export type MutationEditRunningOrderArgs = {
+  third: Array<Scalars['Int']>;
+  second: Array<Scalars['Int']>;
+  first: Array<Scalars['Int']>;
+  unordered: Array<Scalars['Int']>;
+  runningOrderId: Scalars['String'];
+};
+
+
+export type MutationResetRunningOrderArgs = {
+  roId: Scalars['String'];
   eventId: Scalars['String'];
 };
 
@@ -148,13 +164,6 @@ export type MutationCreateAthleteArgs = {
 export type MutationAddAthleteToEventArgs = {
   eventId: Scalars['String'];
   athleteId: Scalars['String'];
-};
-
-
-export type MutationCreateStackArgs = {
-  catagory: Catagory;
-  gender: Gender;
-  eventId: Scalars['String'];
 };
 
 
@@ -236,6 +245,7 @@ export type Team = {
   headCoach: User;
   teamName: Scalars['String'];
   athletes: Array<Athlete>;
+  workouts: Array<Workout>;
 };
 
 export type User = {
@@ -244,6 +254,19 @@ export type User = {
   firstName: Scalars['String'];
   lastName: Scalars['String'];
   email: Scalars['String'];
+};
+
+export type Workout = {
+  __typename?: 'Workout';
+  id: Scalars['Int'];
+  name: Scalars['String'];
+  sets: Scalars['Int'];
+  reps: Scalars['Int'];
+  activeTime: Scalars['Int'];
+  restTime: Scalars['Int'];
+  description: Scalars['String'];
+  type: Scalars['String'];
+  team: Team;
 };
 
 export type GetBouldersInEventQueryVariables = Exact<{
@@ -341,7 +364,7 @@ export type GetEventQuery = (
     & { creator: (
       { __typename?: 'User' }
       & Pick<User, 'lastName' | 'firstName' | 'id' | 'email'>
-    ), runningOrder: (
+    ), runningOrder?: Maybe<(
       { __typename?: 'RunningOrder' }
       & Pick<RunningOrder, 'id'>
       & { unordered: Array<(
@@ -357,7 +380,7 @@ export type GetEventQuery = (
         { __typename?: 'Stack' }
         & Pick<Stack, 'id' | 'gender' | 'catagory'>
       )> }
-    ), stacks?: Maybe<Array<(
+    )>, stacks?: Maybe<Array<(
       { __typename?: 'Stack' }
       & Pick<Stack, 'id' | 'gender' | 'catagory'>
       & { boulders: Array<(
@@ -376,7 +399,7 @@ export type GetEventQuery = (
 
 export type RunningOrderFragment = (
   { __typename?: 'Event' }
-  & { runningOrder: (
+  & { runningOrder?: Maybe<(
     { __typename?: 'RunningOrder' }
     & Pick<RunningOrder, 'id'>
     & { unordered: Array<(
@@ -392,7 +415,7 @@ export type RunningOrderFragment = (
       { __typename?: 'Stack' }
       & Pick<Stack, 'id' | 'gender' | 'catagory'>
     )> }
-  ) }
+  )> }
 );
 
 export type HelloQueryVariables = Exact<{ [key: string]: never; }>;
@@ -470,16 +493,18 @@ export type RegisterForEventMutation = (
   & Pick<Mutation, 'registerForEvent'>
 );
 
-export type CreateStackMutationVariables = Exact<{
-  gender: Gender;
-  catagory: Catagory;
-  eventId: Scalars['String'];
+export type EditRunningOrderMutationVariables = Exact<{
+  runningOrderId: Scalars['String'];
+  unordered: Array<Scalars['Int']> | Scalars['Int'];
+  first: Array<Scalars['Int']> | Scalars['Int'];
+  second: Array<Scalars['Int']> | Scalars['Int'];
+  third: Array<Scalars['Int']> | Scalars['Int'];
 }>;
 
 
-export type CreateStackMutation = (
+export type EditRunningOrderMutation = (
   { __typename?: 'Mutation' }
-  & Pick<Mutation, 'createStack'>
+  & Pick<Mutation, 'editRunningOrder'>
 );
 
 export type GetStacksForEventQueryVariables = Exact<{
@@ -492,6 +517,21 @@ export type GetStacksForEventQuery = (
   & { getStacks: Array<(
     { __typename?: 'Stack' }
     & Pick<Stack, 'id' | 'gender' | 'catagory'>
+  )> }
+);
+
+export type TeamsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type TeamsQuery = (
+  { __typename?: 'Query' }
+  & { teams: Array<(
+    { __typename?: 'Team' }
+    & Pick<Team, 'teamName'>
+    & { headCoach: (
+      { __typename?: 'User' }
+      & Pick<User, 'firstName' | 'lastName'>
+    ) }
   )> }
 );
 
@@ -1060,39 +1100,47 @@ export function useRegisterForEventMutation(baseOptions?: Apollo.MutationHookOpt
 export type RegisterForEventMutationHookResult = ReturnType<typeof useRegisterForEventMutation>;
 export type RegisterForEventMutationResult = Apollo.MutationResult<RegisterForEventMutation>;
 export type RegisterForEventMutationOptions = Apollo.BaseMutationOptions<RegisterForEventMutation, RegisterForEventMutationVariables>;
-export const CreateStackDocument = gql`
-    mutation CreateStack($gender: Gender!, $catagory: Catagory!, $eventId: String!) {
-  createStack(gender: $gender, catagory: $catagory, eventId: $eventId)
+export const EditRunningOrderDocument = gql`
+    mutation editRunningOrder($runningOrderId: String!, $unordered: [Int!]!, $first: [Int!]!, $second: [Int!]!, $third: [Int!]!) {
+  editRunningOrder(
+    unordered: $unordered
+    third: $third
+    second: $second
+    first: $first
+    runningOrderId: $runningOrderId
+  )
 }
     `;
-export type CreateStackMutationFn = Apollo.MutationFunction<CreateStackMutation, CreateStackMutationVariables>;
+export type EditRunningOrderMutationFn = Apollo.MutationFunction<EditRunningOrderMutation, EditRunningOrderMutationVariables>;
 
 /**
- * __useCreateStackMutation__
+ * __useEditRunningOrderMutation__
  *
- * To run a mutation, you first call `useCreateStackMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useCreateStackMutation` returns a tuple that includes:
+ * To run a mutation, you first call `useEditRunningOrderMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useEditRunningOrderMutation` returns a tuple that includes:
  * - A mutate function that you can call at any time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const [createStackMutation, { data, loading, error }] = useCreateStackMutation({
+ * const [editRunningOrderMutation, { data, loading, error }] = useEditRunningOrderMutation({
  *   variables: {
- *      gender: // value for 'gender'
- *      catagory: // value for 'catagory'
- *      eventId: // value for 'eventId'
+ *      runningOrderId: // value for 'runningOrderId'
+ *      unordered: // value for 'unordered'
+ *      first: // value for 'first'
+ *      second: // value for 'second'
+ *      third: // value for 'third'
  *   },
  * });
  */
-export function useCreateStackMutation(baseOptions?: Apollo.MutationHookOptions<CreateStackMutation, CreateStackMutationVariables>) {
+export function useEditRunningOrderMutation(baseOptions?: Apollo.MutationHookOptions<EditRunningOrderMutation, EditRunningOrderMutationVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<CreateStackMutation, CreateStackMutationVariables>(CreateStackDocument, options);
+        return Apollo.useMutation<EditRunningOrderMutation, EditRunningOrderMutationVariables>(EditRunningOrderDocument, options);
       }
-export type CreateStackMutationHookResult = ReturnType<typeof useCreateStackMutation>;
-export type CreateStackMutationResult = Apollo.MutationResult<CreateStackMutation>;
-export type CreateStackMutationOptions = Apollo.BaseMutationOptions<CreateStackMutation, CreateStackMutationVariables>;
+export type EditRunningOrderMutationHookResult = ReturnType<typeof useEditRunningOrderMutation>;
+export type EditRunningOrderMutationResult = Apollo.MutationResult<EditRunningOrderMutation>;
+export type EditRunningOrderMutationOptions = Apollo.BaseMutationOptions<EditRunningOrderMutation, EditRunningOrderMutationVariables>;
 export const GetStacksForEventDocument = gql`
     query GetStacksForEvent($eventId: String!) {
   getStacks(eventId: $eventId) {
@@ -1130,6 +1178,44 @@ export function useGetStacksForEventLazyQuery(baseOptions?: Apollo.LazyQueryHook
 export type GetStacksForEventQueryHookResult = ReturnType<typeof useGetStacksForEventQuery>;
 export type GetStacksForEventLazyQueryHookResult = ReturnType<typeof useGetStacksForEventLazyQuery>;
 export type GetStacksForEventQueryResult = Apollo.QueryResult<GetStacksForEventQuery, GetStacksForEventQueryVariables>;
+export const TeamsDocument = gql`
+    query Teams {
+  teams {
+    teamName
+    headCoach {
+      firstName
+      lastName
+    }
+  }
+}
+    `;
+
+/**
+ * __useTeamsQuery__
+ *
+ * To run a query within a React component, call `useTeamsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useTeamsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useTeamsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useTeamsQuery(baseOptions?: Apollo.QueryHookOptions<TeamsQuery, TeamsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<TeamsQuery, TeamsQueryVariables>(TeamsDocument, options);
+      }
+export function useTeamsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<TeamsQuery, TeamsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<TeamsQuery, TeamsQueryVariables>(TeamsDocument, options);
+        }
+export type TeamsQueryHookResult = ReturnType<typeof useTeamsQuery>;
+export type TeamsLazyQueryHookResult = ReturnType<typeof useTeamsLazyQuery>;
+export type TeamsQueryResult = Apollo.QueryResult<TeamsQuery, TeamsQueryVariables>;
 export const UsersDocument = gql`
     query Users {
   users {

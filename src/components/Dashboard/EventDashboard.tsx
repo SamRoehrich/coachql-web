@@ -78,6 +78,7 @@ const EventDashboard: FC = () => {
       </div>
     );
   }
+  console.log(data);
   if (data?.event === null) {
     return <div>No Event with the id: {eventId}</div>;
   }

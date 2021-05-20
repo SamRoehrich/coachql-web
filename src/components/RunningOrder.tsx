@@ -1,6 +1,9 @@
 import { gql, useApolloClient } from "@apollo/client";
-import { FC, useRef, useState } from "react";
-import { RunningOrder } from "../generated/graphql";
+import { FC, useEffect, useRef, useState } from "react";
+import {
+  RunningOrder,
+  useEditRunningOrderMutation,
+} from "../generated/graphql";
 import Loading from "./Loading";
 
 interface Stack {
@@ -14,11 +17,14 @@ interface Params {
   stackIndex: number;
 }
 
+interface DBStack {
+  id: string;
+}
+
 const RunningOrderTab: FC = () => {
   const client = useApolloClient();
-
   const ro = client.readFragment({
-    id: "Event:15",
+    id: "Event:1",
     fragment: gql`
       fragment runningOrder on Event {
         runningOrder {
@@ -47,7 +53,6 @@ const RunningOrderTab: FC = () => {
       }
     `,
   });
-
   const [dragging, setDragging] = useState(false);
   const [runningOrder, setRunningOrder] = useState<RunningOrder>(
     ro.runningOrder
@@ -55,6 +60,7 @@ const RunningOrderTab: FC = () => {
   const dragNode = useRef<EventTarget>();
   const dragItem = useRef<Params>();
 
+  const [editRunningOrder] = useEditRunningOrderMutation();
   const handleDragStart = (
     e: React.DragEvent<HTMLDivElement>,
     params: Params
@@ -68,6 +74,7 @@ const RunningOrderTab: FC = () => {
 
   const handleDragEnd = (e: React.DragEvent<HTMLDivElement>) => {
     setDragging(false);
+    e.preventDefault();
     dragItem.current = undefined;
     dragNode.current?.removeEventListener("dragend", () => handleDragEnd(e));
     dragNode.current?.removeEventListener("dragover", (e) =>
@@ -98,77 +105,94 @@ const RunningOrderTab: FC = () => {
     }
   };
 
-  if (runningOrder.first === undefined) {
-    return <Loading />;
-  }
+  // const handleSaveClick = () => {
+  //   const first = runningOrder.first.map((item) => ({ id: item.id }));
+  //   const unordered = runningOrder.unordered.map(item => ({ id: item.id }))
+  //   const second = runningOrder.second.map(item => ({ id: item.id }))
+  //   const third = runningOrder.third.map(item => ({ id: item.id }))
 
-  return (
-    <div className="max-w-full m-8">
-      <div className="dran-n-drop flex text-center">
-        <div
-          id="container"
-          onDragEnter={
-            dragging && !runningOrder.unordered.length
-              ? (e) => handleDragEnter(e, { group: "unordered", stackIndex: 0 })
-              : undefined
-          }
-        >
-          <p>Unordered</p>
-          {runningOrder.unordered.map((stack, idx) => (
-            <div
-              key={stack.id}
-              draggable="true"
-              onDragStart={(e) =>
-                handleDragStart(e, { group: "unordered", stackIndex: idx })
-              }
-              onDragEnter={
-                dragging
-                  ? (e) =>
-                      handleDragEnter(e, {
-                        group: "unordered",
-                        stackIndex: idx,
-                      })
-                  : undefined
-              }
-            >
-              <p>
-                {stack.catagory} {stack.gender}
-              </p>
-            </div>
-          ))}
+  //   editRunningOrder({
+  //     variables: { first, second, third, unordered}
+  //   })
+  // };
+
+  if (runningOrder) {
+    return (
+      <div className="max-w-full m-8">
+        <div className="dran-n-drop flex text-center">
+          <div
+            id="container"
+            onDragEnter={
+              dragging && !runningOrder.unordered.length
+                ? (e) =>
+                    handleDragEnter(e, { group: "unordered", stackIndex: 0 })
+                : undefined
+            }
+          >
+            <p>Unordered</p>
+            {runningOrder.unordered &&
+              runningOrder.unordered.map((stack, idx) => (
+                <div
+                  key={stack.id}
+                  draggable="true"
+                  onDragStart={(e) =>
+                    handleDragStart(e, { group: "unordered", stackIndex: idx })
+                  }
+                  onDragEnter={
+                    dragging
+                      ? (e) =>
+                          handleDragEnter(e, {
+                            group: "unordered",
+                            stackIndex: idx,
+                          })
+                      : undefined
+                  }
+                >
+                  <p>
+                    {stack.catagory} {stack.gender}
+                  </p>
+                </div>
+              ))}
+          </div>
+          <div
+            id="container"
+            onDragEnter={
+              dragging && !runningOrder.first.length
+                ? (e) => handleDragEnter(e, { group: "first", stackIndex: 0 })
+                : undefined
+            }
+          >
+            <p>Group 1</p>
+            {runningOrder.first &&
+              runningOrder.first.map((stack: Stack, idx) => (
+                <div
+                  draggable
+                  onDragStart={(e) =>
+                    handleDragStart(e, { group: "first", stackIndex: idx })
+                  }
+                  onDragEnter={
+                    dragging
+                      ? (e) =>
+                          handleDragEnter(e, {
+                            group: "first",
+                            stackIndex: idx,
+                          })
+                      : undefined
+                  }
+                  key={stack.id}
+                >
+                  <p>
+                    {stack.gender} {stack.catagory}
+                  </p>
+                </div>
+              ))}
+          </div>
         </div>
-        <div
-          id="container"
-          onDragEnter={
-            dragging && !runningOrder.first.length
-              ? (e) => handleDragEnter(e, { group: "first", stackIndex: 0 })
-              : undefined
-          }
-        >
-          <p>Group 1</p>
-          {runningOrder.first.map((stack: Stack, idx) => (
-            <div
-              draggable
-              onDragStart={(e) =>
-                handleDragStart(e, { group: "first", stackIndex: idx })
-              }
-              onDragEnter={
-                dragging
-                  ? (e) =>
-                      handleDragEnter(e, { group: "first", stackIndex: idx })
-                  : undefined
-              }
-              key={stack.id}
-            >
-              <p>
-                {stack.gender} {stack.catagory}
-              </p>
-            </div>
-          ))}
-        </div>
+        {/* <button onClick={handleSaveClick}>Save Changes</button> */}
       </div>
-    </div>
-  );
+    );
+  }
+  return <div>Running Order</div>;
 };
 
 export default RunningOrderTab;

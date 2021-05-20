@@ -1,11 +1,3 @@
-mutation CreateStack(
-  $gender: Gender!
-  $catagory: Catagory!
-  $eventId: String!
-) {
-  createStack(gender: $gender, catagory: $catagory, eventId: $eventId)
-}
-
 query GetStacksForEvent($eventId: String!) {
   getStacks(eventId: $eventId) {
     id
