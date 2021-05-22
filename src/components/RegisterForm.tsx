@@ -1,13 +1,14 @@
 import { Form, Field, Formik } from "formik";
 import { FC } from "react";
 import { useHistory } from "react-router";
-import { useRegisterMutation } from "../generated/graphql";
+import { useRegisterMutation, useTeamsQuery } from "../generated/graphql";
 import * as Yup from "yup";
 import { CustomInputComponent } from "./Forms/Inputs";
 
 const RegisterForm: FC = () => {
   const [register] = useRegisterMutation();
   const history = useHistory();
+  const { data, loading } = useTeamsQuery();
   return (
     <div>
       <Formik
@@ -83,6 +84,14 @@ const RegisterForm: FC = () => {
                     <p className="text-lg text-red-600">{errors.lastName}</p>
                   </div>
                 )}
+              </div>
+              <div className="w-1/4">
+                <span>Team</span>
+                <select>
+                  <option>No Team</option>
+                  {data &&
+                    data.teams.map((team) => <option>{team.teamName}</option>)}
+                </select>
               </div>
               <div className="w-1/4">
                 <span className="text-gray-700">Email</span>

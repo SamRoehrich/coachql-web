@@ -105,17 +105,22 @@ const RunningOrderTab: FC = () => {
     }
   };
 
-  // const handleSaveClick = () => {
-  //   const first = runningOrder.first.map((item) => ({ id: item.id }));
-  //   const unordered = runningOrder.unordered.map(item => ({ id: item.id }))
-  //   const second = runningOrder.second.map(item => ({ id: item.id }))
-  //   const third = runningOrder.third.map(item => ({ id: item.id }))
+  const handleSaveClick = () => {
+    const first = runningOrder.first.map((item) => item.id);
+    const unordered = runningOrder.unordered.map((item) => item.id);
+    const second = runningOrder.second.map((item) => item.id);
+    const third = runningOrder.third.map((item) => item.id);
 
-  //   editRunningOrder({
-  //     variables: { first, second, third, unordered}
-  //   })
-  // };
-
+    editRunningOrder({
+      variables: {
+        first,
+        unordered,
+        second,
+        third,
+        runningOrderId: runningOrder.id.toString(),
+      },
+    });
+  };
   if (runningOrder) {
     return (
       <div className="max-w-full m-8">
@@ -188,7 +193,7 @@ const RunningOrderTab: FC = () => {
               ))}
           </div>
         </div>
-        {/* <button onClick={handleSaveClick}>Save Changes</button> */}
+        <button onClick={handleSaveClick}>Save Changes</button>
       </div>
     );
   }

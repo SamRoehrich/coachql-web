@@ -12,6 +12,7 @@ import EventPage from "./pages/EventDashboard";
 import RegisterSuccessPage from "./pages/RegisterSuccessPage";
 import EventSignupForm from "./components/EventSignupForm";
 import ScoringDashboard from "./pages/ScoringDashboard";
+import WorkoutsPage from "./pages/Workouts";
 
 const Routes: React.FC = () => {
   return (
@@ -20,6 +21,7 @@ const Routes: React.FC = () => {
         <Header />
         <Switch>
           <Route exact path="/" component={HomePage} />
+          <Route exact path="/workouts" component={WorkoutsPage} />
           <Route exact path="/home" component={AuthenticatedHomePage} />
           <Route exact path="/register" component={RegisterPage} />
           <Route exact path="/login" component={LoginPage} />
