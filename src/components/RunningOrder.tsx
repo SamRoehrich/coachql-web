@@ -1,10 +1,9 @@
 import { gql, useApolloClient } from "@apollo/client";
-import { FC, useEffect, useRef, useState } from "react";
+import { FC, useRef, useState } from "react";
 import {
   RunningOrder,
   useEditRunningOrderMutation,
 } from "../generated/graphql";
-import Loading from "./Loading";
 
 interface Stack {
   id: number;
@@ -16,11 +15,6 @@ interface Params {
   group: string;
   stackIndex: number;
 }
-
-interface DBStack {
-  id: string;
-}
-
 const RunningOrderTab: FC = () => {
   const client = useApolloClient();
   const ro = client.readFragment({

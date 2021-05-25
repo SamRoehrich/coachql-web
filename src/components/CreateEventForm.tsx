@@ -7,15 +7,15 @@ import {
   CustomInputComponent,
   CustomInputComponentNoBorder,
 } from "./Forms/Inputs";
-import { HiTrash } from "react-icons/hi";
+// import { HiTrash } from "react-icons/hi";
 import { useCreateEventMutation } from "../generated/graphql";
 import * as Yup from "yup";
-import { Catagory, Gender } from "../utils/enums";
+// import { Catagory, Gender } from "../utils/enums";
 
-interface Stack {
-  gender: Gender;
-  catagory: Catagory;
-}
+// interface Stack {
+//   gender: Gender;
+//   catagory: Catagory;
+// }
 
 interface InitialValues {
   eventName: string;
@@ -27,10 +27,8 @@ interface InitialValues {
 }
 
 const CreateEventForm: FC = () => {
-  const [
-    createEvent,
-    { data, loading, error, called },
-  ] = useCreateEventMutation();
+  const [createEvent, { data, loading, error, called }] =
+    useCreateEventMutation();
   const history = useHistory();
   const initialValues: InitialValues = {
     eventName: "",

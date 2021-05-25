@@ -8,7 +8,7 @@ import { CustomInputComponent } from "./Forms/Inputs";
 const RegisterForm: FC = () => {
   const [register] = useRegisterMutation();
   const history = useHistory();
-  const { data, loading } = useTeamsQuery();
+  const { data } = useTeamsQuery();
   return (
     <div>
       <Formik

@@ -1,5 +1,5 @@
 import React, { FC, useState } from "react";
-import { Link, useHistory } from "react-router-dom";
+import { Link, useHistory, useLocation } from "react-router-dom";
 import { setAccessToken } from "../accessToken";
 import { useLogoutMutation, useMeQuery } from "../generated/graphql";
 
@@ -7,11 +7,20 @@ interface Props {}
 
 const Header: FC<Props> = () => {
   const { loading, data } = useMeQuery();
+  const location = useLocation();
   const [logout, { client }] = useLogoutMutation();
   const [showing, setShowing] = useState(false);
   const history = useHistory();
   if (loading) {
     return <div className="max-w-full h-20 items-center m-8"></div>;
+  }
+  // remove header if currently scorekeeping
+  if (location) {
+    const loc = location.pathname.split("/");
+    console.log(loc);
+    if (loc[2] === "scorekeeper") {
+      return null;
+    }
   }
   return (
     <div className="max-w-full h-20 items-center m-8">

@@ -40,17 +40,16 @@ export const CustomPasswordInputComponent: React.ComponentType<
   </div>
 );
 
-export const CustomCheckboxComponent: React.ComponentType<
-  FieldProps["field"]
-> = (props) => (
-  <div>
-    <input
-      {...props}
-      type="checkbox"
-      className="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-offset-0 focus:ring-indigo-200 focus:ring-opacity-50 cursor-pointer"
-    />
-  </div>
-);
+export const CustomCheckboxComponent: React.ComponentType<FieldProps["field"]> =
+  (props) => (
+    <div>
+      <input
+        {...props}
+        type="checkbox"
+        className="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-offset-0 focus:ring-indigo-200 focus:ring-opacity-50 cursor-pointer"
+      />
+    </div>
+  );
 
 export const CustomDateInputComponent: React.ComponentType<
   FieldProps["field"]

@@ -5,7 +5,7 @@ import { currentEventVar } from "../../graphql/cache";
 import StackTab from "./Tabs/StackTab";
 import BouldersTab from "./Tabs/BoudlersTab";
 import AthletesTab from "./Tabs/AthletesTab";
-import { useHistory, useParams } from "react-router";
+import { useParams } from "react-router";
 import { MainButton } from "../Styled/Buttons";
 import GeneralTab from "./Tabs/GeneralTab";
 import RunningOrderTab from "../RunningOrder";

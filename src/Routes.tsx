@@ -13,15 +13,24 @@ import RegisterSuccessPage from "./pages/RegisterSuccessPage";
 import EventSignupForm from "./components/EventSignupForm";
 import ScoringDashboard from "./pages/ScoringDashboard";
 import WorkoutsPage from "./pages/Workouts";
+import CreateWorkotu from "./components/Dashboard/CreateWorkout";
+import ScorekeeperScreen from "./components/Scorekeeper/Scoring";
+import Layout from "./components/Layout";
 
 const Routes: React.FC = () => {
   return (
     <BrowserRouter>
       <div>
-        <Header />
+        {/* <Header /> */}
         <Switch>
-          <Route exact path="/" component={HomePage} />
+          <Route path="/" component={Layout} />
           <Route exact path="/workouts" component={WorkoutsPage} />
+          <Route exact path="/workouts/create" component={CreateWorkotu} />
+          <Route
+            exact
+            path="/scoring/scorekeeper/boulder"
+            component={ScorekeeperScreen}
+          />
           <Route exact path="/home" component={AuthenticatedHomePage} />
           <Route exact path="/register" component={RegisterPage} />
           <Route exact path="/login" component={LoginPage} />

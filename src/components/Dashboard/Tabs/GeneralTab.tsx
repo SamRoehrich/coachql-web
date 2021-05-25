@@ -2,7 +2,7 @@ import { useQuery } from "@apollo/client";
 import { FC } from "react";
 import { GET_CURRENT_EVENT } from "../../../graphql/cache";
 import Loading from "../../Loading";
-import RunningOrderEditor from "../../RunningOrder";
+// import RunningOrderEditor from "../../RunningOrder";
 import { SecondaryButton } from "../../Styled/Buttons";
 import EventInfo from "../EventInfo";
 
