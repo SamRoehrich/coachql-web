@@ -12,7 +12,7 @@ interface InitialValues {
   sets: number;
 }
 
-const CreateWorkotu: FC = () => {
+const CreateWorkout: FC = () => {
   const initialValues: InitialValues = {
     name: "",
     description: "",
@@ -52,7 +52,7 @@ const CreateWorkotu: FC = () => {
   );
 };
 
-export default CreateWorkotu;
+export default CreateWorkout;
 
 {
   /* <Form>
