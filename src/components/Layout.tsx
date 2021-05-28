@@ -8,14 +8,16 @@ import AthleteInfo from "./AthleteInfo";
 import Loading from "./Loading";
 import SubMenu from "./SubMenu";
 import CreateWorkout from "../components/Dashboard/CreateWorkout";
+import EventPage from "../pages/EventDashboard";
 
 const Layout: FC = () => {
+  const { path, url } = useRouteMatch();
   return (
     <div className="flex flex-row h-screen bg-gray-100">
       <div className="flex flex-col justify-between items-center flex-none w-16 bg-gray-200">
         <div className="flex flex-col space-y-4 w-full items-center pt-5">
           <NavLink
-            to="/home"
+            to="/app/home"
             className="rounded-full bg-gray-200 border border-gray-500 text-indigo-500 w-8 h-8 flex items-center justify-center"
             activeClassName="rounded-full bg-gray-200 border border-indigo-300 text-white w-8 h-8 flex items-center justify-center"
           >
@@ -29,7 +31,7 @@ const Layout: FC = () => {
             </svg>
           </NavLink>
           <NavLink
-            to="/roster"
+            to="/app/roster"
             className="rounded-full bg-gray-200 border border-gray-500 text-indigo-500 w-8 h-8 flex items-center justify-center"
             activeClassName="rounded-full bg-gray-200 border border-indigo-300 text-white w-8 h-8 flex items-center justify-center"
           >
@@ -43,14 +45,14 @@ const Layout: FC = () => {
             </svg>
           </NavLink>
           <NavLink
-            to="/workouts"
+            to="/app/workouts"
             className="rounded-full bg-gray-200 border border-gray-500 text-indigo-500 w-8 h-8 flex items-center justify-center"
             activeClassName="rounded-full bg-gray-200 border border-indigo-300 text-white w-8 h-8 flex items-center justify-center"
           >
             <FaDumbbell />
           </NavLink>
           <NavLink
-            to="/events"
+            to="/app/events"
             className="rounded-full bg-gray-200 border border-gray-500 text-indigo-500 w-8 h-8 flex items-center justify-center"
             activeClassName="rounded-full bg-gray-200 border border-indigo-300 text-white w-8 h-8 flex items-center justify-center"
           >
@@ -122,10 +124,17 @@ const Layout: FC = () => {
       <SubMenu />
 
       <div className="flex flex-row flex-auto bg-white rounded-tl-xl border-l shadow-xl">
-        <Route path={`/roster/athlete/:athleteId`} component={AthleteInfo} />
-        <Route path="/coach/:coachId" render={() => <div>coach page</div>} />
-        <Route exact path="/workouts" component={WorkoutsPage} />
-        <Route path="/workouts/create" component={CreateWorkout} />
+        <Route
+          path={`${path}/roster/athlete/:athleteId`}
+          component={AthleteInfo}
+        />
+        <Route
+          path={`${path}/coach/:coachId`}
+          render={() => <div>coach page</div>}
+        />
+        <Route exact path={`${path}/workouts`} component={WorkoutsPage} />
+        <Route path="/app/workouts/create" component={CreateWorkout} />
+        <Route path="/events/:eventId" component={EventPage} />
       </div>
     </div>
   );

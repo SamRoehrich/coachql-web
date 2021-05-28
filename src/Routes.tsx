@@ -23,7 +23,7 @@ const Routes: React.FC = () => {
       <div>
         {/* <Header /> */}
         <Switch>
-          <Route path="/" component={Layout} />
+          <Route path="/app" component={Layout} />
           <Route exact path="/workouts" component={WorkoutsPage} />
           <Route exact path="/workouts/create" component={CreateWorkotu} />
           <Route
