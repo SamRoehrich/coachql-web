@@ -24,11 +24,15 @@ const WorkoutSubMenu: FC = () => {
         </svg>
       </div>
       <div className="overflow-auto h-full">
-        <div className="flex flex-col space-y-4 mt-4">
+        <div className="flex flex-col mt-4">
           <Disclosure>
             {({ open }) => (
               <>
-                <Disclosure.Button className="p-2  border border-gray-200 rounded-lg hover:border-blue-300">
+                <Disclosure.Button
+                  className={`p-2  border border-gray-200 rounded-lg hover:border-blue-300 z-50 ${
+                    open ? "rounded-b-none border-b-none" : ""
+                  } `}
+                >
                   <div className="flex justify-between items-center">
                     <p>Bouldering</p>
                     <svg
@@ -47,7 +51,7 @@ const WorkoutSubMenu: FC = () => {
                     </svg>
                   </div>
                 </Disclosure.Button>
-                <Disclosure.Panel>
+                <Disclosure.Panel className="bg-white rounded-b-xl">
                   <Link to={`/roster/athlete/1`}>
                     <div className="p-1 hover:shadow-sm rounded">
                       <p>Teague Hendrix</p>
@@ -60,7 +64,11 @@ const WorkoutSubMenu: FC = () => {
           <Disclosure>
             {({ open }) => (
               <>
-                <Disclosure.Button className="p-2  border border-gray-200 rounded-lg hover:border-blue-300">
+                <Disclosure.Button
+                  className={`p-2  border border-gray-200 rounded-lg hover:border-blue-300 z-50 ${
+                    open ? "rounded-b-none border-b-none" : ""
+                  } `}
+                >
                   <div className="flex justify-between items-center">
                     <p>Lead</p>
                     <svg
@@ -79,7 +87,7 @@ const WorkoutSubMenu: FC = () => {
                     </svg>
                   </div>
                 </Disclosure.Button>
-                <Disclosure.Panel>
+                <Disclosure.Panel className="bg-white">
                   <Link to={`/roster/athlete/1`}>
                     <div className="p-1 hover:shadow-sm rounded">
                       <p>Teague Hendrix</p>
@@ -92,7 +100,11 @@ const WorkoutSubMenu: FC = () => {
           <Disclosure>
             {({ open }) => (
               <>
-                <Disclosure.Button className="p-2  border border-gray-200 rounded-lg hover:border-blue-300">
+                <Disclosure.Button
+                  className={`p-2  border border-gray-200 rounded-lg hover:border-blue-300 z-50 ${
+                    open ? "rounded-b-none border-b-none" : ""
+                  } `}
+                >
                   <div className="flex justify-between items-center">
                     <p>Speed</p>
                     <svg
@@ -111,7 +123,7 @@ const WorkoutSubMenu: FC = () => {
                     </svg>
                   </div>
                 </Disclosure.Button>
-                <Disclosure.Panel>
+                <Disclosure.Panel className="bg-white">
                   <Link to={`/roster/athlete/1`}>
                     <div className="p-1 hover:shadow-sm rounded">
                       <p>Teague Hendrix</p>
@@ -124,7 +136,11 @@ const WorkoutSubMenu: FC = () => {
           <Disclosure>
             {({ open }) => (
               <>
-                <Disclosure.Button className="p-2  border border-gray-200 rounded-lg hover:border-blue-300">
+                <Disclosure.Button
+                  className={`p-2  border border-gray-200 rounded-lg hover:border-blue-300 z-50 ${
+                    open ? "rounded-b-none border-b-none" : ""
+                  } `}
+                >
                   <div className="flex justify-between items-center">
                     <p>Power Endurance</p>
                     <svg
@@ -143,7 +159,7 @@ const WorkoutSubMenu: FC = () => {
                     </svg>
                   </div>
                 </Disclosure.Button>
-                <Disclosure.Panel>
+                <Disclosure.Panel className="bg-white">
                   <Link to={`/roster/athlete/1`}>
                     <div className="p-1 hover:shadow-sm rounded">
                       <p>Teague Hendrix</p>
@@ -156,7 +172,11 @@ const WorkoutSubMenu: FC = () => {
           <Disclosure>
             {({ open }) => (
               <>
-                <Disclosure.Button className="p-2  border border-gray-200 rounded-lg hover:border-blue-300">
+                <Disclosure.Button
+                  className={`p-2  border border-gray-200 rounded-lg hover:border-blue-300 z-50 ${
+                    open ? "rounded-b-none border-b-none" : ""
+                  } `}
+                >
                   <div className="flex justify-between items-center">
                     <p>Endurance</p>
                     <svg
@@ -175,7 +195,7 @@ const WorkoutSubMenu: FC = () => {
                     </svg>
                   </div>
                 </Disclosure.Button>
-                <Disclosure.Panel>
+                <Disclosure.Panel className="bg-white">
                   <Link to={`/roster/athlete/1`}>
                     <div className="p-1 hover:shadow-sm rounded">
                       <p>Teague Hendrix</p>
@@ -188,7 +208,11 @@ const WorkoutSubMenu: FC = () => {
           <Disclosure>
             {({ open }) => (
               <>
-                <Disclosure.Button className="p-2  border border-gray-200 rounded-lg hover:border-blue-300">
+                <Disclosure.Button
+                  className={`p-2  border border-gray-200 rounded-lg hover:border-blue-300 z-50 ${
+                    open ? "rounded-b-none border-b-none" : ""
+                  } `}
+                >
                   <div className="flex justify-between items-center">
                     <p>Conditioning</p>
                     <svg
@@ -207,7 +231,7 @@ const WorkoutSubMenu: FC = () => {
                     </svg>
                   </div>
                 </Disclosure.Button>
-                <Disclosure.Panel>
+                <Disclosure.Panel className="bg-white">
                   <Link to={`/roster/athlete/1`}>
                     <div className="p-1 hover:shadow-sm rounded">
                       <p>Teague Hendrix</p>
@@ -220,7 +244,11 @@ const WorkoutSubMenu: FC = () => {
           <Disclosure>
             {({ open }) => (
               <>
-                <Disclosure.Button className="p-2  border border-gray-200 rounded-lg hover:border-blue-300">
+                <Disclosure.Button
+                  className={`p-2  border border-gray-200 rounded-lg hover:border-blue-300 z-50 ${
+                    open ? "rounded-b-none border-b-none" : ""
+                  } `}
+                >
                   <div className="flex justify-between items-center">
                     <p>Mobility and Flexibility</p>
                     <svg
@@ -239,7 +267,7 @@ const WorkoutSubMenu: FC = () => {
                     </svg>
                   </div>
                 </Disclosure.Button>
-                <Disclosure.Panel>
+                <Disclosure.Panel className="bg-white">
                   <Link to={`/roster/athlete/1`}>
                     <div className="p-1 hover:shadow-sm rounded">
                       <p>Teague Hendrix</p>
@@ -302,7 +330,11 @@ const WorkoutSubMenu: FC = () => {
           <Disclosure>
             {({ open }) => (
               <>
-                <Disclosure.Button className="p-2  border border-gray-200 rounded-lg hover:border-blue-300">
+                <Disclosure.Button
+                  className={`p-2  border border-gray-200 rounded-lg hover:border-blue-300 z-50 ${
+                    open ? "rounded-b-none border-b-none" : ""
+                  } `}
+                >
                   <div className="flex justify-between items-center">
                     <p>Unordered</p>
                     <svg
@@ -321,7 +353,7 @@ const WorkoutSubMenu: FC = () => {
                     </svg>
                   </div>
                 </Disclosure.Button>
-                <Disclosure.Panel>
+                <Disclosure.Panel className="bg-white">
                   <Link to={`/roster/athlete/1`}>
                     <div className="p-1 hover:shadow-sm rounded">
                       <p>Teague Hendrix</p>
