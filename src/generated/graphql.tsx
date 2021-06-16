@@ -196,6 +196,7 @@ export type Query = {
   event: Event;
   getAuthenticatedEvents: Array<Event>;
   teams: Array<Team>;
+  getTeamByCoachId: Team;
   athletes: Array<Athlete>;
   getStacks: Array<Stack>;
   getBoulders: Array<Boulder>;
@@ -203,6 +204,7 @@ export type Query = {
   getBoulder: Boulder;
   getWorkouts: Array<Workout>;
   getWorkout: Workout;
+  getWorkoutsForTeam: Array<Workout>;
 };
 
 
@@ -213,6 +215,11 @@ export type QueryGetRunningOrderArgs = {
 
 export type QueryEventArgs = {
   eventId: Scalars['String'];
+};
+
+
+export type QueryGetTeamByCoachIdArgs = {
+  coachId: Scalars['String'];
 };
 
 
@@ -238,6 +245,11 @@ export type QueryGetBoulderArgs = {
 
 export type QueryGetWorkoutArgs = {
   workoutId: Scalars['String'];
+};
+
+
+export type QueryGetWorkoutsForTeamArgs = {
+  teamId: Scalars['String'];
 };
 
 export type RunningOrder = {
@@ -555,6 +567,26 @@ export type TeamsQuery = (
   )> }
 );
 
+export type GetTeamByCoachIdQueryVariables = Exact<{
+  coachId: Scalars['String'];
+}>;
+
+
+export type GetTeamByCoachIdQuery = (
+  { __typename?: 'Query' }
+  & { getTeamByCoachId: (
+    { __typename?: 'Team' }
+    & Pick<Team, 'id' | 'teamName'>
+    & { headCoach: (
+      { __typename?: 'User' }
+      & Pick<User, 'firstName' | 'lastName'>
+    ), workouts: Array<(
+      { __typename?: 'Workout' }
+      & Pick<Workout, 'id' | 'name' | 'sets' | 'description' | 'workoutType' | 'timerType' | 'intervals' | 'equiptment'>
+    )> }
+  ) }
+);
+
 export type UsersQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -594,6 +626,19 @@ export type GetWorkoutQuery = (
     { __typename?: 'Workout' }
     & Pick<Workout, 'workoutType' | 'name'>
   ) }
+);
+
+export type GetWorkoutsForTeamQueryVariables = Exact<{
+  teamId: Scalars['String'];
+}>;
+
+
+export type GetWorkoutsForTeamQuery = (
+  { __typename?: 'Query' }
+  & { getWorkoutsForTeam: Array<(
+    { __typename?: 'Workout' }
+    & Pick<Workout, 'id' | 'workoutType' | 'name'>
+  )> }
 );
 
 export const RunningOrderFragmentDoc = gql`
@@ -1266,6 +1311,56 @@ export function useTeamsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<Team
 export type TeamsQueryHookResult = ReturnType<typeof useTeamsQuery>;
 export type TeamsLazyQueryHookResult = ReturnType<typeof useTeamsLazyQuery>;
 export type TeamsQueryResult = Apollo.QueryResult<TeamsQuery, TeamsQueryVariables>;
+export const GetTeamByCoachIdDocument = gql`
+    query getTeamByCoachId($coachId: String!) {
+  getTeamByCoachId(coachId: $coachId) {
+    id
+    teamName
+    headCoach {
+      firstName
+      lastName
+    }
+    workouts {
+      id
+      name
+      sets
+      description
+      workoutType
+      timerType
+      intervals
+      equiptment
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetTeamByCoachIdQuery__
+ *
+ * To run a query within a React component, call `useGetTeamByCoachIdQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetTeamByCoachIdQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetTeamByCoachIdQuery({
+ *   variables: {
+ *      coachId: // value for 'coachId'
+ *   },
+ * });
+ */
+export function useGetTeamByCoachIdQuery(baseOptions: Apollo.QueryHookOptions<GetTeamByCoachIdQuery, GetTeamByCoachIdQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetTeamByCoachIdQuery, GetTeamByCoachIdQueryVariables>(GetTeamByCoachIdDocument, options);
+      }
+export function useGetTeamByCoachIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetTeamByCoachIdQuery, GetTeamByCoachIdQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetTeamByCoachIdQuery, GetTeamByCoachIdQueryVariables>(GetTeamByCoachIdDocument, options);
+        }
+export type GetTeamByCoachIdQueryHookResult = ReturnType<typeof useGetTeamByCoachIdQuery>;
+export type GetTeamByCoachIdLazyQueryHookResult = ReturnType<typeof useGetTeamByCoachIdLazyQuery>;
+export type GetTeamByCoachIdQueryResult = Apollo.QueryResult<GetTeamByCoachIdQuery, GetTeamByCoachIdQueryVariables>;
 export const UsersDocument = gql`
     query Users {
   users {
@@ -1386,3 +1481,40 @@ export function useGetWorkoutLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions
 export type GetWorkoutQueryHookResult = ReturnType<typeof useGetWorkoutQuery>;
 export type GetWorkoutLazyQueryHookResult = ReturnType<typeof useGetWorkoutLazyQuery>;
 export type GetWorkoutQueryResult = Apollo.QueryResult<GetWorkoutQuery, GetWorkoutQueryVariables>;
+export const GetWorkoutsForTeamDocument = gql`
+    query getWorkoutsForTeam($teamId: String!) {
+  getWorkoutsForTeam(teamId: $teamId) {
+    id
+    workoutType
+    name
+  }
+}
+    `;
+
+/**
+ * __useGetWorkoutsForTeamQuery__
+ *
+ * To run a query within a React component, call `useGetWorkoutsForTeamQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetWorkoutsForTeamQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetWorkoutsForTeamQuery({
+ *   variables: {
+ *      teamId: // value for 'teamId'
+ *   },
+ * });
+ */
+export function useGetWorkoutsForTeamQuery(baseOptions: Apollo.QueryHookOptions<GetWorkoutsForTeamQuery, GetWorkoutsForTeamQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetWorkoutsForTeamQuery, GetWorkoutsForTeamQueryVariables>(GetWorkoutsForTeamDocument, options);
+      }
+export function useGetWorkoutsForTeamLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetWorkoutsForTeamQuery, GetWorkoutsForTeamQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetWorkoutsForTeamQuery, GetWorkoutsForTeamQueryVariables>(GetWorkoutsForTeamDocument, options);
+        }
+export type GetWorkoutsForTeamQueryHookResult = ReturnType<typeof useGetWorkoutsForTeamQuery>;
+export type GetWorkoutsForTeamLazyQueryHookResult = ReturnType<typeof useGetWorkoutsForTeamLazyQuery>;
+export type GetWorkoutsForTeamQueryResult = Apollo.QueryResult<GetWorkoutsForTeamQuery, GetWorkoutsForTeamQueryVariables>;

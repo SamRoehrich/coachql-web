@@ -26,3 +26,11 @@ query getWorkout($workoutId: String!) {
     name
   }
 }
+
+query getWorkoutsForTeam($teamId: String!) {
+  getWorkoutsForTeam(teamId: $teamId) {
+    id
+    workoutType
+    name
+  }
+}

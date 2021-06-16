@@ -1,7 +1,7 @@
 import { Disclosure } from "@headlessui/react";
 import { FC } from "react";
 import { FaDumbbell } from "react-icons/fa";
-import { Route, useLocation, useRouteMatch } from "react-router";
+import { Route, useLocation, useParams, useRouteMatch } from "react-router";
 import { Link, NavLink } from "react-router-dom";
 import WorkoutsPage from "../pages/Workouts";
 import AthleteInfo from "./AthleteInfo";
@@ -9,9 +9,32 @@ import Loading from "./Loading";
 import SubMenu from "./SubMenu";
 import CreateWorkout from "../components/Dashboard/CreateWorkout";
 import EventPage from "../pages/EventDashboard";
+import {
+  useMeQuery,
+  useGetTeamByCoachIdQuery,
+  useMeLazyQuery,
+} from "../generated/graphql";
+
+interface Params {
+  userId: string;
+}
 
 const Layout: FC = () => {
   const { path, url } = useRouteMatch();
+  const params = useParams<Params>();
+  console.log(path, url);
+  console.log(params);
+
+  const { data } = useGetTeamByCoachIdQuery({
+    variables: {
+      coachId: params.userId,
+    },
+  });
+
+  if (data) {
+    console.log(data);
+  }
+
   return (
     <div className="flex flex-row h-screen bg-gray-100">
       <div className="flex flex-col justify-between items-center flex-none w-16 bg-gray-200">
@@ -45,7 +68,7 @@ const Layout: FC = () => {
             </svg>
           </NavLink>
           <NavLink
-            to="/app/workouts"
+            to="/app/:userId/workouts"
             className="rounded-full bg-gray-200 border border-gray-500 text-indigo-500 w-8 h-8 flex items-center justify-center"
             activeClassName="rounded-full bg-gray-200 border border-indigo-300 text-white w-8 h-8 flex items-center justify-center"
           >
@@ -71,7 +94,7 @@ const Layout: FC = () => {
           </NavLink>
         </div>
         <div className="flex flex-col space-y-4 w-full items-center pb-5">
-          <a>
+          <Link to="/account">
             <div className="rounded-full bg-gray-200 border border-gray-500 text-indigo-500 w-8 h-8 flex items-center justify-center">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -86,8 +109,8 @@ const Layout: FC = () => {
                 />
               </svg>
             </div>
-          </a>
-          <a>
+          </Link>
+          <Link to="/">
             <div className="rounded-full bg-gray-200 border border-gray-500 text-indigo-500 w-8 h-8 flex items-center justify-center">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -102,8 +125,9 @@ const Layout: FC = () => {
                 />
               </svg>
             </div>
-          </a>
-          <a>
+          </Link>
+
+          <Link to="/logout">
             <div className="rounded-full bg-gray-200 border border-gray-500 text-indigo-500 w-8 h-8 flex items-center justify-center">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -118,7 +142,7 @@ const Layout: FC = () => {
                 />
               </svg>
             </div>
-          </a>
+          </Link>
         </div>
       </div>
       <SubMenu />
@@ -132,7 +156,7 @@ const Layout: FC = () => {
           path={`${path}/coach/:coachId`}
           render={() => <div>coach page</div>}
         />
-        <Route exact path={`${path}/workouts`} component={WorkoutsPage} />
+        <Route exact path="/app/:userId/workouts" component={WorkoutsPage} />
         <Route path="/app/workouts/create" component={CreateWorkout} />
         <Route path="/events/:eventId" component={EventPage} />
       </div>

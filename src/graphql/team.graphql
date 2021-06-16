@@ -7,3 +7,24 @@ query Teams {
     }
   }
 }
+
+query getTeamByCoachId($coachId: String!) {
+  getTeamByCoachId(coachId: $coachId) {
+    id
+    teamName
+    headCoach {
+      firstName
+      lastName
+    }
+    workouts {
+      id
+      name
+      sets
+      description
+      workoutType
+      timerType
+      intervals
+      equiptment
+    }
+  }
+}
