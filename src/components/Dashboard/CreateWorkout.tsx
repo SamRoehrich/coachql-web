@@ -87,6 +87,7 @@ const CreateWorkout: FC = () => {
                         }: FieldProps) => (
                           <>
                             <input
+                              autoComplete="off"
                               type="text"
                               placeholder="Name"
                               {...field}

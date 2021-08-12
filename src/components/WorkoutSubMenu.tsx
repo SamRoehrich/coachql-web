@@ -44,6 +44,7 @@ const WorkoutSubMenu: FC = () => {
     const lead = getWorkoutsInType("Lead", workouts);
     const powerEndurance = getWorkoutsInType("Power Endurance", workouts);
     const speed = getWorkoutsInType("Speed", workouts);
+    console.log(location.pathname.includes("create"));
     return (
       <div className="w-full flex flex-col h-full">
         <div className="flex justify-between items-center">
@@ -342,11 +343,19 @@ const WorkoutSubMenu: FC = () => {
           </div>
         </div>
         <div className="mb-8 h-16 bg-white-500 border border-gray-300 hover:border-blue-300 cursor-pointer justify-self-end rounded-2xl text-center flex items-center justify-center flex-none">
-          <Link to={`${location.pathname}/create`}>
-            <p className="font-semibold text-xl text-gray-900">
-              Create Workout
-            </p>
-          </Link>
+          {location.pathname.includes("create") ? (
+            <button disabled>
+              <p className="font-semibold text-xl text-gray-900">
+                Create Workout
+              </p>
+            </button>
+          ) : (
+            <Link to={`${location.pathname}/create`}>
+              <p className="font-semibold text-xl text-gray-900">
+                Create Workout
+              </p>
+            </Link>
+          )}
         </div>
       </div>
     );
@@ -615,9 +624,13 @@ const WorkoutSubMenu: FC = () => {
         </div>
       </div>
       <div className="mb-8 h-16 bg-white-500 border border-gray-300 hover:border-blue-300 cursor-pointer justify-self-end rounded-2xl text-center flex items-center justify-center flex-none">
-        <Link to={`${location.pathname}/create`}>
-          <p className="font-semibold text-xl text-gray-900">Create Workout</p>
-        </Link>
+        <button disabled={location.pathname.includes("create")}>
+          <Link to={`${location.pathname}/create`}>
+            <p className="font-semibold text-xl text-gray-900">
+              Create Workout
+            </p>
+          </Link>
+        </button>
       </div>
     </div>
   );

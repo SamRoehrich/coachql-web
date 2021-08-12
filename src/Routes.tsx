@@ -13,10 +13,10 @@ import RegisterSuccessPage from "./pages/RegisterSuccessPage";
 import EventSignupForm from "./components/EventSignupForm";
 import ScoringDashboard from "./pages/ScoringDashboard";
 import WorkoutsPage from "./pages/Workouts";
-import CreateWorkotu from "./components/Dashboard/CreateWorkout";
 import ScorekeeperScreen from "./components/Scorekeeper/Scoring";
 import Layout from "./components/Layout";
 import PublicHomePage from "./components/PublicHomePage";
+import CreateWorkout from "./components/Dashboard/CreateWorkout";
 
 const Routes: React.FC = () => {
   return (
@@ -27,7 +27,6 @@ const Routes: React.FC = () => {
           <Route exact path="/" component={PublicHomePage} />
           <Route path="/app/:userId" component={Layout} />
           <Route exact path="/workouts" component={WorkoutsPage} />
-          <Route exact path="/workouts/create" component={CreateWorkotu} />
           <Route
             exact
             path="/scoring/scorekeeper/boulder"

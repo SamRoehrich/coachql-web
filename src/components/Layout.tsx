@@ -14,6 +14,7 @@ import {
   useGetTeamByCoachIdQuery,
   useMeLazyQuery,
 } from "../generated/graphql";
+import CalendarPage from "../pages/CalendarPage";
 
 interface Params {
   userId: string;
@@ -27,7 +28,7 @@ const Layout: FC = () => {
 
   const { data } = useGetTeamByCoachIdQuery({
     variables: {
-      coachId: params.userId,
+      coachId: "1",
     },
   });
 
@@ -75,7 +76,7 @@ const Layout: FC = () => {
             <FaDumbbell />
           </NavLink>
           <NavLink
-            to="/app/events"
+            to="/app/calendar"
             className="rounded-full bg-gray-200 border border-gray-500 text-indigo-500 w-8 h-8 flex items-center justify-center"
             activeClassName="rounded-full bg-gray-200 border border-indigo-300 text-white w-8 h-8 flex items-center justify-center"
           >
@@ -157,8 +158,9 @@ const Layout: FC = () => {
           render={() => <div>coach page</div>}
         />
         <Route exact path="/app/:userId/workouts" component={WorkoutsPage} />
-        <Route path="/app/workouts/create" component={CreateWorkout} />
+        <Route path="/app/:userId/workouts/create" component={CreateWorkout} />
         <Route path="/events/:eventId" component={EventPage} />
+        <Route path="/app/calendar" component={CalendarPage} />
       </div>
     </div>
   );
