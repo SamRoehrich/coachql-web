@@ -10,6 +10,7 @@ export interface Interval {
   description: string;
   type: string;
   infinite: boolean;
+  reps: number;
 }
 
 interface InitialValues {

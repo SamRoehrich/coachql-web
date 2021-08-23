@@ -87,6 +87,26 @@ const CreateWorkoutTimerItem: FC<Props> = ({ arrayHelpers, interval, idx }) => {
           )}
         </Field>
       </div>
+      <div className="">
+        <Field name={`intervals[${idx}].reps`}>
+          {({ field, form: { touched, errors }, meta }: FieldProps) => (
+            <div className="flex flex-col items-center">
+              <span className="text-sm">Reps</span>
+              <input
+                type="number"
+                className="w-16 rounded-xl"
+                disabled={interval.infinite === true ? true : false}
+                {...field}
+              />
+              {errors.name && touched.name && (
+                <div className="m-2">
+                  <p className="text-lg text-red-600">{errors.name}</p>
+                </div>
+              )}
+            </div>
+          )}
+        </Field>
+      </div>
       <div className="flex items-center justify-center">
         <Field name={`intervals[${idx}].infinite`}>
           {({ field, form: { touched, errors }, meta }: FieldProps) => (
