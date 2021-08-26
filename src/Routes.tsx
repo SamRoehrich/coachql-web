@@ -35,7 +35,7 @@ const Routes: React.FC = () => {
           <Route exact path="/home" component={AuthenticatedHomePage} />
           <Route exact path="/register" component={RegisterPage} />
           <Route exact path="/login" component={LoginPage} />
-          <Route exact path="/bye" component={ByePage} />
+          <Route exact path="/logout" component={ByePage} />
           <Route exact path="/coach_register" component={CoachRegisterPage} />
           <Route exact path="/event/create" component={CreateEventForm} />
           <Route

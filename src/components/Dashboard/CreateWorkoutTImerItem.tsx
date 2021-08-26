@@ -10,7 +10,6 @@ interface Props {
 const CreateWorkoutTimerItem: FC<Props> = ({ arrayHelpers, interval, idx }) => {
   return (
     <div className="flex items-center space-x-4 justify-start" key={idx}>
-      <input type="checkbox" className="rounded-full mt-6" />
       <div>
         <Field name={`intervals[${idx}].description`}>
           {({ field, form: { touched, errors }, meta }: FieldProps) => (
@@ -111,7 +110,7 @@ const CreateWorkoutTimerItem: FC<Props> = ({ arrayHelpers, interval, idx }) => {
         <Field name={`intervals[${idx}].infinite`}>
           {({ field, form: { touched, errors }, meta }: FieldProps) => (
             <div className="flex flex-col items-center">
-              <span className="text-xs"></span>
+              <span className="text-xs">Self Paced</span>
               <input type="checkbox" className="w-4 rounded-xl" {...field} />
               {errors.name && touched.name && (
                 <div className="m-2">

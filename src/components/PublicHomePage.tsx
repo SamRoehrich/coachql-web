@@ -13,7 +13,8 @@ const PublicHomePage: FC<Props> = () => {
     return <Loading />;
   }
   if (data) {
-    history.push("/app");
+    console.log(data);
+    history.push(`/app/${data.me?.id}`);
   }
   return (
     <div className="h-screen bg-gray-100">
@@ -29,7 +30,9 @@ const PublicHomePage: FC<Props> = () => {
         </div>
       </header>
       <div className="">
-        <h1 className="text-gray-800">Coachql - The most advanced toolset for climbing coaches.</h1>
+        <h1 className="text-gray-800">
+          Coachql - The most advanced toolset for climbing coaches.
+        </h1>
       </div>
     </div>
   );

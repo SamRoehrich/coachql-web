@@ -216,6 +216,7 @@ const CreateWorkout: FC = () => {
                                   minutes: 0,
                                   description: "",
                                   type: "",
+                                  reps: 0,
                                 })
                               }
                               className="h-12 w-full border rounded-xl flex items-center justify-center cursor-pointer hover:bg-gray-100"
