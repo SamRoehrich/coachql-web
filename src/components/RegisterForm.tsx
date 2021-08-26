@@ -1,5 +1,5 @@
-import { Form, Field, Formik } from "formik";
-import { FC } from "react";
+import { Form, Field, Formik, yupToFormErrors } from "formik";
+import { FC, useState } from "react";
 import { useHistory } from "react-router";
 import { useRegisterMutation, useTeamsQuery } from "../generated/graphql";
 import * as Yup from "yup";
@@ -9,6 +9,7 @@ const RegisterForm: FC = () => {
   const [register] = useRegisterMutation();
   const history = useHistory();
   const { data } = useTeamsQuery();
+  const [createTeam, setCreateTeam] = useState(false);
   return (
     <div>
       <Formik
@@ -19,10 +20,11 @@ const RegisterForm: FC = () => {
           email: "",
           password: "",
           confirmPassword: "",
+          verificationCode: "",
         }}
         onSubmit={async (data, { setSubmitting }) => {
           setSubmitting(true);
-          await register({
+          const registerRes = await register({
             variables: {
               firstName: data.firstName,
               lastName: data.lastName,
@@ -30,10 +32,15 @@ const RegisterForm: FC = () => {
               password: data.password,
             },
           });
-          setSubmitting(false);
-          history.push("/register/success");
+          if (registerRes.data?.register) {
+            setSubmitting(false);
+            history.push("/account/register/success");
+          } else {
+            alert("Error: Complete form and try again.");
+          }
         }}
         validationSchema={Yup.object().shape({
+          createTeam: Yup.boolean(),
           firstName: Yup.string()
             .min(2)
             .max(100)
@@ -47,19 +54,29 @@ const RegisterForm: FC = () => {
             .min(8, "Password must be at least 8 characters.")
             .max(56)
             .required("Password is Required"),
-          confirmPassword: Yup.string().when("password", {
-            is: (val: string | any[]) => (val && val.length > 0 ? true : false),
-            then: Yup.string().oneOf(
-              [Yup.ref("password")],
-              "Passwords do not match"
-            ),
-          }),
+          confirmPassword: Yup.string()
+            .when("password", {
+              is: (val: string | any[]) =>
+                val && val.length > 0 ? true : false,
+              then: Yup.string().oneOf(
+                [Yup.ref("password")],
+                "Passwords do not match"
+              ),
+            })
+            .required("Confirm Password is required"),
+          verificationCode: Yup.string()
+            .min(8)
+            .max(10)
+            .when("createTeam", {
+              is: true,
+              then: Yup.string().required("Verification code is required."),
+            }),
         })}
       >
         {({ errors, touched, isSubmitting }) => (
-          <div className="max-w-full flex text-center justify-center ml-8 mr-8 -mt-8">
+          <div className="max-w-full flex text-center justify-center ml-8 mr-8">
             <Form className="min-w-full flex flex-col items-center">
-              <div className="w-1/4">
+              <div className="w-1/2">
                 <span className="text-gray-700">First Name</span>
                 <Field
                   as={CustomInputComponent}
@@ -72,7 +89,7 @@ const RegisterForm: FC = () => {
                   </div>
                 )}
               </div>
-              <div className="w-1/4">
+              <div className="w-1/2">
                 <span className="text-gray-700">Last Name</span>
                 <Field
                   as={CustomInputComponent}
@@ -85,15 +102,7 @@ const RegisterForm: FC = () => {
                   </div>
                 )}
               </div>
-              <div className="w-1/4">
-                <span>Team</span>
-                <select>
-                  <option>No Team</option>
-                  {data &&
-                    data.teams.map((team) => <option>{team.teamName}</option>)}
-                </select>
-              </div>
-              <div className="w-1/4">
+              <div className="w-1/2">
                 <span className="text-gray-700">Email</span>
                 <Field as={CustomInputComponent} name="email" id="email" />
                 {errors.email && touched.email && (
@@ -102,7 +111,7 @@ const RegisterForm: FC = () => {
                   </div>
                 )}
               </div>
-              <div className="w-1/4">
+              <div className="w-1/2">
                 <span className="text-gray-700">Password</span>
                 <Field
                   as={CustomInputComponent}
@@ -115,7 +124,7 @@ const RegisterForm: FC = () => {
                   </div>
                 )}
               </div>
-              <div className="w-1/4">
+              <div className="w-1/2">
                 <span className="text-gray-700">Confirm Password</span>
                 <Field
                   as={CustomInputComponent}
@@ -130,8 +139,12 @@ const RegisterForm: FC = () => {
                   </div>
                 )}
               </div>
-              <button disabled={isSubmitting} type="submit">
-                Register
+              <button
+                disabled={isSubmitting}
+                type="submit"
+                className="py-4 text-sm w-1/2 tracking-wide text-black uppercase border hover:border-blue-300 rounded-lg hover:shadow-md outline-none lg:text-base bg-primary-green hover:bg-opacity-75 focus:outline-none mt-8 disabled:bg-gray-600 disabled:opacity-50"
+              >
+                Create Account
               </button>
             </Form>
           </div>

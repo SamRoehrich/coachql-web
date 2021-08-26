@@ -1,4 +1,6 @@
 import React from "react";
+import { Link } from "react-router-dom";
+
 import { RouteComponentProps, useHistory } from "react-router";
 import { setAccessToken } from "../accessToken";
 import { MeDocument, MeQuery, useLoginMutation } from "../generated/graphql";
@@ -11,8 +13,21 @@ const Login: React.FC<RouteComponentProps> = () => {
   const history = useHistory();
 
   return (
-    <div className="flex justify-around">
-      <div>Left content</div>
+    <div className="flex h-screen">
+      <div className="flex bg-blue-500 w-1/3 items-center flex-col">
+        <div className="p-10 ">
+          <h1 className="text-gray-100 text-4xl">Coachql</h1>
+        </div>
+        <p className="text-gray-100 text-xl p-2">
+          Manage your teams and athletes with ease.
+        </p>
+        <div className="justify-center text-center">
+          <span>Need an account?</span>
+          <button className="py-4 text-sm w-full tracking-wide text-black uppercase border hover:border-gray-100 rounded-lg hover:shadow-md outline-none lg:text-base bg-primary-green hover:bg-opacity-75 focus:outline-none mt-8 disabled:bg-gray-600 disabled:opacity-50">
+            <Link to="/register">Create your coach account now!</Link>
+          </button>
+        </div>
+      </div>
 
       <Formik
         initialValues={{
@@ -55,9 +70,9 @@ const Login: React.FC<RouteComponentProps> = () => {
         })}
       >
         {({ errors, touched, isSubmitting }) => (
-          <div className="max-w-full flex text-center justify-center ml-8 mr-8">
-            <Form className="w-full flex flex-col items-center">
-              <div className="">
+          <div className="flex text-center justify-center bg-gray-300 w-2/3 items-center">
+            <Form className="flex flex-col items-center">
+              <div className="w-full">
                 <span className="text-gray-700">Email</span>
                 <Field as={CustomInputComponent} name="email" id="email" />
                 {errors.email && touched.email && (
@@ -66,7 +81,7 @@ const Login: React.FC<RouteComponentProps> = () => {
                   </div>
                 )}
               </div>
-              <div className="">
+              <div className="w-full">
                 <span className="text-gray-700">Password</span>
                 <Field
                   as={CustomInputComponent}
@@ -80,7 +95,7 @@ const Login: React.FC<RouteComponentProps> = () => {
                 )}
               </div>
               <button
-                className=" py-4 text-sm tracking-wide text-black uppercase border border-gray-300 hover:border-blue-400 rounded-lg hover:shadow-md outline-none lg:text-base bg-primary-green hover:bg-opacity-75 focus:outline-none mt-8 disabled:bg-gray-600 disabled:opacity-50"
+                className=" py-4 text-sm w-full tracking-wide text-black uppercase border border-gray-300 hover:border-blue-400 rounded-lg hover:shadow-md outline-none lg:text-base bg-primary-green hover:bg-opacity-75 focus:outline-none mt-8 disabled:bg-gray-600 disabled:opacity-50"
                 type="submit"
                 disabled={isSubmitting}
               >
