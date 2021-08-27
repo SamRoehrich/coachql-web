@@ -3,6 +3,7 @@ import { useState } from "react";
 import { FC } from "react";
 import { DndProvider, useDrag, useDrop } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
+import Monthly from "../components/Calendar/Monthly";
 
 const MONTH = [
   "January",
@@ -42,6 +43,33 @@ const abrMonth = [
   "Nov",
   "Dec",
 ];
+
+interface Props {
+  workouts: Workout[] | [];
+}
+
+interface Workout {
+  name: string;
+  workoutType: string;
+  workouts: [];
+}
+
+interface WorkoutCardProps {
+  workout: Workout;
+}
+
+interface MonthlyProps {
+  date: Date;
+}
+
+interface WeekDayCardProps {
+  day: string;
+  idx: number;
+}
+
+interface MonthDayCardProps {
+  date: string;
+}
 
 const getWeekRange = (date: Date): string[] => {
   const dayNumber = date.getDate();
@@ -129,77 +157,40 @@ const Weekly: FC = () => {
   );
 };
 
-const Monthly: FC = () => {
-  return (
-    <div>
-      <div className="w-full flex flex-col">
-        <div className="h-1/5 flex justify-between p-2 w-full">
-          <div>1</div>
-          <div>1</div>
-          <div>1</div>
-          <div>1</div>
-          <div>1</div>
-          <div>1</div>
-          <div>1</div>
-        </div>
-        <div className="h-1/5 flex justify-between p-2 w-full">
-          <div>1</div>
-          <div>1</div>
-          <div>1</div>
-          <div>1</div>
-          <div>1</div>
-          <div>1</div>
-          <div>1</div>
-        </div>{" "}
-        <div className="h-1/5 flex justify-between p-2 w-full">
-          <div>1</div>
-          <div>1</div>
-          <div>1</div>
-          <div>1</div>
-          <div>1</div>
-          <div>1</div>
-          <div>1</div>
-        </div>{" "}
-        <div className="h-1/5 flex justify-between p-2 w-full">
-          <div>1</div>
-          <div>1</div>
-          <div>1</div>
-          <div>1</div>
-          <div>1</div>
-          <div>1</div>
-          <div>1</div>
-        </div>{" "}
-        <div className="h-1/5 flex justify-between p-2 w-full">
-          <div>1</div>
-          <div>1</div>
-          <div>1</div>
-          <div>1</div>
-          <div>1</div>
-          <div>1</div>
-          <div>1</div>
-        </div>
-      </div>
-    </div>
-  );
-};
+// const Monthly: FC<MonthlyProps> = ({ date }) => {
 
-interface Props {
-  workouts: Workout[] | [];
-}
+//   function buildCards(date: Date) {
 
-interface Workout {
-  name: string;
-  workoutType: string;
-  workouts: [];
-}
-
-interface WorkoutCardProps {
-  workout: Workout;
-}
+//   }
+//   return (
+//     <div className="flex justify-between p-2">
+//       <div className="text-center flex">
+//         <h1>Sunday</h1>
+//       </div>
+//       <div className="text-center flex">
+//         <h1>Monday</h1>
+//       </div>{" "}
+//       <div className="text-center flex">
+//         <h1>Tuesday</h1>
+//       </div>{" "}
+//       <div className="text-center flex">
+//         <h1>Wednesday</h1>
+//       </div>{" "}
+//       <div className="text-center flex">
+//         <h1>Thursday</h1>
+//       </div>{" "}
+//       <div className="text-center flex">
+//         <h1>Friday</h1>
+//       </div>{" "}
+//       <div className="text-center flex">
+//         <h1>Saturday</h1>
+//       </div>
+//     </div>
+//   );
+// };
 
 const WorkoutSelector: FC<Props> = ({ workouts }) => {
   if (workouts.length > 0) {
-    console.log(workouts);
     return (
       <div>
         {workouts.map((workout: Workout) => (
@@ -236,11 +227,6 @@ const WorkoutCard: FC<WorkoutCardProps> = ({ workout }) => {
   );
 };
 
-interface WeekDayCardProps {
-  day: string;
-  idx: number;
-}
-
 const WeekDayCard: FC<WeekDayCardProps> = ({ day, idx }) => {
   const date = new Date();
 
@@ -272,6 +258,14 @@ const WeekDayCard: FC<WeekDayCardProps> = ({ day, idx }) => {
           <p>{item.name}</p>
         </div>
       ))}
+    </div>
+  );
+};
+
+const MonthDayCard: FC<MonthDayCardProps> = ({ date }) => {
+  return (
+    <div>
+      <h2>{date}</h2>
     </div>
   );
 };

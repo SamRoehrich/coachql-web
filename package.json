@@ -18,6 +18,7 @@
     "@types/react-router-dom": "^5.1.7",
     "@types/yup": "^0.29.11",
     "apollo-link-token-refresh": "^0.3.2",
+    "date-fns": "^2.23.0",
     "formik": "^2.2.6",
     "graphql": "^15.5.0",
     "jwt-decode": "^3.1.2",
