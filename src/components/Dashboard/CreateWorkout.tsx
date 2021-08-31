@@ -70,14 +70,14 @@ const CreateWorkout: FC = () => {
         console.log(values);
         return (
           <div className="p-4 w-full max-h-screen">
-            <Form className="h-full flex flex-col justify-between">
+            <Form className="max-h-screen flex flex-col justify-between">
               <div>
                 <div className="mb-2">
                   <p className="font-bold text-4xl text-gray-900">
                     Create Workout
                   </p>
                 </div>
-                <div className="h-full flex flex-col justify-between">
+                <div className="flex flex-col justify-between">
                   <div className="flex items-center justify-between">
                     <div>
                       <Field name="name">
@@ -203,12 +203,12 @@ const CreateWorkout: FC = () => {
                       <div className="flex items-center justify-center"></div>
                     </div>
                   </div>
-                  <div className="w-full h-full">
+                  <div className="flex flex-col justify-between border h-24">
                     <FieldArray
                       name="intervals"
                       render={(arrayHelpers) => (
                         <div className="flex flex-col">
-                          <div className="">
+                          <div className="overscroll-auto">
                             <div
                               onClick={() =>
                                 arrayHelpers.push({
@@ -216,12 +216,12 @@ const CreateWorkout: FC = () => {
                                   minutes: 0,
                                   description: "",
                                   type: "",
-                                  reps: 0,
+                                  reps: 1,
                                 })
                               }
                               className="h-12 w-full border rounded-xl flex items-center justify-center cursor-pointer hover:bg-gray-100"
                             >
-                              <button>
+                              <button type="button">
                                 <svg
                                   xmlns="http://www.w3.org/2000/svg"
                                   className="h-10 w-10 text-green-600 focus:ring-0 active:ring-0"
@@ -237,27 +237,31 @@ const CreateWorkout: FC = () => {
                               </button>
                               <p className="mr-2 font-semibold">Add Interval</p>
                             </div>
-                            {values.intervals &&
-                              values.intervals.length > 0 &&
-                              values.intervals.map((interval, idx) => (
-                                <CreateWorkoutTimerItem
-                                  arrayHelpers={arrayHelpers}
-                                  interval={interval as any}
-                                  idx={idx}
-                                />
-                              ))}
+                            <div className="">
+                              {values.intervals &&
+                                values.intervals.length > 0 &&
+                                values.intervals.map((interval, idx) => (
+                                  <CreateWorkoutTimerItem
+                                    arrayHelpers={arrayHelpers}
+                                    interval={interval as any}
+                                    idx={idx}
+                                  />
+                                ))}
+                            </div>
                           </div>
                         </div>
                       )}
                     />
+                    <div className="w-full flex justify-between items-center">
+                      <div className="rounded-xl bg-blue-600 w-full h-12 flex items-center justify-center cursor-pointer hover:bg-blue-800">
+                        <button type="submit">
+                          <p className="font-semibold text-white text-xl">
+                            Save
+                          </p>
+                        </button>
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </div>
-              <div className="w-full flex justify-between items-center">
-                <div className="rounded-xl bg-blue-600 w-full h-12 flex items-center justify-center cursor-pointer hover:bg-blue-800">
-                  <button type="submit">
-                    <p className="font-semibold text-white text-xl">Save</p>
-                  </button>
                 </div>
               </div>
             </Form>

@@ -27,7 +27,7 @@ const CreateWorkoutTimerItem: FC<Props> = ({ arrayHelpers, interval, idx }) => {
       </div>
       <div>
         <Field name={`intervals[${idx}].type`}>
-          {({ field, form: { touched, errors }, meta }: FieldProps) => (
+          {({ field, form: { touched, errors, values }, meta }: FieldProps) => (
             <div className="flex flex-col">
               <span>Interval Type</span>
               <select className="rounded-xl" {...field}>
@@ -108,7 +108,11 @@ const CreateWorkoutTimerItem: FC<Props> = ({ arrayHelpers, interval, idx }) => {
       </div>
       <div className="flex items-center justify-center">
         <Field name={`intervals[${idx}].infinite`}>
-          {({ field, form: { touched, errors }, meta }: FieldProps) => (
+          {({
+            field,
+            form: { touched, errors, setValues },
+            meta,
+          }: FieldProps) => (
             <div className="flex flex-col items-center">
               <span className="text-xs">Self Paced</span>
               <input type="checkbox" className="w-4 rounded-xl" {...field} />
