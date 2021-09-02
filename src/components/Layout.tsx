@@ -33,10 +33,6 @@ const Layout: FC = () => {
   //   },
   // });
 
-  if (meData) {
-    console.log(meData);
-  }
-
   useEffect(() => {
     if (meData && meData.me) {
       console.log(
