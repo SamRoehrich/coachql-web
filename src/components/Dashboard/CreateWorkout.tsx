@@ -70,71 +70,29 @@ const CreateWorkout: FC = () => {
         console.log(values);
         return (
           <div className="p-4 w-full max-h-screen">
-            <Form className="max-h-screen flex flex-col justify-between">
-              <div>
-                <div className="mb-2">
-                  <p className="font-bold text-4xl text-gray-900">
-                    Create Workout
-                  </p>
-                </div>
-                <div className="flex flex-col justify-between">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <Field name="name">
-                        {({
-                          field,
-                          form: { touched, errors },
-                          meta,
-                        }: FieldProps) => (
-                          <>
-                            <input
-                              autoComplete="off"
-                              type="text"
-                              placeholder="Name"
-                              {...field}
-                              className="rounded-xl border-gray-900 h-12"
-                            />
-                            {errors.name && touched.name && (
-                              <div className="m-2">
-                                <p className="text-lg text-red-600">
-                                  {errors.name}
-                                </p>
-                              </div>
-                            )}
-                          </>
-                        )}
-                      </Field>
-                    </div>
-                    <div>
-                      <Field as="select" name="workoutType">
-                        <option value="Bouldering">Bouldering</option>
-                        <option value="Lead">Lead</option>
-                        <option value="Speed">Speed</option>
-                        <option value="Power Endurance">Power Endurance</option>
-                        <option value="Endurance">Endurance</option>
-                        <option value="Conditioning">Conditioning</option>
-                        <option value="Mobility and Flexability">
-                          Mobility and Flexability
-                        </option>
-                        <option value="Unordered">Unordered</option>
-                      </Field>
-                    </div>
-                  </div>
+            <Form className="flex flex-col h-full">
+              <div className="mb-2">
+                <p className="font-bold text-4xl text-gray-900">
+                  Create Workout
+                </p>
+              </div>
+              <div className="flex flex-col h-full">
+                <div className="flex items-center justify-between">
                   <div>
-                    <Field name="description">
+                    <Field name="name">
                       {({
                         field,
                         form: { touched, errors },
                         meta,
                       }: FieldProps) => (
                         <>
-                          <textarea
-                            placeholder="Description"
+                          <input
+                            autoComplete="off"
+                            type="text"
+                            placeholder="Name"
                             {...field}
-                            className="rounded-xl border-gray-900 h-36 w-full"
-                          >
-                            {" "}
-                          </textarea>
+                            className="rounded-xl border-gray-900 h-12"
+                          />
                           {errors.name && touched.name && (
                             <div className="m-2">
                               <p className="text-lg text-red-600">
@@ -145,27 +103,95 @@ const CreateWorkout: FC = () => {
                         </>
                       )}
                     </Field>
-                  </div>{" "}
-                  <div className="flex justify-between items-center">
+                  </div>
+                  <div>
+                    <Field as="select" name="workoutType">
+                      <option value="Bouldering">Bouldering</option>
+                      <option value="Lead">Lead</option>
+                      <option value="Speed">Speed</option>
+                      <option value="Power Endurance">Power Endurance</option>
+                      <option value="Endurance">Endurance</option>
+                      <option value="Conditioning">Conditioning</option>
+                      <option value="Mobility and Flexability">
+                        Mobility and Flexability
+                      </option>
+                      <option value="Unordered">Unordered</option>
+                    </Field>
+                  </div>
+                </div>
+                <div>
+                  <Field name="description">
+                    {({
+                      field,
+                      form: { touched, errors },
+                      meta,
+                    }: FieldProps) => (
+                      <>
+                        <textarea
+                          placeholder="Description"
+                          {...field}
+                          className="rounded-xl border-gray-900 h-36 w-full"
+                        >
+                          {" "}
+                        </textarea>
+                        {errors.name && touched.name && (
+                          <div className="m-2">
+                            <p className="text-lg text-red-600">
+                              {errors.name}
+                            </p>
+                          </div>
+                        )}
+                      </>
+                    )}
+                  </Field>
+                </div>{" "}
+                <div className="flex justify-between items-center">
+                  <div>
+                    <Field name="timerType">
+                      {({
+                        field,
+                        form: { touched, errors },
+                        meta,
+                      }: FieldProps) => (
+                        <div className="flex flex-col w-40">
+                          <span>Timer Type</span>
+                          <select className="rounded-xl" {...field}>
+                            <option>HIIT</option>
+                            <option>Circuit</option>
+                            <option>Round</option>
+                            <option>Custom</option>
+                          </select>
+                          {errors.name && touched.name && (
+                            <div className="m-2">
+                              <p className="text-lg text-red-600">
+                                {errors.name}
+                              </p>
+                            </div>
+                          )}
+                        </div>
+                      )}
+                    </Field>
+                  </div>
+                  <div className="flex item-center space-x-2">
                     <div>
-                      <Field name="timerType">
+                      <Field name="sets">
                         {({
                           field,
                           form: { touched, errors },
                           meta,
                         }: FieldProps) => (
-                          <div className="flex flex-col w-40">
-                            <span>Timer Type</span>
-                            <select className="rounded-xl" {...field}>
-                              <option>HIIT</option>
-                              <option>Circuit</option>
-                              <option>Round</option>
-                              <option>Custom</option>
-                            </select>
-                            {errors.name && touched.name && (
+                          <div className="flex flex-col">
+                            <span>Number of Sets</span>
+
+                            <input
+                              type="number"
+                              {...field}
+                              className="rounded-xl border-gray-900"
+                            />
+                            {errors.sets && touched.sets && (
                               <div className="m-2">
                                 <p className="text-lg text-red-600">
-                                  {errors.name}
+                                  {errors.sets}
                                 </p>
                               </div>
                             )}
@@ -173,42 +199,16 @@ const CreateWorkout: FC = () => {
                         )}
                       </Field>
                     </div>
-                    <div className="flex item-center space-x-2">
-                      <div>
-                        <Field name="sets">
-                          {({
-                            field,
-                            form: { touched, errors },
-                            meta,
-                          }: FieldProps) => (
-                            <div className="flex flex-col">
-                              <span>Number of Sets</span>
-
-                              <input
-                                type="number"
-                                {...field}
-                                className="rounded-xl border-gray-900"
-                              />
-                              {errors.sets && touched.sets && (
-                                <div className="m-2">
-                                  <p className="text-lg text-red-600">
-                                    {errors.sets}
-                                  </p>
-                                </div>
-                              )}
-                            </div>
-                          )}
-                        </Field>
-                      </div>
-                      <div className="flex items-center justify-center"></div>
-                    </div>
+                    <div className="flex items-center justify-center"></div>
                   </div>
-                  <div className="flex flex-col justify-between border h-24">
-                    <FieldArray
-                      name="intervals"
-                      render={(arrayHelpers) => (
-                        <div className="flex flex-col">
-                          <div className="overscroll-auto">
+                </div>
+                <div className="h-full flex flex-col justify-between">
+                  <FieldArray
+                    name="intervals"
+                    render={(arrayHelpers) => (
+                      <div className="flex w-full h-full justify-between">
+                        <div className="flex">
+                          <div>
                             <div
                               onClick={() =>
                                 arrayHelpers.push({
@@ -235,33 +235,65 @@ const CreateWorkout: FC = () => {
                                   />
                                 </svg>
                               </button>
-                              <p className="mr-2 font-semibold">Add Interval</p>
+                              <p className="mr-2 font-semibold select-none">
+                                Add Interval
+                              </p>
                             </div>
-                            <div className="">
-                              {values.intervals &&
-                                values.intervals.length > 0 &&
-                                values.intervals.map((interval, idx) => (
-                                  <CreateWorkoutTimerItem
-                                    arrayHelpers={arrayHelpers}
-                                    interval={interval as any}
-                                    idx={idx}
+                            <div
+                              onClick={() =>
+                                arrayHelpers.push({
+                                  seconds: 0,
+                                  minutes: 0,
+                                  description: "",
+                                  type: "",
+                                  reps: 1,
+                                })
+                              }
+                              className="h-12 w-full border rounded-xl flex items-center justify-center cursor-pointer hover:bg-gray-100"
+                            >
+                              <button type="button">
+                                <svg
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  className="h-10 w-10 text-green-600 focus:ring-0 active:ring-0"
+                                  viewBox="0 0 20 20"
+                                  fill="currentColor"
+                                >
+                                  <path
+                                    fill-rule="evenodd"
+                                    d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
+                                    clip-rule="evenodd"
                                   />
-                                ))}
+                                </svg>
+                              </button>
+                              <p className="mr-2 font-semibold select-none">
+                                Add Rest
+                              </p>
+                            </div>
+                            <div className="w-full flex justify-between items-center">
+                              <div className="rounded-xl bg-blue-600 w-full h-12 flex items-center justify-center cursor-pointer hover:bg-blue-800">
+                                <button type="submit">
+                                  <p className="font-semibold text-white text-xl">
+                                    Save
+                                  </p>
+                                </button>
+                              </div>
                             </div>
                           </div>
                         </div>
-                      )}
-                    />
-                    <div className="w-full flex justify-between items-center">
-                      <div className="rounded-xl bg-blue-600 w-full h-12 flex items-center justify-center cursor-pointer hover:bg-blue-800">
-                        <button type="submit">
-                          <p className="font-semibold text-white text-xl">
-                            Save
-                          </p>
-                        </button>
+                        <div className="overflow-auto border">
+                          {values.intervals &&
+                            values.intervals.length > 0 &&
+                            values.intervals.map((interval, idx) => (
+                              <CreateWorkoutTimerItem
+                                arrayHelpers={arrayHelpers}
+                                interval={interval as any}
+                                idx={idx}
+                              />
+                            ))}
+                        </div>
                       </div>
-                    </div>
-                  </div>
+                    )}
+                  />
                 </div>
               </div>
             </Form>
