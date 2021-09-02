@@ -7,11 +7,17 @@ import RosterSubMenu from "./RosterSubMenu";
 import WorkoutSubMenu from "./WorkoutSubMenu";
 
 const SubMenu: FC = () => {
+  const hiddenPaths = ["calendar", "home"];
   const [open, setOpen] = useState(true);
   const location = useLocation();
   return (
     <div
-      className={`${location.pathname.includes("calendar") ? "hidden" : ""}`}
+      className={`${
+        location.pathname.includes("calendar") ||
+        location.pathname.includes("home")
+          ? "hidden"
+          : ""
+      }`}
     >
       <div className={`${open ? "" : "bg-white"}`}>
         <button onClick={() => setOpen(!open)}>

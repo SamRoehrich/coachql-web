@@ -133,14 +133,14 @@ const CalendarPage: FC = () => {
               <button onClick={() => setIsWeekly(false)}>Monthly</button>
             </div>
           </div>
-          <div className="h-3/5">{isWeekly ? <Weekly /> : <Monthly />}</div>
-          <div>
+          <div className="">{isWeekly ? <Weekly /> : <Monthly />}</div>
+          {/* <div>
             {workouts ? (
               <WorkoutSelector workouts={workouts.workouts} />
             ) : (
               <WorkoutSelector workouts={[]} />
             )}
-          </div>
+          </div> */}
         </div>
       </DndProvider>
     </div>

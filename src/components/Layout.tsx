@@ -16,10 +16,8 @@ import {
 } from "../generated/graphql";
 import CalendarPage from "../pages/CalendarPage";
 import { useEffect } from "react";
-
-interface Params {
-  userId: string;
-}
+import CoachDashboard from "./Dashboard/CoachDashboard";
+import { Params } from "../utils/interfaces";
 
 const Layout: FC = () => {
   const { path, url } = useRouteMatch();
@@ -57,7 +55,7 @@ const Layout: FC = () => {
         <div className="flex flex-col justify-between items-center flex-none w-16 bg-gray-200">
           <div className="flex flex-col space-y-4 w-full items-center pt-5">
             <NavLink
-              to={`/app/${data?.getTeamByCoachId.id}`}
+              to={`/app/${data?.getTeamByCoachId.id}/home`}
               className="rounded-full bg-gray-200 border border-gray-500 text-indigo-500 w-8 h-8 flex items-center justify-center"
               activeClassName="rounded-full bg-gray-200 border border-indigo-300 text-white w-8 h-8 flex items-center justify-center"
             >
@@ -169,6 +167,7 @@ const Layout: FC = () => {
             path={`${path}/roster/athlete/:athleteId`}
             component={AthleteInfo}
           />
+          <Route path={`${path}/home`} component={CoachDashboard} />
           <Route
             path={`${path}/coach/:coachId`}
             render={() => <div>coach page</div>}

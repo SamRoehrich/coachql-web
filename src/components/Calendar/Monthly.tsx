@@ -55,7 +55,7 @@ const Monthly: FC<Props> = () => {
     );
   }
   function renderDays() {
-    const dateFormat = "dddd";
+    const dateFormat = "dd";
     const days = [];
 
     let startDate = startOfWeek(currentMonth);
@@ -63,8 +63,9 @@ const Monthly: FC<Props> = () => {
     for (let i = 0; i < 7; i++) {
       days.push(<div key={i}>{format(addDays(startDate, i), dateFormat)}</div>);
     }
-    return <div className="flex">{days}</div>;
+    return <div className="flex flex-col">{days}</div>;
   }
+
   function renderCells() {
     const monthStart = startOfMonth(currentMonth);
     const monthEnd = endOfMonth(monthStart);
@@ -84,20 +85,24 @@ const Monthly: FC<Props> = () => {
         const cloneDay = day;
 
         days.push(
-          <div key={i} className="" onClick={() => onDateClick()}>
+          <div
+            key={i}
+            className="flex border w-full"
+            onClick={() => onDateClick()}
+          >
             <span>{formattedDate}</span>
           </div>
         );
         day = addDays(day, 1);
       }
       rows.push(
-        <div className="flex" key={day.getDay()}>
+        <div className="flex w-full justify-between" key={day.getDay()}>
           {days}
         </div>
       );
       days = [];
     }
-    return <div className="flex">{rows}</div>;
+    return <div className="flex flex-col w-full justify-between">{rows}</div>;
   }
 
   const onDateClick = () => {};
@@ -108,9 +113,9 @@ const Monthly: FC<Props> = () => {
     setCurrentMonth(subMonths(currentMonth, 1));
   };
   return (
-    <div>
+    <div className="flex flex-col border h-full">
       {renderHeader()}
-      {renderDays()}
+      {/* {renderDays()} */}
       {renderCells()}
     </div>
   );
