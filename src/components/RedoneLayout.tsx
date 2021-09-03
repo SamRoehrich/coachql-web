@@ -2,7 +2,7 @@ import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { FC, Fragment } from "react";
 import { Link } from "react-router-dom";
 import { classNames } from "../utils/classNames";
-import { BellIcon, MenuIcon, XIcon } from "@heroicons/react/outline";
+import { BellIcon, MenuIcon, XIcon, PlusIcon } from "@heroicons/react/outline";
 
 const Navigation = [
   {
@@ -36,6 +36,15 @@ const userNavigation = [
   { name: "Your Profile", href: "#" },
   { name: "Settings", href: "#" },
   { name: "Logout", href: "#" },
+];
+
+const addNav = [
+  { name: "Create Team", href: "#" },
+  { name: "Create Athlete Profile", href: "#" },
+  { name: "Create Coach Profile", href: "#" },
+  { name: "Create A Workout", href: "#" },
+  { name: "Create Training Plan", href: "#" },
+  { name: "Create Assessment Test", href: "#" },
 ];
 
 const user = {
@@ -82,13 +91,41 @@ const Laay: FC = () => {
                 </div>
                 <div className="hidden md:block">
                   <div className="ml-4 flex items-center md:ml-6">
-                    <button
-                      type="button"
-                      className="bg-gray-800 p-1 rounded-full text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
-                    >
-                      <span className="sr-only">View notifications</span>
-                      <BellIcon className="h-6 w-6" aria-hidden="true" />
-                    </button>
+                    <Menu as="div" className="ml-3 relative">
+                      <div>
+                        <Menu.Button className="max-w-xs bg-gray-800 rounded-full flex items-center text-sm focus:outline-none">
+                          <span className="sr-only">Open add menu</span>
+                          <PlusIcon className="block h-8 w-8 text-white rounded-full border-2 border-white " />
+                        </Menu.Button>
+                      </div>
+                      <Transition
+                        as={Fragment}
+                        enter="transition ease-out duration-100"
+                        enterFrom="transform opacity-0 scale-95"
+                        enterTo="transform opacity-100 scale-100"
+                        leave="transition ease-in duration-75"
+                        leaveFrom="transform opacity-100 scale-100"
+                        leaveTo="transform opacity-0 scale-95"
+                      >
+                        <Menu.Items className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
+                          {addNav.map((item) => (
+                            <Menu.Item key={item.name}>
+                              {({ active }) => (
+                                <Link
+                                  to={item.href}
+                                  className={classNames(
+                                    active ? "bg-gray-100" : "",
+                                    "block px-4 py-2 text-sm text-gray-700"
+                                  )}
+                                >
+                                  {item.name}
+                                </Link>
+                              )}
+                            </Menu.Item>
+                          ))}
+                        </Menu.Items>
+                      </Transition>
+                    </Menu>
                     <Menu as="div" className="ml-3 relative">
                       <div>
                         <Menu.Button className="max-w-xs bg-gray-800 rounded-full flex items-center text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
@@ -206,7 +243,42 @@ const Laay: FC = () => {
           <h1 className="text-3xl font-bold to-green-900">Dashboard</h1>
         </div>
       </header>
-      <main className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8"></main>
+      <main className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+        <div className="bg-white">
+          <div className="max-w-2xl mx-auto px-4 sm:py-6 sm:px-6 lg:max-w-7xl lg:px-8">
+            <div className="mt-6 grid grid-cols-1 gay-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
+              <div className="w-full min-h-40 bg-gray-200 rounded-md overflow-hidden group-hover:opacity-75 lg:h-40">
+                <h2 className="text-xl text-gray-700"></h2>
+              </div>
+              <div className="w-full min-h-40 bg-gray-200 rounded-md overflow-hidden group-hover:opacity-75 lg:h-40">
+                <h2 className="text-xl text-gray-700"></h2>
+              </div>
+              <div className="w-full min-h-40 bg-gray-200 rounded-md overflow-hidden group-hover:opacity-75 lg:h-40">
+                <h2 className="text-xl text-gray-700"></h2>
+              </div>
+              <div className="w-full min-h-40 bg-gray-200 rounded-md overflow-hidden group-hover:opacity-75 lg:h-40">
+                <h2 className="text-xl text-gray-700"></h2>
+              </div>
+            </div>
+          </div>
+          <div className="max-w-2xl mx-auto px-4 sm:py-6 sm:px-6 lg:max-w-7xl lg:px-8">
+            <div className="mt-6 grid grid-cols-1 gay-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
+              <div className="w-full min-h-40 bg-gray-200 rounded-md overflow-hidden group-hover:opacity-75 lg:h-40">
+                <h2 className="text-xl text-gray-700"></h2>
+              </div>
+              <div className="w-full min-h-40 bg-gray-200 rounded-md overflow-hidden group-hover:opacity-75 lg:h-40">
+                <h2 className="text-xl text-gray-700"></h2>
+              </div>
+              <div className="w-full min-h-40 bg-gray-200 rounded-md overflow-hidden group-hover:opacity-75 lg:h-40">
+                <h2 className="text-xl text-gray-700"></h2>
+              </div>
+              <div className="w-full min-h-40 bg-gray-200 rounded-md overflow-hidden group-hover:opacity-75 lg:h-40">
+                <h2 className="text-xl text-gray-700"></h2>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
     </div>
   );
 };
