@@ -17,6 +17,7 @@ import ScorekeeperScreen from "./components/Scorekeeper/Scoring";
 import Layout from "./components/Layout";
 import PublicHomePage from "./components/PublicHomePage";
 import CreateWorkout from "./components/Dashboard/CreateWorkout";
+import Laay from "./components/RedoneLayout";
 
 const Routes: React.FC = () => {
   return (
@@ -24,6 +25,7 @@ const Routes: React.FC = () => {
       <div>
         {/* <Header /> */}
         <Switch>
+          <Route exact path="/layout" component={Laay} />
           <Route exact path="/" component={PublicHomePage} />
           <Route path="/app/:userId" component={Layout} />
           <Route exact path="/workouts" component={WorkoutsPage} />
