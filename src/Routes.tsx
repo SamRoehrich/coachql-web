@@ -18,6 +18,7 @@ import Layout from "./components/Layout";
 import PublicHomePage from "./components/PublicHomePage";
 import CreateWorkout from "./components/Dashboard/CreateWorkout";
 import Laay from "./components/RedoneLayout";
+import Calculate from "./components/Calculate";
 
 const Routes: React.FC = () => {
   return (
@@ -25,7 +26,8 @@ const Routes: React.FC = () => {
       <div>
         {/* <Header /> */}
         <Switch>
-          <Route exact path="/layout" component={Laay} />
+          <Route path="/layout/:userId" component={Laay} />
+          <Route exact path="/calculate" component={Calculate} />
           <Route exact path="/" component={PublicHomePage} />
           <Route path="/app/:userId" component={Layout} />
           <Route exact path="/workouts" component={WorkoutsPage} />

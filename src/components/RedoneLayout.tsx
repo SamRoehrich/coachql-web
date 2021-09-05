@@ -1,8 +1,17 @@
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { FC, Fragment } from "react";
-import { Link } from "react-router-dom";
+import { Link, Route, useParams, useRouteMatch } from "react-router-dom";
 import { classNames } from "../utils/classNames";
 import { BellIcon, MenuIcon, XIcon, PlusIcon } from "@heroicons/react/outline";
+import CreateWorkoutModal from "./Dashboard/Modals/CreateWorkoutModal";
+import { Params } from "../utils/interfaces";
+import { useMeQuery } from "../generated/graphql";
+import AthleteInfo from "./AthleteInfo";
+import CoachDashboard from "./Dashboard/CoachDashboard";
+import WorkoutsPage from "../pages/Workouts";
+import CreateWorkout from "./Dashboard/CreateWorkout";
+import EventPage from "../pages/EventDashboard";
+import CalendarPage from "../pages/CalendarPage";
 
 const Navigation = [
   {
@@ -54,12 +63,16 @@ const user = {
   email: "sam_roehrich@icloud.com",
 };
 const Laay: FC = () => {
+  const { path, url } = useRouteMatch();
+  const params = useParams<Params>();
+  console.log(path);
+  const { data: meData } = useMeQuery();
   return (
     <div>
       <Disclosure as="nav" className="bg-gray-800">
         {({ open }) => (
           <>
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 max-h-screen">
               <div className="flex items-center justify-between h-16">
                 <div className="flex items-center">
                   <div className="flex-shrink-0">
@@ -244,39 +257,23 @@ const Laay: FC = () => {
         </div>
       </header>
       <main className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-        <div className="bg-white">
-          <div className="max-w-2xl mx-auto px-4 sm:py-6 sm:px-6 lg:max-w-7xl lg:px-8">
-            <div className="mt-6 grid grid-cols-1 gay-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
-              <div className="w-full min-h-40 bg-gray-200 rounded-md overflow-hidden group-hover:opacity-75 lg:h-40">
-                <h2 className="text-xl text-gray-700"></h2>
-              </div>
-              <div className="w-full min-h-40 bg-gray-200 rounded-md overflow-hidden group-hover:opacity-75 lg:h-40">
-                <h2 className="text-xl text-gray-700"></h2>
-              </div>
-              <div className="w-full min-h-40 bg-gray-200 rounded-md overflow-hidden group-hover:opacity-75 lg:h-40">
-                <h2 className="text-xl text-gray-700"></h2>
-              </div>
-              <div className="w-full min-h-40 bg-gray-200 rounded-md overflow-hidden group-hover:opacity-75 lg:h-40">
-                <h2 className="text-xl text-gray-700"></h2>
-              </div>
-            </div>
-          </div>
-          <div className="max-w-2xl mx-auto px-4 sm:py-6 sm:px-6 lg:max-w-7xl lg:px-8">
-            <div className="mt-6 grid grid-cols-1 gay-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
-              <div className="w-full min-h-40 bg-gray-200 rounded-md overflow-hidden group-hover:opacity-75 lg:h-40">
-                <h2 className="text-xl text-gray-700"></h2>
-              </div>
-              <div className="w-full min-h-40 bg-gray-200 rounded-md overflow-hidden group-hover:opacity-75 lg:h-40">
-                <h2 className="text-xl text-gray-700"></h2>
-              </div>
-              <div className="w-full min-h-40 bg-gray-200 rounded-md overflow-hidden group-hover:opacity-75 lg:h-40">
-                <h2 className="text-xl text-gray-700"></h2>
-              </div>
-              <div className="w-full min-h-40 bg-gray-200 rounded-md overflow-hidden group-hover:opacity-75 lg:h-40">
-                <h2 className="text-xl text-gray-700"></h2>
-              </div>
-            </div>
-          </div>
+        <div className="flex flex-row flex-auto bg-white shadow-xl w-full">
+          <Route
+            path={`${path}/roster/athlete/:athleteId`}
+            component={AthleteInfo}
+          />
+          <Route path={`${path}/home`} component={CoachDashboard} />
+          <Route
+            path={`${path}/coach/:coachId`}
+            render={() => <div>coach page</div>}
+          />
+          <Route exact path="/app/:userId/workouts" component={WorkoutsPage} />
+          <Route
+            path="/app/:userId/workouts/create"
+            component={CreateWorkout}
+          />
+          <Route path="/events/:eventId" component={EventPage} />
+          <Route path="/app/:userId/calendar" component={CalendarPage} />
         </div>
       </main>
     </div>
