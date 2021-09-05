@@ -12,6 +12,7 @@ import WorkoutsPage from "../pages/Workouts";
 import CreateWorkout from "./Dashboard/CreateWorkout";
 import EventPage from "../pages/EventDashboard";
 import CalendarPage from "../pages/CalendarPage";
+import CreateAthlete from "./Dashboard/CreateAthlete";
 
 const Navigation = [
   {
@@ -21,7 +22,7 @@ const Navigation = [
   },
   {
     name: "Team",
-    href: "#",
+    href: "/roster",
     current: false,
   },
   {
@@ -65,7 +66,7 @@ const user = {
 const Laay: FC = () => {
   const { path, url } = useRouteMatch();
   const params = useParams<Params>();
-  console.log(path);
+  console.log(url);
   const { data: meData } = useMeQuery();
   return (
     <div>
@@ -86,7 +87,7 @@ const Laay: FC = () => {
                     <div className="ml-10 flex items-baseline space-x-4">
                       {Navigation.map((item) => (
                         <Link
-                          to={item.href}
+                          to={url + item.href}
                           key={item.name}
                           aria-current={item.current ? "page" : undefined}
                           className={classNames(
@@ -251,16 +252,16 @@ const Laay: FC = () => {
           </>
         )}
       </Disclosure>
-      <header className="bg-white shadow">
-        <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-          <h1 className="text-3xl font-bold to-green-900">Dashboard</h1>
-        </div>
-      </header>
       <main className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
         <div className="flex flex-row flex-auto bg-white shadow-xl w-full">
           <Route
             path={`${path}/roster/athlete/:athleteId`}
             component={AthleteInfo}
+          />
+          <Route
+            path="/layout/:userId/create/athlete"
+            component={CreateAthlete}
+            exact
           />
           <Route path={`${path}/home`} component={CoachDashboard} />
           <Route
