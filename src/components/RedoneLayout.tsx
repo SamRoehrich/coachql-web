@@ -13,11 +13,12 @@ import CreateWorkout from "./Dashboard/CreateWorkout";
 import EventPage from "../pages/EventDashboard";
 import CalendarPage from "../pages/CalendarPage";
 import CreateAthlete from "./Dashboard/CreateAthlete";
+import RosterPage from "../pages/RosterPage";
 
 const Navigation = [
   {
     name: "Dashboard",
-    href: "#",
+    href: "/home",
     current: false,
   },
   {
@@ -50,7 +51,7 @@ const userNavigation = [
 
 const addNav = [
   { name: "Create Team", href: "#" },
-  { name: "Create Athlete Profile", href: "#" },
+  { name: "Create Athlete Profile", href: "/create/athlete" },
   { name: "Create Coach Profile", href: "#" },
   { name: "Create A Workout", href: "#" },
   { name: "Create Training Plan", href: "#" },
@@ -126,7 +127,7 @@ const Laay: FC = () => {
                             <Menu.Item key={item.name}>
                               {({ active }) => (
                                 <Link
-                                  to={item.href}
+                                  to={url + item.href}
                                   className={classNames(
                                     active ? "bg-gray-100" : "",
                                     "block px-4 py-2 text-sm text-gray-700"
@@ -165,7 +166,7 @@ const Laay: FC = () => {
                             <Menu.Item key={item.name}>
                               {({ active }) => (
                                 <Link
-                                  to={item.href}
+                                  to={url + item.href}
                                   className={classNames(
                                     active ? "bg-gray-100" : "",
                                     "block px-4 py-2 text-sm text-gray-700"
@@ -197,7 +198,7 @@ const Laay: FC = () => {
               <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
                 {Navigation.map((item) => (
                   <Link
-                    to={item.href}
+                    to={url + item.href}
                     key={item.name}
                     className={classNames(
                       item.current
@@ -258,16 +259,13 @@ const Laay: FC = () => {
             path={`${path}/roster/athlete/:athleteId`}
             component={AthleteInfo}
           />
+          <Route path={`${path}/roster`} component={RosterPage} />
           <Route
             path="/layout/:userId/create/athlete"
             component={CreateAthlete}
             exact
           />
           <Route path={`${path}/home`} component={CoachDashboard} />
-          <Route
-            path={`${path}/coach/:coachId`}
-            render={() => <div>coach page</div>}
-          />
           <Route exact path="/app/:userId/workouts" component={WorkoutsPage} />
           <Route
             path="/app/:userId/workouts/create"
