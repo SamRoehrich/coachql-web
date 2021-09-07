@@ -70,11 +70,11 @@ const Laay: FC = () => {
   console.log(url);
   const { data: meData } = useMeQuery();
   return (
-    <div>
+    <div className="max-h-screen">
       <Disclosure as="nav" className="bg-gray-800">
         {({ open }) => (
           <>
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 max-h-screen">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
               <div className="flex items-center justify-between h-16">
                 <div className="flex items-center">
                   <div className="flex-shrink-0">
@@ -253,7 +253,7 @@ const Laay: FC = () => {
           </>
         )}
       </Disclosure>
-      <main className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+      <main className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8 h-full">
         <div className="flex flex-row flex-auto bg-white shadow-xl w-full">
           <Route
             path={`${path}/roster/athlete/:athleteId`}
