@@ -82,7 +82,9 @@ const RosterPage: FC = () => {
   return (
     <div className="grid grid-flow-row grid-cols-6 grid-rows-8 gap-x-4 gap-y-8 w-full max-h-screen px-2">
       <div className="flex justify-between items-end px-2 h-16 col-span-full">
-        <p>Teague Hendrix - Comp</p>
+        <p className="text-xl font-semibold text-gray-800">
+          Teague Hendrix - Comp
+        </p>
         <div className="flex space-x-4">
           <button className="shadow-md hover:shadow-lg rounded-md bg-gray-100 hover:cursor-pointer h-9 p-1">
             Overview
@@ -170,17 +172,13 @@ const RosterPage: FC = () => {
                       </div>
                       <div className="flex flex-col col-span-3">
                         <span className="text-xs text-gray-500">Type</span>
-
                         <p className="text-sm">{item.type}</p>
                       </div>
-
-                      <div className="flex-col col-span-1 hidden md:flex md:text-left text-right">
+                      <div className="flex-col sm:col-span-2 md:col-span-1 md:flex md:text-left text-right">
                         <span className="text-xs text-gray-500">Days Ago</span>
-
                         <p className="text-sm ">{item.rpe}</p>
                       </div>
-
-                      <div className="flex flex-col col-span-2 text-right md:col-span-1">
+                      <div className="hidden md:flex flex-col col-span-2 text-right md:col-span-1">
                         <span className="text-xs text-gray-500">Percent</span>
                         <p className="text-sm">{item.percent}</p>
                       </div>

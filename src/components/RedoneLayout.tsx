@@ -28,7 +28,7 @@ const Navigation = [
   },
   {
     name: "Workouts",
-    href: "#",
+    href: "/workouts",
     current: false,
   },
   {
@@ -266,7 +266,11 @@ const Laay: FC = () => {
             exact
           />
           <Route path={`${path}/home`} component={CoachDashboard} />
-          <Route exact path="/app/:userId/workouts" component={WorkoutsPage} />
+          <Route
+            exact
+            path="/layout/:userId/workouts"
+            component={WorkoutsPage}
+          />
           <Route
             path="/app/:userId/workouts/create"
             component={CreateWorkout}
