@@ -1,4 +1,5 @@
-import { PlusIcon } from "@heroicons/react/outline";
+import { PlusIcon, TrashIcon } from "@heroicons/react/outline";
+import { useState } from "react";
 import { FC } from "react";
 
 export interface Interval {
@@ -11,6 +12,7 @@ export interface Interval {
 }
 
 const CreateWorkout: FC = () => {
+  const [intervals, setIntervals] = useState([]);
   return (
     <>
       <div className="w-full">
@@ -132,6 +134,26 @@ const CreateWorkout: FC = () => {
                 </p>
               </div>
               <div className="px-4 sm:px-2 flex justify-between mt-5 space-x-4">
+                <div className="w-ful">
+                  <label>Sets</label>
+                  <input
+                    type="number"
+                    name="sets"
+                    id="sets"
+                    className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block shadow-sm sm:text-sm border-gray-300 rounded-md"
+                  />
+                </div>
+                <div className="w-ful">
+                  <label>Reps</label>
+                  <input
+                    type="number"
+                    name="reps"
+                    id="reps"
+                    className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block shadow-sm sm:text-sm border-gray-300 rounded-md"
+                  />
+                </div>
+              </div>
+              <div className="px-4 sm:px-2 flex justify-between mt-5 space-x-4">
                 <button
                   className="bg-gray-100 h-12 w-full flex items-center justify-center space-x-6 rounded-md shadow-md hover:shadow-lg"
                   type="button"
@@ -153,64 +175,110 @@ const CreateWorkout: FC = () => {
                 <div className="shadow overflow-hidden sm:rounded-md">
                   <div className="px-4 py-5 bg-white space-y-6 sm:p-6">
                     <div className="col-span-6 sm:col-span-4">
-                      <label
-                        htmlFor="email-address"
-                        className="block text-sm font-medium text-gray-700"
-                      >
-                        Email address
-                      </label>
-                      <input
-                        type="text"
-                        name="email-address"
-                        id="email-address"
-                        className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                      />
+                      <div className="flex space-x-2">
+                        <div>
+                          <label
+                            htmlFor="Interval Type"
+                            className="block text-sm font-medium text-gray-700"
+                          >
+                            Interval Type
+                          </label>
+                          <select
+                            id="Interval Type"
+                            name="Interval Type"
+                            className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                          >
+                            <option>Active</option>
+                            <option>Rest</option>
+                          </select>
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700">
+                            Interval Title
+                          </label>
+                          <input
+                            type="text"
+                            className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block shadow-sm sm:text-sm border-gray-300 rounded-md"
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700">
+                            Minutes
+                          </label>
+                          <input
+                            type="number"
+                            className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block shadow-sm sm:text-sm border-gray-300 rounded-md"
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700">
+                            Seconds
+                          </label>
+                          <input
+                            type="number"
+                            className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block shadow-sm sm:text-sm border-gray-300 rounded-md"
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700">
+                            Self Paced
+                          </label>
+                          <input
+                            type="checkbox"
+                            className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block shadow-sm sm:text-sm border-gray-300 rounded-md"
+                          />
+                        </div>
+                        <div>
+                          <TrashIcon className="mt-2 h-8" />
+                        </div>
+                      </div>
                     </div>
                     <fieldset>
                       <legend className="text-base font-medium text-gray-900">
-                        Permissions
+                        Extra
                       </legend>
                       <div className="mt-4 space-y-4">
                         <div className="flex items-start">
                           <div className="flex items-center h-5">
                             <input
-                              id="comments"
-                              name="comments"
+                              id="track-climbs"
+                              name="track-climbs"
                               type="checkbox"
                               className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded"
                             />
                           </div>
                           <div className="ml-3 text-sm">
                             <label
-                              htmlFor="comments"
+                              htmlFor="track-climbs"
                               className="font-medium text-gray-700"
                             >
-                              Create Workout
+                              Record Climbs
                             </label>
                             <p className="text-gray-500">
-                              Athlete can create their own workouts.
+                              After the session is completed, the athletes will
+                              be required to record their climbs.
                             </p>
                           </div>
                         </div>
                         <div className="flex items-start">
                           <div className="flex items-center h-5">
                             <input
-                              id="candidates"
-                              name="candidates"
+                              id="notifications"
+                              name="notifications"
                               type="checkbox"
                               className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded"
                             />
                           </div>
                           <div className="ml-3 text-sm">
                             <label
-                              htmlFor="candidates"
+                              htmlFor="notifications"
                               className="font-medium text-gray-700"
                             >
-                              Require Metrics
+                              Notifications
                             </label>
                             <p className="text-gray-500">
-                              Upon registration, the athlete will need to
-                              complete an assessment test.
+                              Get notified when an athlete completes this
+                              session.
                             </p>
                           </div>
                         </div>
