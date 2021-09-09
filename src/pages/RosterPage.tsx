@@ -80,7 +80,7 @@ const trainingLog = [
 
 const RosterPage: FC = () => {
   return (
-    <div className="grid grid-flow-row grid-cols-6 grid-rows-8 gap-x-4 gap-y-8 w-full max-h-screen px-2">
+    <div className="grid grid-flow-row grid-cols-6 grid-rows-8 gap-x-4 gap-y-8 w-full max-h-full px-2">
       <div className="flex justify-between items-end px-2 h-16 col-span-full">
         <p className="text-xl font-semibold text-gray-800">
           Teague Hendrix - Comp

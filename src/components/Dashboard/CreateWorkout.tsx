@@ -1,8 +1,5 @@
-import { Field, FieldArray, FieldProps, Form, Formik } from "formik";
+import { PlusIcon } from "@heroicons/react/outline";
 import { FC } from "react";
-import * as Yup from "yup";
-import CreateWorkoutTimerItem from "./CreateWorkoutTImerItem";
-import { useCreateWorkoutMutation } from "../../generated/graphql";
 
 export interface Interval {
   minutes: number;
@@ -13,294 +10,228 @@ export interface Interval {
   reps: number;
 }
 
-interface InitialValues {
-  name: string;
-  description: string;
-  sets: number;
-  equiptment: string;
-  workoutType: string;
-  timerType: string;
-  intervals: Interval[];
-  teamId: string;
-}
-
 const CreateWorkout: FC = () => {
-  const initialValues: InitialValues = {
-    name: "",
-    description: "",
-    sets: 0,
-    equiptment: "Wall",
-    workoutType: "Bouldering",
-    timerType: "HIIT",
-    intervals: [],
-    teamId: "1",
-  };
-
-  const [createWorkout, { data }] = useCreateWorkoutMutation();
-
-  if (data) console.log(data);
   return (
-    <Formik
-      initialValues={initialValues}
-      onSubmit={async (values, actions) => {
-        console.log(JSON.stringify(values));
-        await createWorkout({
-          variables: {
-            description: values.description,
-            equiptment: values.equiptment,
-            intervals: JSON.stringify(values.intervals),
-            name: values.name,
-            sets: values.sets,
-            timerType: values.timerType,
-            workoutType: values.workoutType,
-            teamId: "1",
-          },
-        });
-        if (data?.createWorkout) {
-          alert("Workout Created");
-          actions.resetForm();
-        } else {
-          alert("Error Creating Workout");
-        }
-      }}
-      validationSchema={Yup.object()}
-    >
-      {(props) => {
-        const { values, touched, errors } = props;
-        console.log(values);
-        return (
-          <div className="p-4 w-full max-h-screen">
-            <Form className="flex flex-col h-full">
-              <div className="mb-2">
-                <p className="font-bold text-4xl text-gray-900">
-                  Create Workout
+    <>
+      <div className="w-full">
+        <div className="mt-10 sm:mt-0">
+          <header className="bg-white">
+            <div className="max-w-7xl mx-auto py-6 px-1 sm:px-2">
+              <h1 className="text-3xl font-bold">Create Workout</h1>
+            </div>
+          </header>
+          <div className="md:grid md:grid-cols-3 md:gap-6">
+            <div className="md:col-span-1">
+              <div className="px-4 sm:px-2">
+                <h3 className="text-lg font-medium leading-6 text-gray-900">
+                  Description
+                </h3>
+                <p className="mt-1 text-sm text-gray-600">
+                  General information on the workout. Can be edited later.
                 </p>
               </div>
-              <div className="flex flex-col h-full">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <Field name="name">
-                      {({
-                        field,
-                        form: { touched, errors },
-                        meta,
-                      }: FieldProps) => (
-                        <>
-                          <input
-                            autoComplete="off"
-                            type="text"
-                            placeholder="Name"
-                            {...field}
-                            className="rounded-xl border-gray-900 h-12"
-                          />
-                          {errors.name && touched.name && (
-                            <div className="m-2">
-                              <p className="text-lg text-red-600">
-                                {errors.name}
-                              </p>
-                            </div>
-                          )}
-                        </>
-                      )}
-                    </Field>
-                  </div>
-                  <div>
-                    <Field as="select" name="workoutType">
-                      <option value="Bouldering">Bouldering</option>
-                      <option value="Lead">Lead</option>
-                      <option value="Speed">Speed</option>
-                      <option value="Power Endurance">Power Endurance</option>
-                      <option value="Endurance">Endurance</option>
-                      <option value="Conditioning">Conditioning</option>
-                      <option value="Mobility and Flexability">
-                        Mobility and Flexability
-                      </option>
-                      <option value="Unordered">Unordered</option>
-                    </Field>
+            </div>
+            <div className="mt-5 md:mt-0 md:col-span-2">
+              <form action="#" method="POST" autoComplete="off">
+                <div className="shadow overflow-hidden sm:rounded-md">
+                  <div className="px-4 py-5 bg-white sm:p-6">
+                    <div className="grid grid-cols-6 gap-6">
+                      <div className="col-span-6 sm:col-span-3">
+                        <label
+                          htmlFor="first-name"
+                          className="block text-sm font-medium text-gray-700"
+                        >
+                          Name
+                        </label>
+                        <input
+                          type="text"
+                          name="name"
+                          id="name"
+                          className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                        />
+                      </div>
+
+                      <div className="col-span-6 sm:col-span-3">
+                        <label
+                          htmlFor="type"
+                          className="block text-sm font-medium text-gray-700"
+                        >
+                          Training Type
+                        </label>
+                        <select
+                          id="type"
+                          name="type"
+                          className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                        >
+                          <option>Strength and Power</option>
+                          <option>Competition</option>
+                          <option>Anaerobic Capacity</option>
+                          <option>Aerobic Capacity</option>
+                          <option>Aerobic Power</option>
+                          <option>Conditioning</option>
+                          <option>Mobility</option>
+                          <option>Open Session</option>
+                        </select>
+                      </div>
+
+                      <div className="col-span-6">
+                        <label
+                          htmlFor="description"
+                          className="block text-sm font-medium text-gray-700"
+                        >
+                          Description
+                        </label>
+                        <textarea
+                          name="description"
+                          id="description"
+                          className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md h-24"
+                        />
+                      </div>
+                      <div className="col-span-6 sm:col-span-3">
+                        <label
+                          htmlFor="team"
+                          className="block text-sm font-medium text-gray-700"
+                        >
+                          Team
+                        </label>
+                        <select
+                          id="team"
+                          name="team"
+                          className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                        >
+                          <option>Comp</option>
+                          <option>Travel</option>
+                          <option>Training</option>
+                          <option>Rec</option>
+                          <option>Private</option>
+                        </select>
+                      </div>
+                    </div>
                   </div>
                 </div>
-                <div>
-                  <Field name="description">
-                    {({
-                      field,
-                      form: { touched, errors },
-                      meta,
-                    }: FieldProps) => (
-                      <>
-                        <textarea
-                          placeholder="Description"
-                          {...field}
-                          className="rounded-xl border-gray-900 h-36 w-full"
-                        >
-                          {" "}
-                        </textarea>
-                        {errors.name && touched.name && (
-                          <div className="m-2">
-                            <p className="text-lg text-red-600">
-                              {errors.name}
+              </form>
+            </div>
+          </div>
+        </div>
+        <div className="hidden sm:block" aria-hidden="true">
+          <div className="py-5">
+            <div className="border-t border-gray-200" />
+          </div>
+        </div>
+
+        <div className="mt-10 sm:mt-0">
+          <div className="md:grid md:grid-cols-3 md:gap-6">
+            <div className="md:col-span-1">
+              <div className="px-4 sm:px-2">
+                <h3 className="text-lg font-medium leading-6 text-gray-900">
+                  Timer Settings
+                </h3>
+                <p className="mt-1 text-sm text-gray-600">
+                  Design your workout with active/working times and rest times.
+                  Either option can be self paced.
+                </p>
+              </div>
+              <div className="px-4 sm:px-2 flex justify-between mt-5 space-x-4">
+                <button
+                  className="bg-gray-100 h-12 w-full flex items-center justify-center space-x-6 rounded-md shadow-md hover:shadow-lg"
+                  type="button"
+                >
+                  <PlusIcon className="h-6 text-green-600 font-bold" />
+                  <p className="text-gray-800 font-semibold">Active</p>
+                </button>
+                <button
+                  className="bg-gray-100 h-12 w-full flex items-center justify-center space-x-6 rounded-md shadow-md hover:shadow-lg"
+                  type="button"
+                >
+                  <PlusIcon className="h-6 text-green-600" />
+                  <p className="text-gray-800 font-semibold">Rest</p>
+                </button>
+              </div>
+            </div>
+            <div className="mt-5 md:mt-0 md:col-span-2">
+              <form action="#" method="POST">
+                <div className="shadow overflow-hidden sm:rounded-md">
+                  <div className="px-4 py-5 bg-white space-y-6 sm:p-6">
+                    <div className="col-span-6 sm:col-span-4">
+                      <label
+                        htmlFor="email-address"
+                        className="block text-sm font-medium text-gray-700"
+                      >
+                        Email address
+                      </label>
+                      <input
+                        type="text"
+                        name="email-address"
+                        id="email-address"
+                        className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                      />
+                    </div>
+                    <fieldset>
+                      <legend className="text-base font-medium text-gray-900">
+                        Permissions
+                      </legend>
+                      <div className="mt-4 space-y-4">
+                        <div className="flex items-start">
+                          <div className="flex items-center h-5">
+                            <input
+                              id="comments"
+                              name="comments"
+                              type="checkbox"
+                              className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded"
+                            />
+                          </div>
+                          <div className="ml-3 text-sm">
+                            <label
+                              htmlFor="comments"
+                              className="font-medium text-gray-700"
+                            >
+                              Create Workout
+                            </label>
+                            <p className="text-gray-500">
+                              Athlete can create their own workouts.
                             </p>
                           </div>
-                        )}
-                      </>
-                    )}
-                  </Field>
-                </div>{" "}
-                <div className="flex justify-between items-center">
-                  <div>
-                    <Field name="timerType">
-                      {({
-                        field,
-                        form: { touched, errors },
-                        meta,
-                      }: FieldProps) => (
-                        <div className="flex flex-col w-40">
-                          <span>Timer Type</span>
-                          <select className="rounded-xl" {...field}>
-                            <option>HIIT</option>
-                            <option>Circuit</option>
-                            <option>Round</option>
-                            <option>Custom</option>
-                          </select>
-                          {errors.name && touched.name && (
-                            <div className="m-2">
-                              <p className="text-lg text-red-600">
-                                {errors.name}
-                              </p>
-                            </div>
-                          )}
                         </div>
-                      )}
-                    </Field>
-                  </div>
-                  <div className="flex item-center space-x-2">
-                    <div>
-                      <Field name="sets">
-                        {({
-                          field,
-                          form: { touched, errors },
-                          meta,
-                        }: FieldProps) => (
-                          <div className="flex flex-col">
-                            <span>Number of Sets</span>
-
+                        <div className="flex items-start">
+                          <div className="flex items-center h-5">
                             <input
-                              type="number"
-                              {...field}
-                              className="rounded-xl border-gray-900"
+                              id="candidates"
+                              name="candidates"
+                              type="checkbox"
+                              className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded"
                             />
-                            {errors.sets && touched.sets && (
-                              <div className="m-2">
-                                <p className="text-lg text-red-600">
-                                  {errors.sets}
-                                </p>
-                              </div>
-                            )}
                           </div>
-                        )}
-                      </Field>
-                    </div>
-                    <div className="flex items-center justify-center"></div>
-                  </div>
-                </div>
-                <div className="h-full flex flex-col justify-between">
-                  <FieldArray
-                    name="intervals"
-                    render={(arrayHelpers) => (
-                      <div className="flex w-full h-full justify-between">
-                        <div className="flex">
-                          <div>
-                            <div
-                              onClick={() =>
-                                arrayHelpers.push({
-                                  seconds: 0,
-                                  minutes: 0,
-                                  description: "",
-                                  type: "",
-                                  reps: 1,
-                                })
-                              }
-                              className="h-12 w-full border rounded-xl flex items-center justify-center cursor-pointer hover:bg-gray-100"
+                          <div className="ml-3 text-sm">
+                            <label
+                              htmlFor="candidates"
+                              className="font-medium text-gray-700"
                             >
-                              <button type="button">
-                                <svg
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  className="h-10 w-10 text-green-600 focus:ring-0 active:ring-0"
-                                  viewBox="0 0 20 20"
-                                  fill="currentColor"
-                                >
-                                  <path
-                                    fill-rule="evenodd"
-                                    d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
-                                    clip-rule="evenodd"
-                                  />
-                                </svg>
-                              </button>
-                              <p className="mr-2 font-semibold select-none">
-                                Add Interval
-                              </p>
-                            </div>
-                            <div
-                              onClick={() =>
-                                arrayHelpers.push({
-                                  seconds: 0,
-                                  minutes: 0,
-                                  description: "",
-                                  type: "",
-                                  reps: 1,
-                                })
-                              }
-                              className="h-12 w-full border rounded-xl flex items-center justify-center cursor-pointer hover:bg-gray-100"
-                            >
-                              <button type="button">
-                                <svg
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  className="h-10 w-10 text-green-600 focus:ring-0 active:ring-0"
-                                  viewBox="0 0 20 20"
-                                  fill="currentColor"
-                                >
-                                  <path
-                                    fill-rule="evenodd"
-                                    d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
-                                    clip-rule="evenodd"
-                                  />
-                                </svg>
-                              </button>
-                              <p className="mr-2 font-semibold select-none">
-                                Add Rest
-                              </p>
-                            </div>
-                            <div className="w-full flex justify-between items-center">
-                              <div className="rounded-xl bg-blue-600 w-full h-12 flex items-center justify-center cursor-pointer hover:bg-blue-800">
-                                <button type="submit">
-                                  <p className="font-semibold text-white text-xl">
-                                    Save
-                                  </p>
-                                </button>
-                              </div>
-                            </div>
+                              Require Metrics
+                            </label>
+                            <p className="text-gray-500">
+                              Upon registration, the athlete will need to
+                              complete an assessment test.
+                            </p>
                           </div>
-                        </div>
-                        <div className="overflow-auto border">
-                          {values.intervals &&
-                            values.intervals.length > 0 &&
-                            values.intervals.map((interval, idx) => (
-                              <CreateWorkoutTimerItem
-                                arrayHelpers={arrayHelpers}
-                                interval={interval as any}
-                                idx={idx}
-                              />
-                            ))}
                         </div>
                       </div>
-                    )}
-                  />
+                    </fieldset>
+                  </div>
+                  <div className="px-4 py-3 bg-gray-50 text-right sm:px-6">
+                    <button
+                      type="submit"
+                      className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                    >
+                      Save
+                    </button>
+                  </div>
                 </div>
-              </div>
-            </Form>
+              </form>
+            </div>
           </div>
-        );
-      }}
-    </Formik>
+        </div>
+      </div>
+    </>
   );
 };
 

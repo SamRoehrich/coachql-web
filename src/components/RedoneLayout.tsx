@@ -53,7 +53,7 @@ const addNav = [
   { name: "Create Team", href: "#" },
   { name: "Create Athlete Profile", href: "/create/athlete" },
   { name: "Create Coach Profile", href: "#" },
-  { name: "Create A Workout", href: "#" },
+  { name: "Create A Workout", href: "/create/workout" },
   { name: "Create Training Plan", href: "#" },
   { name: "Create Assessment Test", href: "#" },
 ];
@@ -263,6 +263,11 @@ const Laay: FC = () => {
           <Route
             path="/layout/:userId/create/athlete"
             component={CreateAthlete}
+            exact
+          />
+          <Route
+            path="/layout/:userId/create/workout"
+            component={CreateWorkout}
             exact
           />
           <Route path={`${path}/home`} component={CoachDashboard} />
