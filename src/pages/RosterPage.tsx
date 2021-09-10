@@ -76,18 +76,36 @@ const trainingLog = [
     percent: "100%",
     rpe: 8,
   },
+  {
+    name: "Comp Wall Session",
+    type: "Competition Training",
+    percent: "100%",
+    rpe: 8,
+  },
+  {
+    name: "Pull Up 3",
+    type: "Conditioning",
+    percent: "100%",
+    rpe: 6,
+  },
+  {
+    name: "Shoulder Mobility",
+    type: "Mobility",
+    percent: "100%",
+    rpe: 8,
+  },
 ];
 
 const RosterPage: FC = () => {
   return (
-    <div className="grid grid-flow-row grid-cols-6 grid-rows-8 gap-x-4 gap-y-8 w-full max-h-full px-2">
+    <div className="grid grid-flow-row grid-cols-6 grid-rows-8 gap-x-4 gap-y-8 w-full max-h-screen px-2">
       <div className="flex justify-between items-end px-2 h-16 col-span-full">
         <p className="text-xl font-semibold text-gray-800">
           Teague Hendrix - Comp
         </p>
         <div className="flex space-x-4">
-          <button className="shadow-md hover:shadow-lg rounded-md bg-gray-100 hover:cursor-pointer h-9 p-1">
-            Overview
+          <button className="shadow-md hover:shadow-lg rounded-md bg-blue-400 bg-opacity-30 hover:cursor-pointer h-9 p-1">
+            <p className="text-gray-800 font-medium">Overview</p>
           </button>
           <button className="shadow-md hover:shadow-lg rounded-md bg-gray-100 hover:cursor-pointer h-9 p-1">
             Training
@@ -149,7 +167,7 @@ const RosterPage: FC = () => {
           </div>
         </div>
       </div>
-      <div className="col-start-3 col-span-4 row-span-full row-start-2 bg-gray-100 mb-2 rounded-md shadow-md">
+      <div className="col-start-3 col-span-4 row-span-full row-start-2 bg-gray-100 mb-2 rounded-md shadow-md max-h-full overflow-auto">
         <Disclosure defaultOpen={true}>
           {({ open }) => (
             <>

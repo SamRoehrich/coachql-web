@@ -67,7 +67,6 @@ const user = {
 const Laay: FC = () => {
   const { path, url } = useRouteMatch();
   const params = useParams<Params>();
-  console.log(url);
   const { data: meData } = useMeQuery();
   return (
     <div className="max-h-screen">
