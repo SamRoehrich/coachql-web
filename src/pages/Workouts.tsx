@@ -1,6 +1,9 @@
 import { Disclosure } from "@headlessui/react";
+import { TrashIcon } from "@heroicons/react/outline";
 import { FC } from "react";
 import { useGetWorkoutsForTeamQuery } from "../generated/graphql";
+
+import WorkoutIntervalItem from "../components/Dashboard/WorkoutIntervalItem";
 
 const WorkoutsPage: FC = () => {
   return (
@@ -26,21 +29,21 @@ const WorkoutsPage: FC = () => {
       </div>
       <div className="flex flex-col justify-between bg-gray-100 shadow-md rounded-md col-span-2 row-span-3">
         <div className="flex flex-col md:flex-row md:justify-between items-center justify-center text-center">
-          <div className="flex flex-col p-2 text-left">
+          <div className="flex flex-col p-2 text-center md:text-left">
             <span className="text-xs text-gray-500">Type</span>
             <p className="text-lg">Strength and Power</p>
           </div>
-          <div className="flex flex-col p-2 text-right">
+          <div className="flex flex-col p-2 text-center md:text-right">
             <span className="text-xs text-gray-500">Facality</span>
             <p className="text-lg md:text-right">Bouldering</p>
           </div>
         </div>
-        <div className="flex md:justify-between justify-center text-center">
+        <div className="flex md:justify-between justify-center text-center md:text-left">
           <div className="flex flex-col p-2 md:text-left">
             <span className="text-xs text-gray-500">Sets</span>
             <p className="text-lg">5</p>
           </div>
-          <div className="hidden md:flex flex-col p-2 text-right">
+          <div className="hidden md:flex flex-col p-2 text-center md:text-right">
             <span className="text-xs text-gray-500 text-right">Reps</span>
             <p className="text-lg">3</p>
           </div>
@@ -67,18 +70,7 @@ const WorkoutsPage: FC = () => {
         </div>
       </div>
       <div className="col-start-3 col-span-4 row-span-full row-start-2 bg-gray-100 mb-2 rounded-md shadow-md">
-        <Disclosure defaultOpen={true}>
-          {({ open }) => (
-            <>
-              <div className="">
-                <Disclosure.Button className="flex justify-between w-full h-12 items-baseline p-1">
-                  <span>Training Logs</span>
-                </Disclosure.Button>
-                <Disclosure.Panel className=""></Disclosure.Panel>
-              </div>
-            </>
-          )}
-        </Disclosure>
+        <WorkoutIntervalItem />
       </div>
     </div>
   );

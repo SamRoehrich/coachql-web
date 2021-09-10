@@ -220,7 +220,7 @@ const CreateWorkout: FC = () => {
                           />
                         </div>
                         <div>
-                          <label className="block text-sm font-medium text-gray-700">
+                          <label className="block text-sm  font-medium text-gray-700 ">
                             Self Paced
                           </label>
                           <input
@@ -239,7 +239,7 @@ const CreateWorkout: FC = () => {
                       </legend>
                       <div className="mt-4 space-y-4">
                         <div className="flex items-start">
-                          <div className="flex items-center h-5">
+                          <div className="flex items-center h-5 ">
                             <input
                               id="track-climbs"
                               name="track-climbs"
