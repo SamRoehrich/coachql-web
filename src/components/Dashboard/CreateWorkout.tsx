@@ -131,15 +131,6 @@ const CreateWorkout: FC = () => {
                     className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block shadow-sm sm:text-sm border-gray-300 rounded-md w-full"
                   />
                 </div>
-                <div className="">
-                  <label>Reps</label>
-                  <input
-                    type="number"
-                    name="reps"
-                    id="reps"
-                    className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block shadow-sm sm:text-sm border-gray-300 rounded-md w-full"
-                  />
-                </div>
               </div>
               <div className="px-4 sm:px-2 flex justify-between mt-5 space-x-4">
                 <button
