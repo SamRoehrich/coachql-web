@@ -59,7 +59,7 @@ const Login: React.FC<RouteComponentProps> = () => {
             response.data.login.user
           ) {
             setAccessToken(response.data.login.accessToken);
-            history.push("/app/" + response.data.login.user.id);
+            history.push("/layout/" + response.data.login.user.id + "/home");
           }
         }}
         validationSchema={Yup.object({
