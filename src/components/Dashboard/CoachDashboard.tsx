@@ -159,7 +159,7 @@ const CoachDashboard: FC = () => {
   }
   return (
     <div>
-      <button>Create your Orginization</button>
+      <button>Create your Organization</button>
     </div>
   );
 };
