@@ -1,22 +1,18 @@
 mutation createWorkout(
-  $intervals: String!
   $description: String!
-  $sets: Float!
+  $sets: String!
+  $numSets: Float!
   $name: String!
-  $timerType: String!
   $equiptment: String!
   $workoutType: String!
-  $teamId: String!
 ) {
   createWorkout(
-    intervals: $intervals
-    description: $description
-    sets: $sets
-    name: $name
-    timerType: $timerType
-    equiptment: $equiptment
-    workoutType: $workoutType
-    teamId: $teamId
+    name: $name,
+    numSets: $numSets,
+    equiptment: $equiptment,
+    workoutType: $workoutType,
+    description: $description,
+    sets: $sets,
   )
 }
 

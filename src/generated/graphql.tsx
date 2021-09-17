@@ -19,8 +19,11 @@ export type Athlete = {
   id: Scalars['Int'];
   gender: Gender;
   user: User;
+  parentEmail: Scalars['String'];
   birthYear: Scalars['Int'];
-  team: Scalars['String'];
+  organization: Organization;
+  team: Team;
+  trainingPlan: TrainingPlan;
 };
 
 export type Boulder = {
@@ -39,6 +42,15 @@ export enum Catagory {
   C = 'C',
   D = 'D'
 }
+
+export type Coach = {
+  __typename?: 'Coach';
+  id: Scalars['Int'];
+  user?: Maybe<User>;
+  birthYear: Scalars['Int'];
+  organization: Organization;
+  team: Team;
+};
 
 export type Event = {
   __typename?: 'Event';
@@ -71,18 +83,29 @@ export type Mutation = {
   __typename?: 'Mutation';
   register: Scalars['Boolean'];
   logout: Scalars['Boolean'];
+  activateAthlete: Scalars['Boolean'];
+  activateUser: Scalars['Boolean'];
   login: LoginResponse;
   createRunningOrder: Scalars['Boolean'];
   editRunningOrder: Scalars['Boolean'];
   resetRunningOrder: Scalars['Boolean'];
   createEvent: Scalars['Boolean'];
-  seedEvent: Scalars['Boolean'];
-  registerForEvent: Scalars['Boolean'];
-  registerTeam: Scalars['Boolean'];
-  createAthlete: Scalars['Boolean'];
+  createTeam: Scalars['Boolean'];
+  deleteTeam: Scalars['Boolean'];
+  addAthleteToTeam: Scalars['Boolean'];
+  deleteAthleteProfile: Scalars['Boolean'];
+  createAthleteProfile: Scalars['Boolean'];
   addAthleteToEvent: Scalars['Boolean'];
   createBoulder: Scalars['Boolean'];
   createWorkout: Scalars['Boolean'];
+  updateWorkoutDescription: Scalars['Boolean'];
+  updateWorkoutName: Scalars['Boolean'];
+  updateWorkoutType: Scalars['Boolean'];
+  updateWorkoutEquiptment: Scalars['Boolean'];
+  updateWorkoutSets: Scalars['Boolean'];
+  deleteWorkout: Scalars['Boolean'];
+  createOrganization: Scalars['Boolean'];
+  createCoachProfile: Scalars['Boolean'];
 };
 
 
@@ -91,6 +114,12 @@ export type MutationRegisterArgs = {
   firstName: Scalars['String'];
   password: Scalars['String'];
   email: Scalars['String'];
+};
+
+
+export type MutationActivateAthleteArgs = {
+  userId: Scalars['Float'];
+  password: Scalars['String'];
 };
 
 
@@ -129,36 +158,34 @@ export type MutationCreateEventArgs = {
 };
 
 
-export type MutationSeedEventArgs = {
-  eventId: Scalars['String'];
-};
-
-
-export type MutationRegisterForEventArgs = {
-  gender: Scalars['String'];
-  birthYear: Scalars['Float'];
-  team: Scalars['String'];
-  lastName: Scalars['String'];
-  firstName: Scalars['String'];
-  password: Scalars['String'];
-  email: Scalars['String'];
-  eventId: Scalars['String'];
-};
-
-
-export type MutationRegisterTeamArgs = {
+export type MutationCreateTeamArgs = {
+  orgId: Scalars['Float'];
   teamName: Scalars['String'];
 };
 
 
-export type MutationCreateAthleteArgs = {
-  gender: Scalars['String'];
-  team: Scalars['String'];
-  birthYear: Scalars['Float'];
+export type MutationDeleteTeamArgs = {
+  teamId: Scalars['Float'];
+};
+
+
+export type MutationAddAthleteToTeamArgs = {
+  teamId: Scalars['Float'];
+  athleteId: Scalars['Float'];
+};
+
+
+export type MutationDeleteAthleteProfileArgs = {
+  athleteId: Scalars['Float'];
+};
+
+
+export type MutationCreateAthleteProfileArgs = {
+  orgId: Scalars['Float'];
+  parentEmail: Scalars['String'];
+  email: Scalars['String'];
   lastName: Scalars['String'];
   firstName: Scalars['String'];
-  password: Scalars['String'];
-  email: Scalars['String'];
 };
 
 
@@ -175,14 +202,69 @@ export type MutationCreateBoulderArgs = {
 
 
 export type MutationCreateWorkoutArgs = {
-  teamId: Scalars['String'];
-  intervals: Scalars['String'];
+  numSets: Scalars['Float'];
   equiptment: Scalars['String'];
-  timerType: Scalars['String'];
   workoutType: Scalars['String'];
   description: Scalars['String'];
-  sets: Scalars['Float'];
+  sets: Scalars['String'];
   name: Scalars['String'];
+};
+
+
+export type MutationUpdateWorkoutDescriptionArgs = {
+  description: Scalars['String'];
+  workoutId: Scalars['Float'];
+};
+
+
+export type MutationUpdateWorkoutNameArgs = {
+  name: Scalars['String'];
+  workoutId: Scalars['Float'];
+};
+
+
+export type MutationUpdateWorkoutTypeArgs = {
+  workoutType: Scalars['String'];
+  workoutId: Scalars['Float'];
+};
+
+
+export type MutationUpdateWorkoutEquiptmentArgs = {
+  equiptment: Scalars['String'];
+  workoutId: Scalars['Float'];
+};
+
+
+export type MutationUpdateWorkoutSetsArgs = {
+  sets: Scalars['String'];
+  workoutId: Scalars['Float'];
+};
+
+
+export type MutationDeleteWorkoutArgs = {
+  workoutId: Scalars['Float'];
+};
+
+
+export type MutationCreateOrganizationArgs = {
+  name: Scalars['String'];
+};
+
+
+export type MutationCreateCoachProfileArgs = {
+  birthYear: Scalars['Float'];
+  orgId: Scalars['Float'];
+};
+
+export type Organization = {
+  __typename?: 'Organization';
+  id: Scalars['Int'];
+  name: Scalars['String'];
+  owner: User;
+  teams: Array<Team>;
+  workouts: Array<Workout>;
+  athletes: Array<Athlete>;
+  coaches: Array<Coach>;
 };
 
 export type Query = {
@@ -205,6 +287,9 @@ export type Query = {
   getWorkouts: Array<Workout>;
   getWorkout: Workout;
   getWorkoutsForTeam: Array<Workout>;
+  getOrganizations: Array<Organization>;
+  getOrganization: Organization;
+  getCoaches: Array<Coach>;
 };
 
 
@@ -220,11 +305,6 @@ export type QueryEventArgs = {
 
 export type QueryGetTeamByCoachIdArgs = {
   coachId: Scalars['String'];
-};
-
-
-export type QueryAthletesArgs = {
-  eventId: Scalars['String'];
 };
 
 
@@ -274,10 +354,20 @@ export type Stack = {
 export type Team = {
   __typename?: 'Team';
   id: Scalars['Int'];
-  headCoach: User;
   teamName: Scalars['String'];
   athletes: Array<Athlete>;
-  workouts: Array<Workout>;
+  organization: Organization;
+};
+
+export type TrainingPlan = {
+  __typename?: 'TrainingPlan';
+  id: Scalars['Int'];
+  org: Organization;
+  description: Scalars['String'];
+  startDate: Scalars['String'];
+  endDate: Scalars['String'];
+  numWeeks: Scalars['Int'];
+  plan: Scalars['String'];
 };
 
 export type User = {
@@ -286,19 +376,19 @@ export type User = {
   firstName: Scalars['String'];
   lastName: Scalars['String'];
   email: Scalars['String'];
+  active: Scalars['Boolean'];
 };
 
 export type Workout = {
   __typename?: 'Workout';
   id: Scalars['Int'];
   name: Scalars['String'];
-  sets: Scalars['Int'];
+  numSets: Scalars['Int'];
   description: Scalars['String'];
   workoutType: Scalars['String'];
-  timerType: Scalars['String'];
-  intervals: Scalars['String'];
+  sets: Scalars['String'];
   equiptment: Scalars['String'];
-  team: Team;
+  organization: Organization;
 };
 
 export type GetBouldersInEventQueryVariables = Exact<{
@@ -495,34 +585,32 @@ export type MeQuery = (
   )> }
 );
 
-export type RegisterMutationVariables = Exact<{
-  email: Scalars['String'];
-  password: Scalars['String'];
-  firstName: Scalars['String'];
-  lastName: Scalars['String'];
-}>;
+export type GetOrgQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type RegisterMutation = (
-  { __typename?: 'Mutation' }
-  & Pick<Mutation, 'register'>
-);
-
-export type RegisterForEventMutationVariables = Exact<{
-  firstName: Scalars['String'];
-  lastName: Scalars['String'];
-  email: Scalars['String'];
-  password: Scalars['String'];
-  gender: Scalars['String'];
-  birthYear: Scalars['Float'];
-  team: Scalars['String'];
-  eventId: Scalars['String'];
-}>;
-
-
-export type RegisterForEventMutation = (
-  { __typename?: 'Mutation' }
-  & Pick<Mutation, 'registerForEvent'>
+export type GetOrgQuery = (
+  { __typename?: 'Query' }
+  & { getOrganization: (
+    { __typename?: 'Organization' }
+    & Pick<Organization, 'name'>
+    & { owner: (
+      { __typename?: 'User' }
+      & Pick<User, 'lastName'>
+    ), teams: Array<(
+      { __typename?: 'Team' }
+      & Pick<Team, 'id' | 'teamName'>
+    )>, workouts: Array<(
+      { __typename?: 'Workout' }
+      & Pick<Workout, 'id' | 'name'>
+    )>, athletes: Array<(
+      { __typename?: 'Athlete' }
+      & Pick<Athlete, 'id' | 'birthYear'>
+      & { user: (
+        { __typename?: 'User' }
+        & Pick<User, 'id' | 'firstName' | 'lastName'>
+      ) }
+    )> }
+  ) }
 );
 
 export type EditRunningOrderMutationVariables = Exact<{
@@ -552,41 +640,6 @@ export type GetStacksForEventQuery = (
   )> }
 );
 
-export type TeamsQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type TeamsQuery = (
-  { __typename?: 'Query' }
-  & { teams: Array<(
-    { __typename?: 'Team' }
-    & Pick<Team, 'teamName'>
-    & { headCoach: (
-      { __typename?: 'User' }
-      & Pick<User, 'firstName' | 'lastName'>
-    ) }
-  )> }
-);
-
-export type GetTeamByCoachIdQueryVariables = Exact<{
-  coachId: Scalars['String'];
-}>;
-
-
-export type GetTeamByCoachIdQuery = (
-  { __typename?: 'Query' }
-  & { getTeamByCoachId: (
-    { __typename?: 'Team' }
-    & Pick<Team, 'id' | 'teamName'>
-    & { headCoach: (
-      { __typename?: 'User' }
-      & Pick<User, 'firstName' | 'lastName'>
-    ), workouts: Array<(
-      { __typename?: 'Workout' }
-      & Pick<Workout, 'id' | 'name' | 'sets' | 'description' | 'workoutType' | 'timerType' | 'intervals' | 'equiptment'>
-    )> }
-  ) }
-);
-
 export type UsersQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -599,14 +652,12 @@ export type UsersQuery = (
 );
 
 export type CreateWorkoutMutationVariables = Exact<{
-  intervals: Scalars['String'];
   description: Scalars['String'];
-  sets: Scalars['Float'];
+  sets: Scalars['String'];
+  numSets: Scalars['Float'];
   name: Scalars['String'];
-  timerType: Scalars['String'];
   equiptment: Scalars['String'];
   workoutType: Scalars['String'];
-  teamId: Scalars['String'];
 }>;
 
 
@@ -1109,92 +1160,60 @@ export function useMeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<MeQuery
 export type MeQueryHookResult = ReturnType<typeof useMeQuery>;
 export type MeLazyQueryHookResult = ReturnType<typeof useMeLazyQuery>;
 export type MeQueryResult = Apollo.QueryResult<MeQuery, MeQueryVariables>;
-export const RegisterDocument = gql`
-    mutation Register($email: String!, $password: String!, $firstName: String!, $lastName: String!) {
-  register(
-    email: $email
-    password: $password
-    firstName: $firstName
-    lastName: $lastName
-  )
+export const GetOrgDocument = gql`
+    query GetOrg {
+  getOrganization {
+    name
+    owner {
+      lastName
+    }
+    teams {
+      id
+      teamName
+    }
+    workouts {
+      id
+      name
+    }
+    athletes {
+      id
+      birthYear
+      user {
+        id
+        firstName
+        lastName
+      }
+    }
+  }
 }
     `;
-export type RegisterMutationFn = Apollo.MutationFunction<RegisterMutation, RegisterMutationVariables>;
 
 /**
- * __useRegisterMutation__
+ * __useGetOrgQuery__
  *
- * To run a mutation, you first call `useRegisterMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useRegisterMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
+ * To run a query within a React component, call `useGetOrgQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetOrgQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
  *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const [registerMutation, { data, loading, error }] = useRegisterMutation({
+ * const { data, loading, error } = useGetOrgQuery({
  *   variables: {
- *      email: // value for 'email'
- *      password: // value for 'password'
- *      firstName: // value for 'firstName'
- *      lastName: // value for 'lastName'
  *   },
  * });
  */
-export function useRegisterMutation(baseOptions?: Apollo.MutationHookOptions<RegisterMutation, RegisterMutationVariables>) {
+export function useGetOrgQuery(baseOptions?: Apollo.QueryHookOptions<GetOrgQuery, GetOrgQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<RegisterMutation, RegisterMutationVariables>(RegisterDocument, options);
+        return Apollo.useQuery<GetOrgQuery, GetOrgQueryVariables>(GetOrgDocument, options);
       }
-export type RegisterMutationHookResult = ReturnType<typeof useRegisterMutation>;
-export type RegisterMutationResult = Apollo.MutationResult<RegisterMutation>;
-export type RegisterMutationOptions = Apollo.BaseMutationOptions<RegisterMutation, RegisterMutationVariables>;
-export const RegisterForEventDocument = gql`
-    mutation RegisterForEvent($firstName: String!, $lastName: String!, $email: String!, $password: String!, $gender: String!, $birthYear: Float!, $team: String!, $eventId: String!) {
-  registerForEvent(
-    gender: $gender
-    firstName: $firstName
-    lastName: $lastName
-    birthYear: $birthYear
-    team: $team
-    email: $email
-    password: $password
-    eventId: $eventId
-  )
-}
-    `;
-export type RegisterForEventMutationFn = Apollo.MutationFunction<RegisterForEventMutation, RegisterForEventMutationVariables>;
-
-/**
- * __useRegisterForEventMutation__
- *
- * To run a mutation, you first call `useRegisterForEventMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useRegisterForEventMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [registerForEventMutation, { data, loading, error }] = useRegisterForEventMutation({
- *   variables: {
- *      firstName: // value for 'firstName'
- *      lastName: // value for 'lastName'
- *      email: // value for 'email'
- *      password: // value for 'password'
- *      gender: // value for 'gender'
- *      birthYear: // value for 'birthYear'
- *      team: // value for 'team'
- *      eventId: // value for 'eventId'
- *   },
- * });
- */
-export function useRegisterForEventMutation(baseOptions?: Apollo.MutationHookOptions<RegisterForEventMutation, RegisterForEventMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<RegisterForEventMutation, RegisterForEventMutationVariables>(RegisterForEventDocument, options);
-      }
-export type RegisterForEventMutationHookResult = ReturnType<typeof useRegisterForEventMutation>;
-export type RegisterForEventMutationResult = Apollo.MutationResult<RegisterForEventMutation>;
-export type RegisterForEventMutationOptions = Apollo.BaseMutationOptions<RegisterForEventMutation, RegisterForEventMutationVariables>;
+export function useGetOrgLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetOrgQuery, GetOrgQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetOrgQuery, GetOrgQueryVariables>(GetOrgDocument, options);
+        }
+export type GetOrgQueryHookResult = ReturnType<typeof useGetOrgQuery>;
+export type GetOrgLazyQueryHookResult = ReturnType<typeof useGetOrgLazyQuery>;
+export type GetOrgQueryResult = Apollo.QueryResult<GetOrgQuery, GetOrgQueryVariables>;
 export const EditRunningOrderDocument = gql`
     mutation editRunningOrder($runningOrderId: String!, $unordered: [Int!]!, $first: [Int!]!, $second: [Int!]!, $third: [Int!]!) {
   editRunningOrder(
@@ -1273,94 +1292,6 @@ export function useGetStacksForEventLazyQuery(baseOptions?: Apollo.LazyQueryHook
 export type GetStacksForEventQueryHookResult = ReturnType<typeof useGetStacksForEventQuery>;
 export type GetStacksForEventLazyQueryHookResult = ReturnType<typeof useGetStacksForEventLazyQuery>;
 export type GetStacksForEventQueryResult = Apollo.QueryResult<GetStacksForEventQuery, GetStacksForEventQueryVariables>;
-export const TeamsDocument = gql`
-    query Teams {
-  teams {
-    teamName
-    headCoach {
-      firstName
-      lastName
-    }
-  }
-}
-    `;
-
-/**
- * __useTeamsQuery__
- *
- * To run a query within a React component, call `useTeamsQuery` and pass it any options that fit your needs.
- * When your component renders, `useTeamsQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useTeamsQuery({
- *   variables: {
- *   },
- * });
- */
-export function useTeamsQuery(baseOptions?: Apollo.QueryHookOptions<TeamsQuery, TeamsQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<TeamsQuery, TeamsQueryVariables>(TeamsDocument, options);
-      }
-export function useTeamsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<TeamsQuery, TeamsQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<TeamsQuery, TeamsQueryVariables>(TeamsDocument, options);
-        }
-export type TeamsQueryHookResult = ReturnType<typeof useTeamsQuery>;
-export type TeamsLazyQueryHookResult = ReturnType<typeof useTeamsLazyQuery>;
-export type TeamsQueryResult = Apollo.QueryResult<TeamsQuery, TeamsQueryVariables>;
-export const GetTeamByCoachIdDocument = gql`
-    query getTeamByCoachId($coachId: String!) {
-  getTeamByCoachId(coachId: $coachId) {
-    id
-    teamName
-    headCoach {
-      firstName
-      lastName
-    }
-    workouts {
-      id
-      name
-      sets
-      description
-      workoutType
-      timerType
-      intervals
-      equiptment
-    }
-  }
-}
-    `;
-
-/**
- * __useGetTeamByCoachIdQuery__
- *
- * To run a query within a React component, call `useGetTeamByCoachIdQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetTeamByCoachIdQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetTeamByCoachIdQuery({
- *   variables: {
- *      coachId: // value for 'coachId'
- *   },
- * });
- */
-export function useGetTeamByCoachIdQuery(baseOptions: Apollo.QueryHookOptions<GetTeamByCoachIdQuery, GetTeamByCoachIdQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetTeamByCoachIdQuery, GetTeamByCoachIdQueryVariables>(GetTeamByCoachIdDocument, options);
-      }
-export function useGetTeamByCoachIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetTeamByCoachIdQuery, GetTeamByCoachIdQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetTeamByCoachIdQuery, GetTeamByCoachIdQueryVariables>(GetTeamByCoachIdDocument, options);
-        }
-export type GetTeamByCoachIdQueryHookResult = ReturnType<typeof useGetTeamByCoachIdQuery>;
-export type GetTeamByCoachIdLazyQueryHookResult = ReturnType<typeof useGetTeamByCoachIdLazyQuery>;
-export type GetTeamByCoachIdQueryResult = Apollo.QueryResult<GetTeamByCoachIdQuery, GetTeamByCoachIdQueryVariables>;
 export const UsersDocument = gql`
     query Users {
   users {
@@ -1399,16 +1330,14 @@ export type UsersQueryHookResult = ReturnType<typeof useUsersQuery>;
 export type UsersLazyQueryHookResult = ReturnType<typeof useUsersLazyQuery>;
 export type UsersQueryResult = Apollo.QueryResult<UsersQuery, UsersQueryVariables>;
 export const CreateWorkoutDocument = gql`
-    mutation createWorkout($intervals: String!, $description: String!, $sets: Float!, $name: String!, $timerType: String!, $equiptment: String!, $workoutType: String!, $teamId: String!) {
+    mutation createWorkout($description: String!, $sets: String!, $numSets: Float!, $name: String!, $equiptment: String!, $workoutType: String!) {
   createWorkout(
-    intervals: $intervals
-    description: $description
-    sets: $sets
     name: $name
-    timerType: $timerType
+    numSets: $numSets
     equiptment: $equiptment
     workoutType: $workoutType
-    teamId: $teamId
+    description: $description
+    sets: $sets
   )
 }
     `;
@@ -1427,14 +1356,12 @@ export type CreateWorkoutMutationFn = Apollo.MutationFunction<CreateWorkoutMutat
  * @example
  * const [createWorkoutMutation, { data, loading, error }] = useCreateWorkoutMutation({
  *   variables: {
- *      intervals: // value for 'intervals'
  *      description: // value for 'description'
  *      sets: // value for 'sets'
+ *      numSets: // value for 'numSets'
  *      name: // value for 'name'
- *      timerType: // value for 'timerType'
  *      equiptment: // value for 'equiptment'
  *      workoutType: // value for 'workoutType'
- *      teamId: // value for 'teamId'
  *   },
  * });
  */

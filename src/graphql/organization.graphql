@@ -1,0 +1,25 @@
+query GetOrg {
+  getOrganization {
+    name
+    owner {
+      lastName
+    }
+    teams {
+      id
+      teamName
+    }
+    workouts {
+      id
+      name
+    }
+    athletes {
+      id
+      birthYear
+      user {
+        id
+        firstName
+        lastName
+      }
+    }
+  }
+}

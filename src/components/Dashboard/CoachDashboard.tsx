@@ -1,14 +1,11 @@
 import { FC } from "react";
 import { useParams } from "react-router";
-import { useGetTeamByCoachIdQuery } from "../../generated/graphql";
+import { useGetOrgQuery } from "../../generated/graphql";
 import { Params } from "../../utils/interfaces";
 
 const CoachDashboard: FC = () => {
   const params = useParams<Params>();
-  const { data, loading, error } = useGetTeamByCoachIdQuery({
-    variables: {
-      coachId: "1",
-    },
+  const { data, loading, error } = useGetOrgQuery({
     fetchPolicy: "cache-first",
   });
   if (loading) {
@@ -20,10 +17,7 @@ const CoachDashboard: FC = () => {
       <div className="grid grid-flow-row grid-cols-3 grid-rows-8 gap-x-4 gap-y-10 w-full px-2">
         <div className="flex justify-between p-4 h-16 items-center col-span-full">
           <p className="font-semibold text-gray-800 text-xl">
-            {data.getTeamByCoachId.teamName}
-          </p>
-          <p className="font-semibold text-gray-800 text-xl">
-            Hello {data.getTeamByCoachId.headCoach.firstName}
+            {data.getOrganization.name}
           </p>
         </div>
         <div className="border shadow rounded-xl bg-gray-100 h-16 flex items-center justify-center p-4">
@@ -33,7 +27,7 @@ const CoachDashboard: FC = () => {
           <p>7 Coaches</p>
         </div>
         <div className="border shadow rounded-xl bg-gray-100 h-16 flex items-center justify-center p-4">
-          <p>{data.getTeamByCoachId.workouts.length} Workout Sessions</p>
+          <p>{data.getOrganization.workouts.length} Workout Sessions</p>
         </div>
         <button className="border shadow rounded-xl bg-gray-100 h-16 flex items-center justify-center p-4 hover:border-blue-500">
           Notes

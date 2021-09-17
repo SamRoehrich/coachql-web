@@ -4,7 +4,7 @@ import { useHistory, useParams } from "react-router";
 import PublicEventInfo from "../components/PublicEventInfo";
 import { MainButton } from "../components/Styled/Buttons";
 
-import { useRegisterForEventMutation } from "../generated/graphql";
+// import { useRegisterForEventMutation } from "../generated/graphql";
 import { Gender } from "../utils/enums";
 
 interface Params {
@@ -13,7 +13,7 @@ interface Params {
 
 const EventSignup: FC = () => {
   const [showing, setShowing] = useState(false);
-  const [registerForEvent, { loading, error }] = useRegisterForEventMutation();
+  // const [registerForEvent, { loading, error }] = useRegisterForEventMutation();
   const params = useParams<Params>();
   const history = useHistory();
   const formik = useFormik({
@@ -35,27 +35,27 @@ const EventSignup: FC = () => {
       team,
       birthYear,
     }) => {
-      try {
-        const registerResult = await registerForEvent({
-          variables: {
-            firstName,
-            lastName,
-            email,
-            password,
-            team,
-            birthYear: parseFloat(birthYear),
-            gender,
-            eventId: params.eventId,
-          },
-        });
-        if (error) {
-          alert("Error Registering for Event. Refresh the page and try again.");
-        }
-        if (registerResult.data) {
-          formik.resetForm();
-          history.push("/event/register/success");
-        }
-      } catch (err) {}
+      // try {
+      //   const registerResult = await registerForEvent({
+      //     variables: {
+      //       firstName,
+      //       lastName,
+      //       email,
+      //       password,
+      //       team,
+      //       birthYear: parseFloat(birthYear),
+      //       gender,
+      //       eventId: params.eventId,
+      //     },
+      //   });
+      //   if (error) {
+      //     alert("Error Registering for Event. Refresh the page and try again.");
+      //   }
+      //   if (registerResult.data) {
+      //     formik.resetForm();
+      //     history.push("/event/register/success");
+      //   }
+      // } catch (err) {}
     },
   });
 
@@ -142,7 +142,7 @@ const EventSignup: FC = () => {
                 onChange={formik.handleChange}
               />
             </div>
-            <button type="submit" disabled={loading}>
+            <button type="submit">
               Register for Event
             </button>
           </form>

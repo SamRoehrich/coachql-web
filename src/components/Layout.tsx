@@ -11,7 +11,6 @@ import CreateWorkout from "../components/Dashboard/CreateWorkout";
 import EventPage from "../pages/EventDashboard";
 import {
   useMeQuery,
-  useGetTeamByCoachIdLazyQuery,
   useMeLazyQuery,
 } from "../generated/graphql";
 import CalendarPage from "../pages/CalendarPage";
@@ -25,7 +24,7 @@ const Layout: FC = () => {
   const { data: meData } = useMeQuery();
   console.log(path, url);
   console.log(params);
-  const [getTeamByCoachId, { loading, data }] = useGetTeamByCoachIdLazyQuery();
+  // const [getTeamByCoachId, { loading, data }] = useGetTeamByCoachIdLazyQuery();
 
   // const { data } = useGetTeamByCoachIdLazyQuery({
   //   variables: {
@@ -33,21 +32,21 @@ const Layout: FC = () => {
   //   },
   // });
 
-  useEffect(() => {
-    if (meData && meData.me) {
-      console.log(
-        getTeamByCoachId({
-          variables: {
-            coachId: meData.me.id.toString(),
-          },
-        })
-      );
-    }
-  }, [meData, getTeamByCoachId]);
+  // useEffect(() => {
+  //   if (meData && meData.me) {
+  //     console.log(
+  //       getTeamByCoachId({
+  //         variables: {
+  //           coachId: meData.me.id.toString(),
+  //         },
+  //       })
+  //     );
+  //   }
+  // }, [meData, getTeamByCoachId]);
 
   return (
     <div className="flex flex-col h-screen bg-gray-100">
-      <div className="flex h-screen">
+      {/* <div className="flex h-screen">
         <div className="flex flex-col justify-between items-center flex-none w-16 bg-gray-200">
           <div className="flex flex-col space-y-4 w-full items-center pt-5">
             <NavLink
@@ -176,7 +175,7 @@ const Layout: FC = () => {
           <Route path="/events/:eventId" component={EventPage} />
           <Route path="/app/:userId/calendar" component={CalendarPage} />
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };
