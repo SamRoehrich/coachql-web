@@ -100,7 +100,7 @@ const trainingLog = [
 
 const RosterPage: FC = () => {
   return (
-    <div className="flex">
+    <div className="flex w-full">
       <AthleteList />
       <AthleteInfo />
     </div>

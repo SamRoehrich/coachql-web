@@ -5,37 +5,26 @@ import { Params } from "../../utils/interfaces";
 
 const CoachDashboard: FC = () => {
   const params = useParams<Params>();
-  const { data, loading, error } = useGetOrgQuery({
-    fetchPolicy: "cache-first",
-  });
+  const { data, loading, error } = useGetOrgQuery();
   if (loading) {
     return <h1>Loading</h1>;
   }
   if (data) {
     console.log(data);
     return (
-      <div className="grid grid-flow-row grid-cols-3 grid-rows-8 gap-x-4 gap-y-10 w-full px-2">
+      <div className="grid grid-flow-row grid-cols-3 grid-rows-8 gap-x-4 gap-y-4 w-full px-2">
         <div className="flex justify-between p-4 h-16 items-center col-span-full">
           <p className="font-semibold text-gray-800 text-xl">
             {data.getOrganization.name}
           </p>
         </div>
-        <div className="border shadow rounded-xl bg-gray-100 h-16 flex items-center justify-center p-4">
-          <p>87 Athletes</p>
-        </div>
-        <div className="border shadow rounded-xl bg-gray-100 h-16 flex items-center justify-center p-4">
-          <p>7 Coaches</p>
-        </div>
-        <div className="border shadow rounded-xl bg-gray-100 h-16 flex items-center justify-center p-4">
-          <p>{data.getOrganization.workouts.length} Workout Sessions</p>
-        </div>
-        <button className="border shadow rounded-xl bg-gray-100 h-16 flex items-center justify-center p-4 hover:border-blue-500">
+        <button className="border shadow rounded-xl bg-gray-100 h-16 flex items-center justify-center p-2 hover:border-blue-500">
           Notes
         </button>
-        <button className="border shadow rounded-xl bg-gray-100 h-16 flex items-center justify-center p-4 hover:border-blue-500">
+        <button className="border shadow rounded-xl bg-gray-100 h-16 flex items-center justify-center p-2 hover:border-blue-500">
           Contact Athletes
         </button>
-        <button className="border shadow rounded-xl bg-gray-100 h-16 flex items-center justify-center p-4 hover:border-blue-500">
+        <button className="border shadow rounded-xl bg-gray-100 h-16 flex items-center justify-center p-2 hover:border-blue-500">
           Contact Coaches
         </button>
         <div className="row-span-2 col-span-full bg-gray-100 rounded-md">

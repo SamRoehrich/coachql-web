@@ -98,7 +98,7 @@ const trainingLog = [
 
 const AthleteInfo: FC = () => {
   return (
-    <div className="grid grid-flow-row grid-cols-6 grid-rows-8 gap-x-4 gap-y-8 w-full max-h-screen px-2">
+    <div className="grid grid-flow-row grid-cols-6 grid-rows-8 gap-x-4 gap-y-2 w-full max-h-screen px-2">
       <div className="flex justify-between items-end px-2 h-16 col-span-full">
         <p className="text-xl font-semibold text-gray-800">
           Teague Hendrix - Comp
@@ -157,7 +157,7 @@ const AthleteInfo: FC = () => {
           </div>
         </div>
       </div>
-      <div className="row-span-4 col-start-1 col-span-2 shadow-md rounded-md bg-gray-100 mb-2">
+      <div className="row-span-2 col-start-1 col-span-2 shadow-md rounded-md bg-gray-100 mb-2">
         <div className="">
           <div className="flex justify-center">
             <ChartPieIcon className="h-1/2 w-1/2" />

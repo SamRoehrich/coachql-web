@@ -1,5 +1,6 @@
 query GetOrg {
   getOrganization {
+    id
     name
     owner {
       lastName
@@ -20,6 +21,19 @@ query GetOrg {
         firstName
         lastName
       }
+    }
+  }
+}
+
+query GetAthletesInOrg {
+  getAthletesInOrg {
+    id
+    team {
+      teamName
+    }
+    user {
+      lastName
+      firstName
     }
   }
 }

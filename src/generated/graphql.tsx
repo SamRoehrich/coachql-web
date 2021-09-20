@@ -94,6 +94,7 @@ export type Mutation = {
   deleteTeam: Scalars['Boolean'];
   addAthleteToTeam: Scalars['Boolean'];
   deleteAthleteProfile: Scalars['Boolean'];
+  updateAthleteBirthYear: Scalars['Boolean'];
   createAthleteProfile: Scalars['Boolean'];
   addAthleteToEvent: Scalars['Boolean'];
   createBoulder: Scalars['Boolean'];
@@ -176,6 +177,12 @@ export type MutationAddAthleteToTeamArgs = {
 
 
 export type MutationDeleteAthleteProfileArgs = {
+  athleteId: Scalars['Float'];
+};
+
+
+export type MutationUpdateAthleteBirthYearArgs = {
+  birthYear: Scalars['Float'];
   athleteId: Scalars['Float'];
 };
 
@@ -288,6 +295,7 @@ export type Query = {
   getWorkout: Workout;
   getWorkoutsForTeam: Array<Workout>;
   getOrganizations: Array<Organization>;
+  getAthletesInOrg: Array<Athlete>;
   getOrganization: Organization;
   getCoaches: Array<Coach>;
 };
@@ -592,7 +600,7 @@ export type GetOrgQuery = (
   { __typename?: 'Query' }
   & { getOrganization: (
     { __typename?: 'Organization' }
-    & Pick<Organization, 'name'>
+    & Pick<Organization, 'id' | 'name'>
     & { owner: (
       { __typename?: 'User' }
       & Pick<User, 'lastName'>
@@ -611,6 +619,24 @@ export type GetOrgQuery = (
       ) }
     )> }
   ) }
+);
+
+export type GetAthletesInOrgQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetAthletesInOrgQuery = (
+  { __typename?: 'Query' }
+  & { getAthletesInOrg: Array<(
+    { __typename?: 'Athlete' }
+    & Pick<Athlete, 'id'>
+    & { team: (
+      { __typename?: 'Team' }
+      & Pick<Team, 'teamName'>
+    ), user: (
+      { __typename?: 'User' }
+      & Pick<User, 'lastName' | 'firstName'>
+    ) }
+  )> }
 );
 
 export type EditRunningOrderMutationVariables = Exact<{
@@ -1163,6 +1189,7 @@ export type MeQueryResult = Apollo.QueryResult<MeQuery, MeQueryVariables>;
 export const GetOrgDocument = gql`
     query GetOrg {
   getOrganization {
+    id
     name
     owner {
       lastName
@@ -1214,6 +1241,47 @@ export function useGetOrgLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<Get
 export type GetOrgQueryHookResult = ReturnType<typeof useGetOrgQuery>;
 export type GetOrgLazyQueryHookResult = ReturnType<typeof useGetOrgLazyQuery>;
 export type GetOrgQueryResult = Apollo.QueryResult<GetOrgQuery, GetOrgQueryVariables>;
+export const GetAthletesInOrgDocument = gql`
+    query GetAthletesInOrg {
+  getAthletesInOrg {
+    id
+    team {
+      teamName
+    }
+    user {
+      lastName
+      firstName
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetAthletesInOrgQuery__
+ *
+ * To run a query within a React component, call `useGetAthletesInOrgQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAthletesInOrgQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetAthletesInOrgQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetAthletesInOrgQuery(baseOptions?: Apollo.QueryHookOptions<GetAthletesInOrgQuery, GetAthletesInOrgQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetAthletesInOrgQuery, GetAthletesInOrgQueryVariables>(GetAthletesInOrgDocument, options);
+      }
+export function useGetAthletesInOrgLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetAthletesInOrgQuery, GetAthletesInOrgQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetAthletesInOrgQuery, GetAthletesInOrgQueryVariables>(GetAthletesInOrgDocument, options);
+        }
+export type GetAthletesInOrgQueryHookResult = ReturnType<typeof useGetAthletesInOrgQuery>;
+export type GetAthletesInOrgLazyQueryHookResult = ReturnType<typeof useGetAthletesInOrgLazyQuery>;
+export type GetAthletesInOrgQueryResult = Apollo.QueryResult<GetAthletesInOrgQuery, GetAthletesInOrgQueryVariables>;
 export const EditRunningOrderDocument = gql`
     mutation editRunningOrder($runningOrderId: String!, $unordered: [Int!]!, $first: [Int!]!, $second: [Int!]!, $third: [Int!]!) {
   editRunningOrder(

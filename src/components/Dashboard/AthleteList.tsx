@@ -1,24 +1,32 @@
-import { useQuery } from "@apollo/client";
+import { gql, useQuery } from "@apollo/client";
 import React, { FC } from "react";
+import { useApolloClient } from "@apollo/client";
 import { GET_CURRENT_EVENT } from "../../graphql/cache";
-import { Athlete } from "../../generated/graphql";
+import { useGetAthletesInOrgQuery } from "../../generated/graphql";
+import Loading from "../Loading";
 
 interface Props {}
 
 const AthleteList: FC<Props> = () => {
-  const { data } = useQuery(GET_CURRENT_EVENT);
-  if (data.currentEvent.athletes) {
-    return (
-      <div>
-        <ul>
-          {data.currentEvent.athletes.map((athlete: Athlete) => (
-            <li key={athlete.id}>
+  const { data, loading } = useGetAthletesInOrgQuery({
+    fetchPolicy: "cache-first",
+  });
+  if (loading) {
+    return <Loading />;
+  }
+  if (data?.getAthletesInOrg) {
+    if (data.getAthletesInOrg.length > 0) {
+      return (
+        <div className="flex flex-col col-span-1">
+          {data.getAthletesInOrg.map((athlete) => (
+            <div>
+              <p>{athlete.user.firstName}</p>
               <p>{athlete.user.lastName}</p>
-            </li>
+            </div>
           ))}
-        </ul>
-      </div>
-    );
+        </div>
+      );
+    }
   }
   return (
     <div className="text-center mt-10">
