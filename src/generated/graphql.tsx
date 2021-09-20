@@ -209,6 +209,8 @@ export type MutationCreateBoulderArgs = {
 
 
 export type MutationCreateWorkoutArgs = {
+  notifications: Scalars['Boolean'];
+  recordClimbs: Scalars['Boolean'];
   numSets: Scalars['Float'];
   equiptment: Scalars['String'];
   workoutType: Scalars['String'];
@@ -397,6 +399,8 @@ export type Workout = {
   sets: Scalars['String'];
   equiptment: Scalars['String'];
   organization: Organization;
+  recordClimbs: Scalars['Boolean'];
+  notifications: Scalars['Boolean'];
 };
 
 export type GetBouldersInEventQueryVariables = Exact<{
@@ -684,6 +688,8 @@ export type CreateWorkoutMutationVariables = Exact<{
   name: Scalars['String'];
   equiptment: Scalars['String'];
   workoutType: Scalars['String'];
+  recordClimbs: Scalars['Boolean'];
+  notifications: Scalars['Boolean'];
 }>;
 
 
@@ -1398,7 +1404,7 @@ export type UsersQueryHookResult = ReturnType<typeof useUsersQuery>;
 export type UsersLazyQueryHookResult = ReturnType<typeof useUsersLazyQuery>;
 export type UsersQueryResult = Apollo.QueryResult<UsersQuery, UsersQueryVariables>;
 export const CreateWorkoutDocument = gql`
-    mutation createWorkout($description: String!, $sets: String!, $numSets: Float!, $name: String!, $equiptment: String!, $workoutType: String!) {
+    mutation createWorkout($description: String!, $sets: String!, $numSets: Float!, $name: String!, $equiptment: String!, $workoutType: String!, $recordClimbs: Boolean!, $notifications: Boolean!) {
   createWorkout(
     name: $name
     numSets: $numSets
@@ -1406,6 +1412,8 @@ export const CreateWorkoutDocument = gql`
     workoutType: $workoutType
     description: $description
     sets: $sets
+    recordClimbs: $recordClimbs
+    notifications: $notifications
   )
 }
     `;
@@ -1430,6 +1438,8 @@ export type CreateWorkoutMutationFn = Apollo.MutationFunction<CreateWorkoutMutat
  *      name: // value for 'name'
  *      equiptment: // value for 'equiptment'
  *      workoutType: // value for 'workoutType'
+ *      recordClimbs: // value for 'recordClimbs'
+ *      notifications: // value for 'notifications'
  *   },
  * });
  */

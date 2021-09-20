@@ -5,14 +5,18 @@ mutation createWorkout(
   $name: String!
   $equiptment: String!
   $workoutType: String!
+  $recordClimbs: Boolean!
+  $notifications: Boolean!
 ) {
   createWorkout(
-    name: $name,
-    numSets: $numSets,
-    equiptment: $equiptment,
-    workoutType: $workoutType,
-    description: $description,
-    sets: $sets,
+    name: $name
+    numSets: $numSets
+    equiptment: $equiptment
+    workoutType: $workoutType
+    description: $description
+    sets: $sets
+    recordClimbs: $recordClimbs
+    notifications: $notifications
   )
 }
 
