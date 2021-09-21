@@ -1,13 +1,22 @@
+import { TrashIcon } from "@heroicons/react/outline";
 import { FC } from "react";
 
-const WorkoutIntervalItem: FC = () => {
+interface Props {
+  idx?: number;
+  remove?: any;
+  initialValue?: number;
+}
+
+const WorkoutIntervalItem: FC<Props> = ({ idx, remove, initialValue }) => {
   return (
-    <div className="flex max-w-full flex-wrap items-center justify-between px-2">
+    <div
+      key={idx}
+      className="flex max-w-full flex-wrap items-center justify-between px-2"
+    >
       <div>
-        <input
-          type="checkbox"
-          className="focus:ring-indigo-500 h-5 w-5 text-indigo-600 border-gray-300 rounded"
-        />
+        <button>
+          <TrashIcon className="h-3 w-3" />
+        </button>
       </div>
       <div className="flex flex-col text-left mt-1 p-1">
         <label
