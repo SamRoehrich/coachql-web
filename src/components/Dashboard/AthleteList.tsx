@@ -17,9 +17,9 @@ const AthleteList: FC<Props> = () => {
   if (data?.getAthletesInOrg) {
     if (data.getAthletesInOrg.length > 0) {
       return (
-        <div className="flex flex-col col-span-1">
+        <div className="flex flex-col col-span-1 w-full">
           {data.getAthletesInOrg.map((athlete) => (
-            <div>
+            <div className="w-full">
               <p>{athlete.user.firstName}</p>
               <p>{athlete.user.lastName}</p>
             </div>

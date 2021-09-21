@@ -289,6 +289,7 @@ export type Query = {
   teams: Array<Team>;
   getTeamByCoachId: Team;
   athletes: Array<Athlete>;
+  getAthleteById: Athlete;
   getStacks: Array<Stack>;
   getBoulders: Array<Boulder>;
   getBouldersForEvent: Array<Boulder>;
@@ -315,6 +316,11 @@ export type QueryEventArgs = {
 
 export type QueryGetTeamByCoachIdArgs = {
   coachId: Scalars['String'];
+};
+
+
+export type QueryGetAthleteByIdArgs = {
+  athleteId: Scalars['Float'];
 };
 
 
@@ -402,6 +408,23 @@ export type Workout = {
   recordClimbs: Scalars['Boolean'];
   notifications: Scalars['Boolean'];
 };
+
+export type GetAthleteQueryVariables = Exact<{
+  AthleteId: Scalars['Float'];
+}>;
+
+
+export type GetAthleteQuery = (
+  { __typename?: 'Query' }
+  & { getAthleteById: (
+    { __typename?: 'Athlete' }
+    & Pick<Athlete, 'id' | 'birthYear' | 'parentEmail'>
+    & { user: (
+      { __typename?: 'User' }
+      & Pick<User, 'lastName' | 'firstName' | 'email'>
+    ) }
+  ) }
+);
 
 export type GetBouldersInEventQueryVariables = Exact<{
   eventId: Scalars['String'];
@@ -751,6 +774,48 @@ export const RunningOrderFragmentDoc = gql`
   }
 }
     `;
+export const GetAthleteDocument = gql`
+    query GetAthlete($AthleteId: Float!) {
+  getAthleteById(athleteId: $AthleteId) {
+    id
+    birthYear
+    parentEmail
+    user {
+      lastName
+      firstName
+      email
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetAthleteQuery__
+ *
+ * To run a query within a React component, call `useGetAthleteQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAthleteQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetAthleteQuery({
+ *   variables: {
+ *      AthleteId: // value for 'AthleteId'
+ *   },
+ * });
+ */
+export function useGetAthleteQuery(baseOptions: Apollo.QueryHookOptions<GetAthleteQuery, GetAthleteQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetAthleteQuery, GetAthleteQueryVariables>(GetAthleteDocument, options);
+      }
+export function useGetAthleteLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetAthleteQuery, GetAthleteQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetAthleteQuery, GetAthleteQueryVariables>(GetAthleteDocument, options);
+        }
+export type GetAthleteQueryHookResult = ReturnType<typeof useGetAthleteQuery>;
+export type GetAthleteLazyQueryHookResult = ReturnType<typeof useGetAthleteLazyQuery>;
+export type GetAthleteQueryResult = Apollo.QueryResult<GetAthleteQuery, GetAthleteQueryVariables>;
 export const GetBouldersInEventDocument = gql`
     query GetBouldersInEvent($eventId: String!) {
   getBouldersForEvent(eventId: $eventId) {

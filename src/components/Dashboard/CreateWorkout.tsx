@@ -272,10 +272,6 @@ const CreateWorkout: FC = () => {
                         <div className="px-4 py-5 bg-white space-y-6 sm:p-6">
                           <div className="col-span-6 sm:col-span-4">
                             <WorkoutIntervalItem />
-                            <WorkoutIntervalItem />
-                            <WorkoutIntervalItem />
-                            <WorkoutIntervalItem />
-                            <WorkoutIntervalItem />
                           </div>
                         </div>
                       </div>

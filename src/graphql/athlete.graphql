@@ -1,0 +1,12 @@
+query GetAthlete($AthleteId: Float!) {
+  getAthleteById(athleteId: $AthleteId) {
+    id
+    birthYear
+    parentEmail
+    user {
+      lastName
+      firstName
+      email
+    }
+  }
+}
