@@ -37,3 +37,10 @@ query GetAthletesInOrg {
     }
   }
 }
+
+query GetTeamsInOrg {
+  getTeamsInOrg {
+    id
+    teamName
+  }
+}

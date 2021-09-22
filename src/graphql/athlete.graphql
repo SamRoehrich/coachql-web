@@ -10,3 +10,25 @@ query GetAthlete($AthleteId: Float!) {
     }
   }
 }
+
+mutation CreateAthleteProfile(
+  $firstName: String!
+  $lastName: String!
+  $email: String!
+  $parentEmail: String!
+  $birthYear: Float!
+  $teamId: Float!
+  $metricsRequired: Boolean!
+  $createWorkouts: Boolean!
+) {
+  createAthleteProfile(
+    firstName: $firstName
+    lastName: $lastName
+    email: $email
+    parentEmail: $parentEmail
+    birthYear: $birthYear
+    teamId: $teamId
+    metricsRequired: $metricsRequired
+    createWorkouts: $createWorkouts
+  )
+}
