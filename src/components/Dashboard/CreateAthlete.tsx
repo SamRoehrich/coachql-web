@@ -43,19 +43,7 @@ const CreateAthlete: FC = () => {
             },
             actions
           ) => {
-            console.log(
-              firstName,
-              lastName,
-              email,
-              parentEmail,
-              teamId,
-              metricsRequired,
-              createWorkouts,
-              birthYear,
-              typeof teamId
-            );
-
-            const createRes = await createAthleteProfile({
+            await createAthleteProfile({
               variables: {
                 firstName,
                 lastName,
@@ -67,7 +55,7 @@ const CreateAthlete: FC = () => {
                 birthYear: Number.parseInt(birthYear),
               },
             });
-            if (createRes.data) {
+            if (data) {
               actions.resetForm();
             }
           }}
