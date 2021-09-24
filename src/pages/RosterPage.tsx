@@ -136,13 +136,13 @@ const RosterPage: FC = () => {
     return (
       <div className="grid grid-flow-row grid-cols-6 grid-rows-8 gap-x-4 gap-y-2 w-full max-h-screen px-2">
         {athletes.getAthletesInOrg.length > 0 && (
-          <div className="flex flex-col col-span-1 w-full">
+          <div className="flex flex-col col-span-1 w-full row-span-full">
             {athletes.getAthletesInOrg.map((athlete, idx) => (
               <div
                 key={athlete.id + "" + idx}
                 className={classNames(
                   idx % 2 === 0 ? "bg-gray-100" : "",
-                  "text-sm h-20 w-full flex space-x-1 flex-none"
+                  "text-sm h-10 w-full flex space-x-1 flex-none items-center"
                 )}
                 onClick={() => handleListItemClick(athlete.id)}
               >
@@ -154,7 +154,7 @@ const RosterPage: FC = () => {
         )}
         {athleteData && athleteData.getAthleteById ? (
           <>
-            <div className="flex justify-between px-2 h-16 col-span-5">
+            <div className="flex justify-between px-2 h-16 col-span-5 items-center">
               <p className="text-2xl font-semibold text-gray-900">
                 {athleteData.getAthleteById.user.firstName}{" "}
                 {athleteData.getAthleteById.user.lastName}

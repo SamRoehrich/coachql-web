@@ -305,7 +305,7 @@ const CreateWorkout: FC = () => {
                                 {values.sets.map((set, idx) => (
                                   <div
                                     key={idx}
-                                    className="grid grid-cols-6 gap-4 rounded"
+                                    className="flex justify-around items-baseline rounded"
                                   >
                                     <div className="mx-auto">
                                       <button
@@ -315,16 +315,30 @@ const CreateWorkout: FC = () => {
                                         <TrashIcon className="h-6 w-6" />
                                       </button>
                                     </div>
-                                    <div className="mt-1">
+                                    <div className="mt-1  w-40 flex flex-col">
                                       <label>Interval Type</label>
                                       <select
-                                        className="mt-1  py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm w-full"
+                                        className="mt-1 py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                                         id="intensity"
                                         name={`sets[${idx}].intensity`}
+                                        value={set.intensity}
                                         onChange={handleChange}
                                       >
-                                        <option value="Active">Active</option>
-                                        <option value="Rest">Rest</option>
+                                        {set.intensity === "Active" ? (
+                                          <>
+                                            <option value="Active">
+                                              Active
+                                            </option>
+                                            <option value="Rest">Rest</option>
+                                          </>
+                                        ) : (
+                                          <>
+                                            <option value="Rest">Rest</option>
+                                            <option value="Active">
+                                              Active
+                                            </option>
+                                          </>
+                                        )}
                                       </select>
                                     </div>
                                     <div className="flex flex-col text-left mt-1 p-1">
@@ -338,12 +352,24 @@ const CreateWorkout: FC = () => {
                                         id="timer"
                                         name={`sets[${idx}].timer`}
                                         onChange={handleChange}
-                                        className="mt-1  py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                                        value={`sets[${idx}.timer]`}
+                                        className="mt-1 w-28 py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                                       >
-                                        <option value="Timed">Timed</option>
-                                        <option value="Self Paced">
-                                          Self Paced
-                                        </option>
+                                        {set.timer === "Timed" ? (
+                                          <>
+                                            <option value="Timed">Timed</option>
+                                            <option value="Self Paced">
+                                              Self Paced
+                                            </option>
+                                          </>
+                                        ) : (
+                                          <>
+                                            <option value="Self Paced">
+                                              Self Paced
+                                            </option>
+                                            <option value="Timed">Timed</option>
+                                          </>
+                                        )}
                                       </select>
                                     </div>
                                     <div className="flex flex-col text-left mt-1 p-1">
@@ -358,29 +384,45 @@ const CreateWorkout: FC = () => {
                                         className="mt-1 focus:ring-indigo-500 focus:border-indigo-500  shadow-sm sm:text-sm border-gray-300 rounded-md"
                                       />
                                     </div>
-                                    <div className="flex flex-col text-left mt-1 p-1">
-                                      <label className="text-sm font-medium text-gray-700">
-                                        Minutes
-                                      </label>
-                                      <input
-                                        type="number"
-                                        id="minutes"
-                                        name={`sets[${idx}].minutes`}
-                                        onChange={handleChange}
-                                        className="w-full mt-1 focus:ring-indigo-500 focus:border-indigo-500  shadow-sm sm:text-sm border-gray-300 rounded-md"
-                                      />
-                                    </div>
-                                    <div className="flex flex-col text-left mt-1 p-1">
-                                      <label className=" text-sm font-medium text-gray-700">
-                                        Seconds
-                                      </label>
-                                      <input
-                                        type="number"
-                                        name={`sets[${idx}].seconds`}
-                                        onChange={handleChange}
-                                        className="w-full mt-1 focus:ring-indigo-500 focus:border-indigo-500  shadow-sm sm:text-sm border-gray-300 rounded-md"
-                                      />
-                                    </div>
+                                    {set.timer === "Self Paced" ? (
+                                      <>
+                                        <div className="flex flex-col mt-1 p-1">
+                                          <label className="text-sm">
+                                            Reps
+                                          </label>
+                                          <input
+                                            type="number"
+                                            className="w-full mt-1 focus:ring-indigo-500 focus:border-indigo-500  shadow-sm sm:text-sm border-gray-300 rounded-md"
+                                          />
+                                        </div>
+                                      </>
+                                    ) : (
+                                      <>
+                                        <div className="flex flex-col text-left mt-1 p-1">
+                                          <label className="text-sm font-medium text-gray-700">
+                                            Minutes
+                                          </label>
+                                          <input
+                                            type="number"
+                                            id="minutes"
+                                            name={`sets[${idx}].minutes`}
+                                            onChange={handleChange}
+                                            className="w-full mt-1 focus:ring-indigo-500 focus:border-indigo-500  shadow-sm sm:text-sm border-gray-300 rounded-md"
+                                          />
+                                        </div>
+                                        <div className="flex flex-col text-left mt-1 p-1">
+                                          <label className=" text-sm font-medium text-gray-700">
+                                            Seconds
+                                          </label>
+                                          <input
+                                            type="number"
+                                            name={`sets[${idx}].seconds`}
+                                            onChange={handleChange}
+                                            className="w-full mt-1 focus:ring-indigo-500 focus:border-indigo-500  shadow-sm sm:text-sm border-gray-300 rounded-md"
+                                          />
+                                        </div>
+                                      </>
+                                    )}
                                   </div>
                                 ))}
                               </div>
