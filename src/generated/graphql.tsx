@@ -427,7 +427,7 @@ export type GetAthleteQuery = (
     & Pick<Athlete, 'id' | 'birthYear' | 'parentEmail'>
     & { user: (
       { __typename?: 'User' }
-      & Pick<User, 'lastName' | 'firstName' | 'email'>
+      & Pick<User, 'id' | 'active' | 'lastName' | 'firstName' | 'email'>
     ) }
   ) }
 );
@@ -815,6 +815,8 @@ export const GetAthleteDocument = gql`
     birthYear
     parentEmail
     user {
+      id
+      active
       lastName
       firstName
       email
