@@ -86,23 +86,25 @@ const Monthly: FC<Props> = () => {
 
         days.push(
           <div
-            key={i}
+            key={"calendar" + i}
             className="flex border w-full"
             onClick={() => onDateClick()}
           >
-            <span>{formattedDate}</span>
+            <span className="text-sm text-gray-600">{formattedDate}</span>
           </div>
         );
         day = addDays(day, 1);
       }
       rows.push(
-        <div className="flex w-full justify-between" key={day.getDay()}>
+        <div className="flex w-full justify-between h-full" key={day.getDay()}>
           {days}
         </div>
       );
       days = [];
     }
-    return <div className="flex flex-col w-full justify-between">{rows}</div>;
+    return (
+      <div className="flex flex-col w-full justify-between h-full">{rows}</div>
+    );
   }
 
   const onDateClick = () => {};

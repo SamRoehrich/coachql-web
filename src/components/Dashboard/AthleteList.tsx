@@ -1,36 +1,44 @@
-import { gql, useQuery } from "@apollo/client";
-import React, { FC } from "react";
-import { useApolloClient } from "@apollo/client";
-import { GET_CURRENT_EVENT } from "../../graphql/cache";
+import { useEffect } from "react";
 import { useGetAthletesInOrgQuery } from "../../generated/graphql";
-import Loading from "../Loading";
+import { currentAthleteId } from "../../graphql/cache";
+import { classNames } from "../../utils/classNames";
 
-interface Props {}
-
-const AthleteList: FC<Props> = () => {
-  const { data, loading } = useGetAthletesInOrgQuery({
+const AthleteList = () => {
+  const { data: athletes } = useGetAthletesInOrgQuery({
     fetchPolicy: "cache-first",
   });
-  if (loading) {
-    return <Loading />;
-  }
-  if (data?.getAthletesInOrg) {
-    if (data.getAthletesInOrg.length > 0) {
-      return (
-        <div className="flex flex-col col-span-1 w-full">
-          {data.getAthletesInOrg.map((athlete) => (
-            <div className="w-full">
-              <p>{athlete.user.firstName}</p>
-              <p>{athlete.user.lastName}</p>
-            </div>
-          ))}
-        </div>
-      );
-    }
-  }
+
+  useEffect(() => {
+    currentAthleteId(athletes?.getAthletesInOrg[0].id);
+  }, [athletes]);
+  const handleListItemClick = (athleteId: number) => {
+    console.log("clicked" + athleteId);
+    currentAthleteId(athleteId);
+  };
+
   return (
-    <div className="text-center mt-10">
-      No Athletes Have Registered For This Event.
+    <div>
+      <div className="flex flex-col col-span-1 w-full row-span-full">
+        {athletes && athletes.getAthletesInOrg.length > 0 ? (
+          athletes.getAthletesInOrg.map((athlete, idx) => (
+            <>
+              <div
+                key={athlete.id + "" + idx}
+                className={classNames(
+                  idx % 2 === 0 ? "bg-gray-100" : "",
+                  "text-sm h-10 w-full flex space-x-1 flex-none items-center"
+                )}
+                onClick={() => handleListItemClick(athlete.id)}
+              >
+                <p className="text-sm">{athlete.user.firstName}</p>
+                <p>{athlete.user.lastName}</p>
+              </div>
+            </>
+          ))
+        ) : (
+          <></>
+        )}
+      </div>
     </div>
   );
 };

@@ -4,6 +4,8 @@ query GetAthlete($AthleteId: Float!) {
     birthYear
     parentEmail
     user {
+      id
+      active
       lastName
       firstName
       email
