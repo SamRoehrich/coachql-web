@@ -305,16 +305,15 @@ const CreateWorkout: FC = () => {
                                 {values.sets.map((set, idx) => (
                                   <div
                                     key={idx}
-                                    className="flex justify-around items-baseline rounded"
+                                    className="flex justify-start items-baseline rounded col-span-full"
                                   >
-                                    <div className="mx-auto">
-                                      <button
-                                        type="button"
-                                        onClick={() => remove(idx)}
-                                      >
-                                        <TrashIcon className="h-6 w-6" />
-                                      </button>
-                                    </div>
+                                    <button
+                                      type="button"
+                                      onClick={() => remove(idx)}
+                                    >
+                                      <TrashIcon className="h-6 w-6 align-middle" />
+                                    </button>
+
                                     <div className="mt-1  w-40 flex flex-col">
                                       <label>Interval Type</label>
                                       <select
