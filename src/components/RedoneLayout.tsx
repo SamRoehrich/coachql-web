@@ -254,10 +254,6 @@ const Laay: FC = () => {
       </Disclosure>
       <main className="max-w-7xl lg:max-w-screen mx-auto py-6 sm:px-6 lg:px-0 h-full">
         <div className="flex flex-row flex-auto bg-white shadow-xl w-full">
-          <Route
-            path={`${path}/roster/athlete/:athleteId`}
-            component={AthleteInfo}
-          />
           <Route path={`${path}/roster`} component={RosterPage} />
           <Route
             path="/layout/:userId/create/athlete"

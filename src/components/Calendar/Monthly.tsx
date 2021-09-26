@@ -79,6 +79,8 @@ const Monthly: FC<Props> = () => {
     let day = startDate;
     let formattedDate = "";
 
+    // ADD WORKOUT DATA HERE
+
     while (day <= endDate) {
       for (let i = 0; i < 7; i++) {
         formattedDate = format(day, dateFormat);
