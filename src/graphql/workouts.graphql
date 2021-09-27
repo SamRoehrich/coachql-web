@@ -35,9 +35,9 @@ query GetWorkouts {
     workoutType
     sets
     id
-    organization {
-      id
-    }
+    equiptment
+    recordClimbs
+    notifications
   }
 }
 

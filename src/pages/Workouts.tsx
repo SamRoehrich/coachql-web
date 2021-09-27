@@ -7,9 +7,12 @@ import {
 } from "../generated/graphql";
 
 import WorkoutIntervalItem from "../components/Dashboard/WorkoutIntervalItem";
+import { useReactiveVar } from "@apollo/client";
+import { currentWorkoutId } from "../graphql/cache";
 
 const WorkoutList = () => {
   const { data, loading } = useGetWorkoutsQuery();
+  const workout = useReactiveVar(currentWorkoutId);
 
   console.log(data);
 
@@ -52,7 +55,7 @@ const WorkoutsPage: FC = () => {
           </button>
         </div>
       </div>
-      <div className="flex flex-col justify-between bg-gray-100 shadow-md rounded-md col-span-2 row-span-3">
+      <div className="flex flex-col justify-between bg-gray-100 shadow-md rounded-md col-span-2 row-span-3 col-start-2">
         <div className="flex flex-col md:flex-row md:justify-between items-center justify-center text-center">
           <div className="flex flex-col p-2 text-center md:text-left">
             <span className="text-xs text-gray-500">Type</span>
@@ -86,7 +89,7 @@ const WorkoutsPage: FC = () => {
           </div>
         </div>
       </div>
-      <div className="row-span-4 col-start-1 col-span-2 shadow-md rounded-md bg-gray-100 mb-2">
+      <div className="row-span-4 col-start-2 col-span-2 shadow-md rounded-md bg-gray-100 mb-2">
         <div className="p-2">
           <div className="flex justify-center"></div>
           <div className="">
@@ -94,7 +97,7 @@ const WorkoutsPage: FC = () => {
           </div>
         </div>
       </div>
-      <div className="col-start-3 col-span-4 row-span-full row-start-2 bg-gray-100 mb-2 rounded-md shadow-md">
+      <div className="col-start-4 col-span-3 row-span-full row-start-2 bg-gray-100 mb-2 rounded-md shadow-md">
         <WorkoutIntervalItem />
       </div>
     </div>
