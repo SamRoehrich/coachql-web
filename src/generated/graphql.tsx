@@ -295,6 +295,7 @@ export type Query = {
   getTeamByCoachId: Team;
   getOrganizations: Array<Organization>;
   getAthletesInOrg: Array<Athlete>;
+  getWorkoutsInOrg: Array<Workout>;
   getTeamsInOrg: Array<Team>;
   getOrganization: Organization;
   athletes: Array<Athlete>;
@@ -303,7 +304,6 @@ export type Query = {
   getBoulders: Array<Boulder>;
   getBouldersForEvent: Array<Boulder>;
   getBoulder: Boulder;
-  getWorkouts: Array<Workout>;
   getWorkout: Workout;
   getWorkoutsForTeam: Array<Workout>;
   getCoaches: Array<Coach>;
@@ -766,6 +766,21 @@ export type GetWorkoutQuery = (
     { __typename?: 'Workout' }
     & Pick<Workout, 'workoutType' | 'name'>
   ) }
+);
+
+export type GetWorkoutsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetWorkoutsQuery = (
+  { __typename?: 'Query' }
+  & { getWorkoutsInOrg: Array<(
+    { __typename?: 'Workout' }
+    & Pick<Workout, 'name' | 'description' | 'numSets' | 'workoutType' | 'sets' | 'id'>
+    & { organization: (
+      { __typename?: 'Organization' }
+      & Pick<Organization, 'id'>
+    ) }
+  )> }
 );
 
 export type GetWorkoutsForTeamQueryVariables = Exact<{
@@ -1669,6 +1684,48 @@ export function useGetWorkoutLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions
 export type GetWorkoutQueryHookResult = ReturnType<typeof useGetWorkoutQuery>;
 export type GetWorkoutLazyQueryHookResult = ReturnType<typeof useGetWorkoutLazyQuery>;
 export type GetWorkoutQueryResult = Apollo.QueryResult<GetWorkoutQuery, GetWorkoutQueryVariables>;
+export const GetWorkoutsDocument = gql`
+    query GetWorkouts {
+  getWorkoutsInOrg {
+    name
+    description
+    numSets
+    workoutType
+    sets
+    id
+    organization {
+      id
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetWorkoutsQuery__
+ *
+ * To run a query within a React component, call `useGetWorkoutsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetWorkoutsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetWorkoutsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetWorkoutsQuery(baseOptions?: Apollo.QueryHookOptions<GetWorkoutsQuery, GetWorkoutsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetWorkoutsQuery, GetWorkoutsQueryVariables>(GetWorkoutsDocument, options);
+      }
+export function useGetWorkoutsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetWorkoutsQuery, GetWorkoutsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetWorkoutsQuery, GetWorkoutsQueryVariables>(GetWorkoutsDocument, options);
+        }
+export type GetWorkoutsQueryHookResult = ReturnType<typeof useGetWorkoutsQuery>;
+export type GetWorkoutsLazyQueryHookResult = ReturnType<typeof useGetWorkoutsLazyQuery>;
+export type GetWorkoutsQueryResult = Apollo.QueryResult<GetWorkoutsQuery, GetWorkoutsQueryVariables>;
 export const GetWorkoutsForTeamDocument = gql`
     query getWorkoutsForTeam($teamId: String!) {
   getWorkoutsForTeam(teamId: $teamId) {

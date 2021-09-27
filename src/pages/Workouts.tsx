@@ -1,14 +1,39 @@
 import { Disclosure } from "@headlessui/react";
 import { TrashIcon } from "@heroicons/react/outline";
 import { FC } from "react";
-import { useGetWorkoutsForTeamQuery } from "../generated/graphql";
+import {
+  useGetWorkoutsForTeamQuery,
+  useGetWorkoutsQuery,
+} from "../generated/graphql";
 
 import WorkoutIntervalItem from "../components/Dashboard/WorkoutIntervalItem";
+
+const WorkoutList = () => {
+  const { data, loading } = useGetWorkoutsQuery();
+
+  console.log(data);
+
+  if (data && data.getWorkoutsInOrg.length > 0) {
+    const workouts = data.getWorkoutsInOrg;
+    return (
+      <div className="col-span-1">
+        {workouts.map((workout, idx) => (
+          <div>
+            <p>{workout.name}</p>
+          </div>
+        ))}
+      </div>
+    );
+  }
+
+  return <></>;
+};
 
 const WorkoutsPage: FC = () => {
   return (
     <div className="grid grid-flow-row grid-cols-6 grid-rows-8 gap-x-4 gap-y-8 w-full max-h-screen px-2">
-      <div className="flex justify-between items-end px-2 h-16 col-span-full">
+      <WorkoutList />
+      <div className="flex justify-between items-end px-2 h-16 col-start-2 col-span-5">
         <p className="text-xl font-semibold text-gray-800">
           Strength and Power - 5 x 3
         </p>
