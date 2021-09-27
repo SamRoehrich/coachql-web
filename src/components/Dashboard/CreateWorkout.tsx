@@ -144,6 +144,7 @@ const CreateWorkout: FC = () => {
                               value={values.workoutType}
                               className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                             >
+                              <option>---</option>
                               <option>Strength and Power</option>
                               <option>Competition</option>
                               <option>Anaerobic Capacity</option>
@@ -152,6 +153,27 @@ const CreateWorkout: FC = () => {
                               <option>Conditioning</option>
                               <option>Mobility</option>
                               <option>Open Session</option>
+                            </select>
+                          </div>
+
+                          <div className="col-span-3">
+                            <label>Equptiment</label>
+                            <select
+                              id="equiptment"
+                              name="equiptment"
+                              onChange={handleChange}
+                              value={values.equiptment}
+                              className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                            >
+                              <option>---</option>
+                              <option>Bouldering Wall</option>
+                              <option>Board</option>
+                              <option>Rope Wall</option>
+                              <option>Finger Board</option>
+                              <option>Bar</option>
+                              <option>Rings</option>
+                              <option>Weight Room</option>
+                              <option>Floor</option>
                             </select>
                           </div>
 

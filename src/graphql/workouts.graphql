@@ -20,10 +20,17 @@ mutation createWorkout(
   )
 }
 
-query getWorkout($workoutId: String!) {
+query getWorkout($workoutId: Float!) {
   getWorkout(workoutId: $workoutId) {
-    workoutType
     name
+    description
+    numSets
+    workoutType
+    sets
+    id
+    equiptment
+    recordClimbs
+    notifications
   }
 }
 
