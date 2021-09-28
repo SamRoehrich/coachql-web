@@ -10,6 +10,7 @@ import {
 import WorkoutIntervalItem from "../components/Dashboard/WorkoutIntervalItem";
 import { useReactiveVar } from "@apollo/client";
 import { currentWorkoutId } from "../graphql/cache";
+import { classNames } from "../utils/classNames";
 
 interface Set {
   intensity: string;
@@ -91,61 +92,69 @@ const WorkoutsPage: FC = () => {
             </button>
           </div>
         </div>
-        <div className="flex flex-col justify-between bg-gray-100 shadow-md rounded-md col-span-2 row-span-3 col-start-2">
-          <div className="flex flex-col md:flex-row md:justify-between items-center justify-center text-center">
-            <div className="flex flex-col p-2 text-center md:text-left">
+        <div className="flex flex-col justify-between bg-gray-100 shadow-md rounded-md col-span-1 row-span-3 col-start-2">
+          <div className="flex flex-col md:flex-row items-center justify-center text-center">
+            <div className="flex flex-col p-2 text-center">
               <span className="text-xs text-gray-500">Type</span>
               <p className="text-lg">{workoutData?.getWorkout.workoutType}</p>
             </div>
-            <div className="flex flex-col p-2 text-center md:text-right">
-              <span className="text-xs text-gray-500">Facality</span>
-              <p className="text-lg md:text-right">
-                {workoutData?.getWorkout.equiptment}
-              </p>
-            </div>
           </div>
-          <div className="flex md:justify-between justify-center text-center md:text-left">
-            <div className="flex flex-col p-2 md:text-left">
+          <div className="flex flex-col p-2 text-center">
+            <span className="text-xs text-gray-500">Facality</span>
+            <p className="text-lg">{workoutData?.getWorkout.equiptment}</p>
+          </div>
+          <div className="flex justify-center text-center">
+            <div className="flex flex-col p-2">
               <span className="text-xs text-gray-500">Sets</span>
               <p className="text-lg">{workoutData?.getWorkout.numSets}</p>
             </div>
-            {/* <div className="hidden md:flex flex-col p-2 text-center md:text-right">
-            <span className="text-xs text-gray-500 text-right">Reps</span>
-            <p className="text-lg">3</p>
-          </div> */}
-          </div>
-          <div className="flex md:justify-between justify-center">
-            <div className="flex flex-col p-2 text-left">
-              <span className="text-xs text-gray-500 text-left">Created</span>
-              <p className="text-lg md:text-left">Sept 1</p>
-            </div>
-            <div className="flex-col p-2 hidden md:flex">
-              <span className="text-xs text-gray-500 md:text-right">
-                Completed Sessions
-              </span>
-              <p className="text-lg text-right">July 30</p>
-            </div>
           </div>
         </div>
-        <div className="row-span-4 col-start-2 col-span-2 shadow-md rounded-md bg-gray-100 mb-2">
-          <div className="p-2">
-            <div className="flex justify-center"></div>
+        <div className="row-span-4 col-start-2 col-span-1 shadow-md rounded-md bg-gray-100 mb-2"></div>
+        <div className="px-2 col-start-3 col-span-4 row-span-full row-start-2 white mb-2 rounded-md shadow-lg">
+          <div className="mt-2 h-1/2 rounded">
+            <div className="grid grid-cols-6 rounded w-full text-sm text-gray-700 bg-gray-100 p-2">
+              <p className="text-center">Name</p>
+              <p className="text-center">Intensity</p>
+              <p className="text-center">Timer</p>
+              <p className="text-center">Minutes</p>
+              <p className="text-center">Seconds</p>
+              <p className="text-center">Reps</p>
+            </div>
+            {sets.map((set, idx) => (
+              <div
+                className={classNames(
+                  idx % 2 === 0 ? "bg-white" : "bg-gray-100",
+                  "p-2 grid grid-cols-6 w-full text-center text-md rounded"
+                )}
+                key={set.intensity + idx}
+              >
+                <p>{set.title}</p>
+                <p>{set.intensity}</p>
+                <p>{set.timer}</p>
+                {set.timer === "Timed" ? (
+                  <>
+                    <p>{set.minutes}</p>
+                    <p>{set.seconds}</p>
+                    <p>---</p>
+                  </>
+                ) : (
+                  <>
+                    <p>---</p>
+                    <p>---</p>
+                    <p>1</p>
+                  </>
+                )}
+              </div>
+            ))}
+          </div>
+          <div className="border-t border-gray-200" />
+          <div className="">
+            <p>Description</p>
             <div className="">
-              <p>Description</p>
-            </div>
-            <div>
-              <p>{workoutData?.getWorkout.description}</p>
+              <p>{workoutData.getWorkout.description}</p>
             </div>
           </div>
-        </div>
-        <div className="col-start-4 col-span-3 row-span-full row-start-2 bg-gray-100 mb-2 rounded-md shadow-md">
-          {sets.map((set, idx) => (
-            <div className="flex">
-              <p>{set.title}</p>
-              <p>{set.intensity}</p>
-              <p>{set.timer}</p>
-            </div>
-          ))}
         </div>
       </div>
     );
@@ -183,22 +192,6 @@ const WorkoutsPage: FC = () => {
           <div className="flex flex-col p-2 md:text-left">
             <span className="text-xs text-gray-500">Sets</span>
             <p className="text-lg"></p>
-          </div>
-          {/* <div className="hidden md:flex flex-col p-2 text-center md:text-right">
-            <span className="text-xs text-gray-500 text-right">Reps</span>
-            <p className="text-lg">3</p>
-          </div> */}
-        </div>
-        <div className="flex md:justify-between justify-center">
-          <div className="flex flex-col p-2 text-left">
-            <span className="text-xs text-gray-500 text-left">Created</span>
-            <p className="text-lg md:text-left">Sept 1</p>
-          </div>
-          <div className="flex-col p-2 hidden md:flex">
-            <span className="text-xs text-gray-500 md:text-right">
-              Completed Sessions
-            </span>
-            <p className="text-lg text-right">July 30</p>
           </div>
         </div>
       </div>
