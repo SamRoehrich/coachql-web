@@ -41,7 +41,13 @@ const WorkoutList = () => {
     return (
       <div className="col-span-1">
         {workouts.map((workout, idx) => (
-          <div onClick={() => handleWorkoutListItemClick(workout.id)}>
+          <div
+            onClick={() => handleWorkoutListItemClick(workout.id)}
+            className={classNames(
+              idx % 2 === 0 ? "bg-gray-100" : "",
+              "text-sm h-10 w-full flex space-x-1 flex-none items-center"
+            )}
+          >
             <p>{workout.name}</p>
           </div>
         ))}
