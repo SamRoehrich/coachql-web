@@ -2,10 +2,8 @@ import React from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import AuthenticatedHomePage from "./pages/AuthenticatedHomePage";
 import CreateEventForm from "./components/CreateEventForm";
-import Header from "./components/Header";
 import ByePage from "./pages/bye";
 import CoachRegisterPage from "./pages/CoachRegister";
-import HomePage from "./pages/Home";
 import LoginPage from "./pages/Login";
 import RegisterPage from "./pages/Register";
 import EventPage from "./pages/EventDashboard";
@@ -16,7 +14,6 @@ import WorkoutsPage from "./pages/Workouts";
 import ScorekeeperScreen from "./components/Scorekeeper/Scoring";
 import Layout from "./components/Layout";
 import PublicHomePage from "./components/PublicHomePage";
-import CreateWorkout from "./components/Dashboard/CreateWorkout";
 import Laay from "./components/RedoneLayout";
 import Calculate from "./components/Calculate";
 

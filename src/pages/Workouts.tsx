@@ -1,13 +1,9 @@
-import { Disclosure } from "@headlessui/react";
-import { TrashIcon } from "@heroicons/react/outline";
 import { FC, useEffect } from "react";
 import {
   useGetWorkoutLazyQuery,
-  useGetWorkoutsForTeamQuery,
   useGetWorkoutsQuery,
 } from "../generated/graphql";
 
-import WorkoutIntervalItem from "../components/Dashboard/WorkoutIntervalItem";
 import { useReactiveVar } from "@apollo/client";
 import { currentWorkoutId } from "../graphql/cache";
 import { classNames } from "../utils/classNames";
@@ -22,9 +18,6 @@ interface Set {
 
 const WorkoutList = () => {
   const { data, loading } = useGetWorkoutsQuery();
-  const currentWorkout = useReactiveVar(currentWorkoutId);
-  const [getWorkout, { loading: workoutLoading, data: workoutData }] =
-    useGetWorkoutLazyQuery();
 
   useEffect(() => {
     if (data !== undefined) {
