@@ -1,7 +1,10 @@
 import { useReactiveVar } from "@apollo/client";
 import { Disclosure } from "@headlessui/react";
 import { FC, useEffect } from "react";
-import { useGetAthleteLazyQuery } from "../generated/graphql";
+import {
+  useGetAthleteLazyQuery,
+  useGetAthleteQuery,
+} from "../generated/graphql";
 import { currentAthleteId } from "../graphql/cache";
 import { classNames } from "../utils/classNames";
 import AthleteCalendar from "./Dashboard/AthleteCalendar";
@@ -147,13 +150,30 @@ const AthleteInfoRecentTraining = () => {
 };
 
 const AthleteInfoOverviewPanel = () => {
+  const date = new Date();
+  const currentAthlete = currentAthleteId();
+  const [getAthlete, { data, loading }] = useGetAthleteLazyQuery();
+
+  // THIS IS VERY GROSS
+  useEffect(() => {
+    if (currentAthlete !== null) {
+      let id = currentAthlete?.valueOf();
+      if (id) {
+        getAthlete({
+          variables: {
+            AthleteId: id,
+          },
+        });
+      }
+    }
+  }, [currentAthlete]);
   return (
     <div className="flex flex-col justify-between bg-gray-100 shadow-md rounded-md col-span-2 col-start-2 row-span-3">
       <div className="flex flex-col md:flex-row md:justify-between items-center justify-center text-center">
         <div className="flex flex-col p-2">
           <span className="text-xs text-gray-500">Age</span>
           <p className="text-lg text-gray-900">
-            {/* {date.getFullYear() - athleteData?.getAthleteById.birthYear} */}
+            {date.getFullYear() - data?.getAthleteById.birthYear!}
           </p>
         </div>
         <div className="flex flex-col p-2">
