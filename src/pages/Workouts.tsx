@@ -18,7 +18,9 @@ interface Set {
 }
 
 const WorkoutList = () => {
-  const { data, loading } = useGetWorkoutsQuery();
+  const { data, loading } = useGetWorkoutsQuery({
+    fetchPolicy: "cache-and-network",
+  });
 
   useEffect(() => {
     if (data !== undefined) {
@@ -89,9 +91,6 @@ const WorkoutsPage: FC = () => {
           <div className="flex space-x-4">
             <button className="shadow-md hover:shadow-lg rounded-md bg-gray-100 hover:cursor-pointer h-9 p-1">
               <Link to={`workouts/edit-workout/${workout.id}`}>Edit</Link>
-            </button>
-            <button className="shadow-md hover:shadow-lg rounded-md bg-gray-100 hover:cursor-pointer h-9 p-1">
-              Save Changes
             </button>
             <button className="shadow-md hover:shadow-lg rounded-md bg-gray-100 hover:cursor-pointer h-9 p-1">
               Delete
@@ -176,43 +175,10 @@ const WorkoutsPage: FC = () => {
             Edit
           </button>
           <button className="shadow-md hover:shadow-lg rounded-md bg-gray-100 hover:cursor-pointer h-9 p-1">
-            Save Changes
-          </button>
-          <button className="shadow-md hover:shadow-lg rounded-md bg-gray-100 hover:cursor-pointer h-9 p-1">
             Delete
           </button>
         </div>
       </div>
-      <div className="flex flex-col justify-between bg-gray-100 shadow-md rounded-md col-span-2 row-span-3 col-start-2">
-        <div className="flex flex-col md:flex-row md:justify-between items-center justify-center text-center">
-          <div className="flex flex-col p-2 text-center md:text-left">
-            <span className="text-xs text-gray-500">Type</span>
-            <p className="text-lg"></p>
-          </div>
-          <div className="flex flex-col p-2 text-center md:text-right">
-            <span className="text-xs text-gray-500">Facality</span>
-            <p className="text-lg md:text-right"></p>
-          </div>
-        </div>
-        <div className="flex md:justify-between justify-center text-center md:text-left">
-          <div className="flex flex-col p-2 md:text-left">
-            <span className="text-xs text-gray-500">Sets</span>
-            <p className="text-lg"></p>
-          </div>
-        </div>
-      </div>
-      <div className="row-span-4 col-start-2 col-span-2 shadow-md rounded-md bg-gray-100 mb-2">
-        <div className="p-2">
-          <div className="flex justify-center"></div>
-          <div className="">
-            <p>Description</p>
-          </div>
-          <div>
-            <p></p>
-          </div>
-        </div>
-      </div>
-      <div className="col-start-4 col-span-3 row-span-full row-start-2 bg-gray-100 mb-2 rounded-md shadow-md"></div>
     </div>
   );
 };
