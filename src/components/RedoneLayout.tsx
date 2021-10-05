@@ -14,6 +14,7 @@ import EventPage from "../pages/EventDashboard";
 import CalendarPage from "../pages/CalendarPage";
 import CreateAthlete from "./Dashboard/CreateAthlete";
 import RosterPage from "../pages/RosterPage";
+import EditWorkout from "./Dashboard/EditWorkout";
 
 const Navigation = [
   {
@@ -270,6 +271,11 @@ const Laay: FC = () => {
             exact
             path="/layout/:userId/workouts"
             component={WorkoutsPage}
+          />
+          <Route
+            exact
+            path="/layout/:userId/workouts/edit-workout/:workoutId"
+            component={EditWorkout}
           />
           <Route
             path="/app/:userId/workouts/create"

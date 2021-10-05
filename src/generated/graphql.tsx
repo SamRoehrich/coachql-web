@@ -26,6 +26,7 @@ export type Athlete = {
   metricsRequired: Scalars['Boolean'];
   createWorkouts: Scalars['Boolean'];
   trainingPlan: TrainingPlan;
+  sessions: Array<Session>;
 };
 
 export type Boulder = {
@@ -102,6 +103,7 @@ export type Mutation = {
   addAthleteToEvent: Scalars['Boolean'];
   createBoulder: Scalars['Boolean'];
   createWorkout: Scalars['Boolean'];
+  editWorkout: Scalars['Boolean'];
   updateWorkoutDescription: Scalars['Boolean'];
   updateWorkoutName: Scalars['Boolean'];
   updateWorkoutType: Scalars['Boolean'];
@@ -109,6 +111,7 @@ export type Mutation = {
   updateWorkoutSets: Scalars['Boolean'];
   deleteWorkout: Scalars['Boolean'];
   createCoachProfile: Scalars['Boolean'];
+  logSession: Scalars['Boolean'];
 };
 
 
@@ -230,6 +233,19 @@ export type MutationCreateWorkoutArgs = {
 };
 
 
+export type MutationEditWorkoutArgs = {
+  id: Scalars['Float'];
+  notifications: Scalars['Boolean'];
+  recordClimbs: Scalars['Boolean'];
+  numSets: Scalars['Float'];
+  equiptment: Scalars['String'];
+  workoutType: Scalars['String'];
+  description: Scalars['String'];
+  sets: Scalars['String'];
+  name: Scalars['String'];
+};
+
+
 export type MutationUpdateWorkoutDescriptionArgs = {
   description: Scalars['String'];
   workoutId: Scalars['Float'];
@@ -268,6 +284,14 @@ export type MutationDeleteWorkoutArgs = {
 export type MutationCreateCoachProfileArgs = {
   birthYear: Scalars['Float'];
   orgId: Scalars['Float'];
+};
+
+
+export type MutationLogSessionArgs = {
+  notes: Scalars['String'];
+  rpe: Scalars['Float'];
+  percentCompleted: Scalars['Float'];
+  workoutId: Scalars['Float'];
 };
 
 export type Organization = {
@@ -361,6 +385,16 @@ export type RunningOrder = {
   first: Array<Stack>;
   second: Array<Stack>;
   third: Array<Stack>;
+};
+
+export type Session = {
+  __typename?: 'Session';
+  id: Scalars['Int'];
+  workout: Workout;
+  notes: Scalars['String'];
+  rpe: Scalars['Int'];
+  percentCompleted: Scalars['Int'];
+  date: Scalars['String'];
 };
 
 export type Stack = {
@@ -753,6 +787,24 @@ export type CreateWorkoutMutationVariables = Exact<{
 export type CreateWorkoutMutation = (
   { __typename?: 'Mutation' }
   & Pick<Mutation, 'createWorkout'>
+);
+
+export type EditWorkoutMutationVariables = Exact<{
+  description: Scalars['String'];
+  sets: Scalars['String'];
+  numSets: Scalars['Float'];
+  name: Scalars['String'];
+  equiptment: Scalars['String'];
+  workoutType: Scalars['String'];
+  recordClimbs: Scalars['Boolean'];
+  notifications: Scalars['Boolean'];
+  id: Scalars['Float'];
+}>;
+
+
+export type EditWorkoutMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'editWorkout'>
 );
 
 export type GetWorkoutQueryVariables = Exact<{
@@ -1644,6 +1696,55 @@ export function useCreateWorkoutMutation(baseOptions?: Apollo.MutationHookOption
 export type CreateWorkoutMutationHookResult = ReturnType<typeof useCreateWorkoutMutation>;
 export type CreateWorkoutMutationResult = Apollo.MutationResult<CreateWorkoutMutation>;
 export type CreateWorkoutMutationOptions = Apollo.BaseMutationOptions<CreateWorkoutMutation, CreateWorkoutMutationVariables>;
+export const EditWorkoutDocument = gql`
+    mutation editWorkout($description: String!, $sets: String!, $numSets: Float!, $name: String!, $equiptment: String!, $workoutType: String!, $recordClimbs: Boolean!, $notifications: Boolean!, $id: Float!) {
+  editWorkout(
+    name: $name
+    numSets: $numSets
+    equiptment: $equiptment
+    workoutType: $workoutType
+    description: $description
+    sets: $sets
+    recordClimbs: $recordClimbs
+    notifications: $notifications
+    id: $id
+  )
+}
+    `;
+export type EditWorkoutMutationFn = Apollo.MutationFunction<EditWorkoutMutation, EditWorkoutMutationVariables>;
+
+/**
+ * __useEditWorkoutMutation__
+ *
+ * To run a mutation, you first call `useEditWorkoutMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useEditWorkoutMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [editWorkoutMutation, { data, loading, error }] = useEditWorkoutMutation({
+ *   variables: {
+ *      description: // value for 'description'
+ *      sets: // value for 'sets'
+ *      numSets: // value for 'numSets'
+ *      name: // value for 'name'
+ *      equiptment: // value for 'equiptment'
+ *      workoutType: // value for 'workoutType'
+ *      recordClimbs: // value for 'recordClimbs'
+ *      notifications: // value for 'notifications'
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useEditWorkoutMutation(baseOptions?: Apollo.MutationHookOptions<EditWorkoutMutation, EditWorkoutMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<EditWorkoutMutation, EditWorkoutMutationVariables>(EditWorkoutDocument, options);
+      }
+export type EditWorkoutMutationHookResult = ReturnType<typeof useEditWorkoutMutation>;
+export type EditWorkoutMutationResult = Apollo.MutationResult<EditWorkoutMutation>;
+export type EditWorkoutMutationOptions = Apollo.BaseMutationOptions<EditWorkoutMutation, EditWorkoutMutationVariables>;
 export const GetWorkoutDocument = gql`
     query getWorkout($workoutId: Float!) {
   getWorkout(workoutId: $workoutId) {

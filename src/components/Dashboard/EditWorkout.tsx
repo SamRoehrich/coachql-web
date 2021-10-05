@@ -1,75 +1,78 @@
-import { PlusIcon, TrashIcon, XIcon } from "@heroicons/react/outline";
-import { FieldArray, Form, Formik, useFormik } from "formik";
-import { useState } from "react";
-import { FC } from "react";
-import { useCreateWorkoutMutation } from "../../generated/graphql";
-import WorkoutIntervalItem from "./WorkoutIntervalItem";
-
-export interface Interval {
-  minutes: number;
-  seconds: number;
-  description: string;
-  type: string;
-  infinite: boolean;
-  reps: number;
+import { PlusIcon, TrashIcon } from "@heroicons/react/outline";
+import { FieldArray, Form, Formik } from "formik";
+import { FC, useState } from "react";
+import { useParams } from "react-router";
+import {
+  useGetWorkoutQuery,
+  useEditWorkoutMutation,
+} from "../../generated/graphql";
+import { ActiveSet, RestSet } from "./CreateWorkout";
+interface Params {
+  userId: string;
+  workoutId: string;
 }
 
-export const ActiveSet = {
-  intensity: "Active",
-  timer: "Timed",
-  title: "",
-  minutes: 0,
-  seconds: 0,
-};
+interface Set {
+  intensity: string;
+  timer: string;
+  title: string;
+  minutes: number;
+  seconds: number;
+}
 
-export const RestSet = {
-  intensity: "Rest",
-  timer: "Self Paced",
-  title: "",
-  minutes: 0,
-  seconds: 0,
-};
-
-const CreateWorkout: FC = () => {
-  const [createWorkout, { data, loading, error }] = useCreateWorkoutMutation();
-  return (
-    <>
-      <div className="w-full">
+const EditWorkout: FC = () => {
+  const params = useParams<Params>();
+  const { data, loading } = useGetWorkoutQuery({
+    variables: {
+      workoutId: Number.parseInt(params.workoutId),
+    },
+  });
+  const [editWorkout] = useEditWorkoutMutation();
+  if (loading) {
+    return (
+      <div>
+        <p>Loading... </p>
+      </div>
+    );
+  }
+  if (data) {
+    const {
+      name,
+      description,
+      numSets,
+      notifications,
+      recordClimbs,
+      equiptment,
+      sets,
+      workoutType,
+      id,
+    } = data.getWorkout;
+    return (
+      <div className="h-full w-full">
         <Formik
           initialValues={{
-            name: "",
-            description: "",
-            numSets: 1,
-            equiptment: "",
-            sets: [ActiveSet],
-            workoutType: "",
-            recordClimbs: false,
-            notifications: false,
+            name,
+            description,
+            numSets,
+            equiptment,
+            sets: JSON.parse(sets),
+            workoutType,
+            recordClimbs,
+            notifications,
+            id,
           }}
-          onSubmit={async (
-            {
-              description,
-              equiptment,
-              name,
-              numSets,
-              sets,
-              workoutType,
-              notifications,
-              recordClimbs,
-            },
-            actions
-          ) => {
-            console.log(
-              description,
-              equiptment,
-              name,
-              numSets,
-              sets,
-              workoutType,
-              notifications,
-              recordClimbs
-            );
-            const createRes = await createWorkout({
+          onSubmit={async ({
+            description,
+            equiptment,
+            name,
+            numSets,
+            sets,
+            workoutType,
+            notifications,
+            recordClimbs,
+            id,
+          }) => {
+            const res = await editWorkout({
               variables: {
                 description,
                 equiptment,
@@ -79,10 +82,11 @@ const CreateWorkout: FC = () => {
                 workoutType,
                 recordClimbs,
                 notifications,
+                id,
               },
             });
-            if (createRes) {
-              actions.resetForm();
+            if (res) {
+              alert("updated");
             }
           }}
           render={({ values, handleChange }) => (
@@ -90,7 +94,9 @@ const CreateWorkout: FC = () => {
               <div className="mt-10 sm:mt-0">
                 <header className="bg-white">
                   <div className="max-w-7xl mx-auto py-6 px-1 sm:px-2">
-                    <h1 className="text-3xl font-bold">Create Workout</h1>
+                    <h1 className="text-3xl font-bold">
+                      Edit Workout - {name}
+                    </h1>
                   </div>
                 </header>
                 <div className="hidden sm:block" aria-hidden="true">
@@ -316,7 +322,7 @@ const CreateWorkout: FC = () => {
                               type="submit"
                               className="inline-flex w-full justify-center py-2 px-2 mt-10 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                             >
-                              Save
+                              Save Changes
                             </button>
                           </div>
                         </div>
@@ -324,7 +330,7 @@ const CreateWorkout: FC = () => {
                           <div className="shadow sm:rounded-md max-h-screen overflow-auto h-full">
                             <div className="px-4 py-5 bg-white space-y-6 sm:p-6">
                               <div className="col-span-6 sm:col-span-4">
-                                {values.sets.map((set, idx) => (
+                                {values.sets.map((set: Set, idx: number) => (
                                   <div
                                     key={idx}
                                     className="flex justify-start items-baseline rounded col-span-full"
@@ -401,6 +407,7 @@ const CreateWorkout: FC = () => {
                                         type="text"
                                         id="title"
                                         name={`sets[${idx}].title`}
+                                        value={set.title}
                                         onChange={handleChange}
                                         className="mt-1 focus:ring-indigo-500 focus:border-indigo-500  shadow-sm sm:text-sm border-gray-300 rounded-md"
                                       />
@@ -427,6 +434,7 @@ const CreateWorkout: FC = () => {
                                             type="number"
                                             id="minutes"
                                             name={`sets[${idx}].minutes`}
+                                            value={set.minutes}
                                             onChange={handleChange}
                                             className="w-full mt-1 focus:ring-indigo-500 focus:border-indigo-500  shadow-sm sm:text-sm border-gray-300 rounded-md"
                                           />
@@ -438,6 +446,7 @@ const CreateWorkout: FC = () => {
                                           <input
                                             type="number"
                                             name={`sets[${idx}].seconds`}
+                                            value={set.seconds}
                                             onChange={handleChange}
                                             className="w-full mt-1 focus:ring-indigo-500 focus:border-indigo-500  shadow-sm sm:text-sm border-gray-300 rounded-md"
                                           />
@@ -457,10 +466,15 @@ const CreateWorkout: FC = () => {
               </div>
             </Form>
           )}
-        />
+        ></Formik>
       </div>
-    </>
+    );
+  }
+  return (
+    <div>
+      <p>Workout not found</p>
+    </div>
   );
 };
 
-export default CreateWorkout;
+export default EditWorkout;

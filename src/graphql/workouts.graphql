@@ -20,6 +20,30 @@ mutation createWorkout(
   )
 }
 
+mutation editWorkout(
+  $description: String!
+  $sets: String!
+  $numSets: Float!
+  $name: String!
+  $equiptment: String!
+  $workoutType: String!
+  $recordClimbs: Boolean!
+  $notifications: Boolean!
+  $id: Float!
+) {
+  editWorkout(
+    name: $name
+    numSets: $numSets
+    equiptment: $equiptment
+    workoutType: $workoutType
+    description: $description
+    sets: $sets
+    recordClimbs: $recordClimbs
+    notifications: $notifications
+    id: $id
+  )
+}
+
 query getWorkout($workoutId: Float!) {
   getWorkout(workoutId: $workoutId) {
     name

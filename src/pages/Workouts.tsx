@@ -7,6 +7,7 @@ import {
 import { useReactiveVar } from "@apollo/client";
 import { currentWorkoutId } from "../graphql/cache";
 import { classNames } from "../utils/classNames";
+import { Link, useParams } from "react-router-dom";
 
 interface Set {
   intensity: string;
@@ -51,11 +52,16 @@ const WorkoutList = () => {
   return <></>;
 };
 
+interface Params {
+  userId: string;
+}
+
 const WorkoutsPage: FC = () => {
   const [getWorkout, { loading: workoutLoading, data: workoutData }] =
     useGetWorkoutLazyQuery();
 
   const currentWorkout = useReactiveVar(currentWorkoutId);
+  const params = useParams<Params>();
 
   useEffect(() => {
     if (currentWorkout !== null) {
@@ -71,6 +77,7 @@ const WorkoutsPage: FC = () => {
     const { getWorkout: workout } = workoutData;
     const sets: Set[] = JSON.parse(workout.sets);
     const handleEditClick = () => {};
+    console.log(params);
 
     return (
       <div className="grid grid-flow-row grid-cols-6 grid-rows-8 gap-x-4 gap-y-8 w-full max-h-screen px-2">
@@ -80,11 +87,8 @@ const WorkoutsPage: FC = () => {
             {workoutData?.getWorkout.name}
           </p>
           <div className="flex space-x-4">
-            <button
-              className="shadow-md hover:shadow-lg rounded-md bg-gray-100 hover:cursor-pointer h-9 p-1"
-              onClick={handleEditClick}
-            >
-              Edit
+            <button className="shadow-md hover:shadow-lg rounded-md bg-gray-100 hover:cursor-pointer h-9 p-1">
+              <Link to={`workouts/edit-workout/${workout.id}`}>Edit</Link>
             </button>
             <button className="shadow-md hover:shadow-lg rounded-md bg-gray-100 hover:cursor-pointer h-9 p-1">
               Save Changes
