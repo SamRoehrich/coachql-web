@@ -1,13 +1,9 @@
-import { Disclosure } from "@headlessui/react";
-import { TrashIcon } from "@heroicons/react/outline";
 import { FC, useEffect } from "react";
 import {
   useGetWorkoutLazyQuery,
-  useGetWorkoutsForTeamQuery,
   useGetWorkoutsQuery,
 } from "../generated/graphql";
 
-import WorkoutIntervalItem from "../components/Dashboard/WorkoutIntervalItem";
 import { useReactiveVar } from "@apollo/client";
 import { currentWorkoutId } from "../graphql/cache";
 import { classNames } from "../utils/classNames";
@@ -45,10 +41,10 @@ const WorkoutList = () => {
             onClick={() => handleWorkoutListItemClick(workout.id)}
             className={classNames(
               idx % 2 === 0 ? "bg-gray-100" : "",
-              "text-sm h-10 w-full flex space-x-1 flex-none items-center"
+              "text-sm h-10 w-full flex space-x-1 flex-none items-center p-2"
             )}
           >
-            <p>{workout.name}</p>
+            <p className="cursor-pointer font-semibold">{workout.name}</p>
           </div>
         ))}
       </div>
@@ -77,7 +73,7 @@ const WorkoutsPage: FC = () => {
   if (workoutData !== undefined) {
     const { getWorkout: workout } = workoutData;
     const sets: Set[] = JSON.parse(workout.sets);
-    console.log(sets);
+    const handleEditClick = () => {};
 
     return (
       <div className="grid grid-flow-row grid-cols-6 grid-rows-8 gap-x-4 gap-y-8 w-full max-h-screen px-2">
@@ -87,7 +83,10 @@ const WorkoutsPage: FC = () => {
             {workoutData?.getWorkout.name}
           </p>
           <div className="flex space-x-4">
-            <button className="shadow-md hover:shadow-lg rounded-md bg-gray-100 hover:cursor-pointer h-9 p-1">
+            <button
+              className="shadow-md hover:shadow-lg rounded-md bg-gray-100 hover:cursor-pointer h-9 p-1"
+              onClick={handleEditClick}
+            >
               Edit
             </button>
             <button className="shadow-md hover:shadow-lg rounded-md bg-gray-100 hover:cursor-pointer h-9 p-1">
