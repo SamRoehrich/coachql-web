@@ -18,9 +18,6 @@ interface Set {
 
 const WorkoutList = () => {
   const { data, loading } = useGetWorkoutsQuery();
-  const currentWorkout = useReactiveVar(currentWorkoutId);
-  const [getWorkout, { loading: workoutLoading, data: workoutData }] =
-    useGetWorkoutLazyQuery();
 
   useEffect(() => {
     if (data !== undefined) {
