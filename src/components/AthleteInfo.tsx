@@ -1,7 +1,7 @@
 import { useReactiveVar } from "@apollo/client";
 import { Disclosure } from "@headlessui/react";
 import { FC, useEffect } from "react";
-import { Route, useRouteMatch } from "react-router";
+import { Route, Switch, useRouteMatch } from "react-router";
 import {
   useGetAthleteLazyQuery,
   useGetAthleteQuery,
@@ -225,11 +225,12 @@ const AthleteInfoOverviewPanel = () => {
 };
 
 const AthleteInfo: FC = () => {
+  const currentAthlete = useReactiveVar(currentAthleteId);
+  const { path, url } = useRouteMatch();
   const [getAthlete, { data: athleteData }] = useGetAthleteLazyQuery({
     fetchPolicy: "cache-first",
   });
-
-  const currentAthlete = useReactiveVar(currentAthleteId);
+  console.log(path, url);
 
   useEffect(() => {
     if (currentAthlete !== null) {
@@ -245,16 +246,18 @@ const AthleteInfo: FC = () => {
     return (
       <>
         <AthleteInfoHeader user={athleteData.getAthleteById.user} />
-        <Route
-          path="/layout/:userId/roster/:athleteId/overview"
-          component={AthleteOverviewTab}
-          exact
-        />
-        <Route
-          path="/layout/:userId/roster/:athleteId/metrics"
-          component={Metrics}
-          exact
-        />
+        <Switch>
+          <Route
+            path={`${path}/:athleteId/overview`}
+            component={AthleteOverviewTab}
+            exact
+          />
+          <Route
+            path={`${path}/:athleteId/metrics`}
+            component={Metrics}
+            exact
+          />
+        </Switch>
       </>
     );
   }
