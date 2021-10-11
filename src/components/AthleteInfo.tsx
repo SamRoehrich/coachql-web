@@ -1,6 +1,7 @@
 import { useReactiveVar } from "@apollo/client";
 import { Disclosure } from "@headlessui/react";
 import { FC, useEffect } from "react";
+import { Route, useRouteMatch } from "react-router";
 import {
   useGetAthleteLazyQuery,
   useGetAthleteQuery,
@@ -9,6 +10,7 @@ import { currentAthleteId } from "../graphql/cache";
 import { classNames } from "../utils/classNames";
 import AthleteCalendar from "./Dashboard/AthleteCalendar";
 import AthleteInfoHeader from "./Dashboard/AthleteHeaderInfo";
+import Metrics from "./Dashboard/Metrics";
 
 const trainingLog = [
   {
@@ -102,6 +104,16 @@ const trainingLog = [
     rpe: 8,
   },
 ];
+
+const AthleteOverviewTab = () => {
+  return (
+    <>
+      <AthleteInfoOverviewPanel />
+      <AthleteCalendar />
+      <AthleteInfoRecentTraining />
+    </>
+  );
+};
 
 const AthleteInfoRecentTraining = () => {
   return (
@@ -233,9 +245,16 @@ const AthleteInfo: FC = () => {
     return (
       <>
         <AthleteInfoHeader user={athleteData.getAthleteById.user} />
-        <AthleteInfoOverviewPanel />
-        <AthleteCalendar />
-        <AthleteInfoRecentTraining />
+        <Route
+          path="/layout/:userId/roster/:athleteId/overview"
+          component={AthleteOverviewTab}
+          exact
+        />
+        <Route
+          path="/layout/:userId/roster/:athleteId/metrics"
+          component={Metrics}
+          exact
+        />
       </>
     );
   }

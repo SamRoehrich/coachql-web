@@ -16,6 +16,7 @@ import AthleteInfoHeader from "../components/Dashboard/AthleteHeaderInfo";
 import Monthly from "../components/Calendar/Monthly";
 import AthleteCalendar from "../components/Dashboard/AthleteCalendar";
 import AthleteInfo from "../components/AthleteInfo";
+import { useHistory, useRouteMatch } from "react-router";
 
 const trainingLog = [
   {
@@ -112,6 +113,8 @@ const trainingLog = [
 
 const RosterPage: FC = () => {
   const date = new Date();
+  const history = useHistory();
+  const { path, url } = useRouteMatch();
   const { data: athletes, loading } = useGetAthletesInOrgQuery({
     fetchPolicy: "cache-first",
   });
@@ -128,6 +131,7 @@ const RosterPage: FC = () => {
           AthleteId: currentAthlete,
         },
       });
+      history.push(`${url}/${currentAthlete}/overview`);
     }
   }, [currentAthlete]);
 
