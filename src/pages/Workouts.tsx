@@ -15,6 +15,7 @@ interface Set {
   title: string;
   minutes: number;
   seconds: number;
+  reps: number;
 }
 
 const WorkoutList = () => {
@@ -78,8 +79,6 @@ const WorkoutsPage: FC = () => {
   if (workoutData !== undefined) {
     const { getWorkout: workout } = workoutData;
     const sets: Set[] = JSON.parse(workout.sets);
-    const handleEditClick = () => {};
-    console.log(params);
 
     return (
       <div className="grid grid-flow-row grid-cols-6 grid-rows-8 gap-x-4 gap-y-8 w-full max-h-screen px-2">
@@ -115,13 +114,12 @@ const WorkoutsPage: FC = () => {
             </div>
           </div>
         </div>
-        <div className="row-span-4 col-start-2 col-span-1 shadow-md rounded-md bg-gray-100 mb-2"></div>
         <div className="px-2 col-start-3 col-span-4 row-span-full row-start-2 white mb-2 rounded-md shadow-lg">
           <div className="mt-2 h-1/2 rounded">
             <div className="grid grid-cols-6 rounded w-full text-sm text-gray-700 bg-gray-100 p-2">
               <p className="text-center">Name</p>
               <p className="text-center">Intensity</p>
-              <p className="text-center">Timer</p>
+              <p className="text-center">Pace</p>
               <p className="text-center">Minutes</p>
               <p className="text-center">Seconds</p>
               <p className="text-center">Reps</p>
@@ -137,19 +135,12 @@ const WorkoutsPage: FC = () => {
                 <p>{set.title}</p>
                 <p>{set.intensity}</p>
                 <p>{set.timer}</p>
-                {set.timer === "Timed" ? (
-                  <>
-                    <p>{set.minutes}</p>
-                    <p>{set.seconds}</p>
-                    <p>---</p>
-                  </>
-                ) : (
-                  <>
-                    <p>---</p>
-                    <p>---</p>
-                    <p>1</p>
-                  </>
-                )}
+
+                <>
+                  <p>{set.minutes}</p>
+                  <p>{set.seconds}</p>
+                  <p>{set.reps}</p>
+                </>
               </div>
             ))}
           </div>

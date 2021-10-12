@@ -1,6 +1,6 @@
 import { PlusIcon, TrashIcon } from "@heroicons/react/outline";
 import { FieldArray, Form, Formik } from "formik";
-import { FC, useState } from "react";
+import { FC } from "react";
 import { useParams } from "react-router";
 import {
   useGetWorkoutQuery,
@@ -18,6 +18,7 @@ interface Set {
   title: string;
   minutes: number;
   seconds: number;
+  reps: number;
 }
 
 const EditWorkout: FC = () => {
@@ -412,47 +413,44 @@ const EditWorkout: FC = () => {
                                         className="mt-1 focus:ring-indigo-500 focus:border-indigo-500  shadow-sm sm:text-sm border-gray-300 rounded-md"
                                       />
                                     </div>
-                                    {set.timer === "Self Paced" ? (
-                                      <>
-                                        <div className="flex flex-col mt-1 p-1">
-                                          <label className="text-sm">
-                                            Reps
-                                          </label>
-                                          <input
-                                            type="number"
-                                            className="w-full mt-1 focus:ring-indigo-500 focus:border-indigo-500  shadow-sm sm:text-sm border-gray-300 rounded-md"
-                                          />
-                                        </div>
-                                      </>
-                                    ) : (
-                                      <>
-                                        <div className="flex flex-col text-left mt-1 p-1">
-                                          <label className="text-sm font-medium text-gray-700">
-                                            Minutes
-                                          </label>
-                                          <input
-                                            type="number"
-                                            id="minutes"
-                                            name={`sets[${idx}].minutes`}
-                                            value={set.minutes}
-                                            onChange={handleChange}
-                                            className="w-full mt-1 focus:ring-indigo-500 focus:border-indigo-500  shadow-sm sm:text-sm border-gray-300 rounded-md"
-                                          />
-                                        </div>
-                                        <div className="flex flex-col text-left mt-1 p-1">
-                                          <label className=" text-sm font-medium text-gray-700">
-                                            Seconds
-                                          </label>
-                                          <input
-                                            type="number"
-                                            name={`sets[${idx}].seconds`}
-                                            value={set.seconds}
-                                            onChange={handleChange}
-                                            className="w-full mt-1 focus:ring-indigo-500 focus:border-indigo-500  shadow-sm sm:text-sm border-gray-300 rounded-md"
-                                          />
-                                        </div>
-                                      </>
-                                    )}
+                                    <>
+                                      <div className="flex flex-col text-left mt-1 p-1">
+                                        <label className="text-sm font-medium text-gray-700">
+                                          Minutes
+                                        </label>
+                                        <input
+                                          type="number"
+                                          id="minutes"
+                                          name={`sets[${idx}].minutes`}
+                                          value={set.minutes}
+                                          onChange={handleChange}
+                                          className="w-full mt-1 focus:ring-indigo-500 focus:border-indigo-500  shadow-sm sm:text-sm border-gray-300 rounded-md"
+                                        />
+                                      </div>
+                                      <div className="flex flex-col text-left mt-1 p-1">
+                                        <label className=" text-sm font-medium text-gray-700">
+                                          Seconds
+                                        </label>
+                                        <input
+                                          type="number"
+                                          name={`sets[${idx}].seconds`}
+                                          value={set.seconds}
+                                          onChange={handleChange}
+                                          className="w-full mt-1 focus:ring-indigo-500 focus:border-indigo-500  shadow-sm sm:text-sm border-gray-300 rounded-md"
+                                        />
+                                      </div>
+                                      <div className="flex flex-col mt-1 p-1">
+                                        <label className="text-sm">Reps</label>
+                                        <input
+                                          type="number"
+                                          id="reps"
+                                          name={`sets[${idx}].reps`}
+                                          value={set.reps}
+                                          onChange={handleChange}
+                                          className="w-full mt-1 focus:ring-indigo-500 focus:border-indigo-500  shadow-sm sm:text-sm border-gray-300 rounded-md"
+                                        />
+                                      </div>
+                                    </>
                                   </div>
                                 ))}
                               </div>
