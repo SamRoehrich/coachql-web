@@ -131,7 +131,7 @@ const client = new ApolloClient({
         }
       },
       fetchAccessToken: () => {
-        return fetch("http://localhost:4000/refresh_token", {
+        return fetch("https://cql-remote.herokuapp.com/refresh_token", {
           method: "POST",
           credentials: "include",
         });
@@ -149,7 +149,7 @@ const client = new ApolloClient({
     // }),
     requestLink,
     new HttpLink({
-      uri: "http://localhost:4000/graphql",
+      uri: "https://cql-remote.herokuapp.com/graphql",
       credentials: "include",
     }),
   ]),
