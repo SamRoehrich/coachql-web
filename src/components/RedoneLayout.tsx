@@ -1,12 +1,8 @@
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { FC, Fragment } from "react";
-import { Link, Route, useParams, useRouteMatch } from "react-router-dom";
+import { Link, Route, useHistory, useRouteMatch } from "react-router-dom";
 import { classNames } from "../utils/classNames";
 import { BellIcon, MenuIcon, XIcon, PlusIcon } from "@heroicons/react/outline";
-import CreateWorkoutModal from "./Dashboard/Modals/CreateWorkoutModal";
-import { Params } from "../utils/interfaces";
-import { useMeQuery } from "../generated/graphql";
-import AthleteInfo from "./AthleteInfo";
 import CoachDashboard from "./Dashboard/CoachDashboard";
 import WorkoutsPage from "../pages/Workouts";
 import CreateWorkout from "./Dashboard/CreateWorkout";
@@ -15,6 +11,7 @@ import CalendarPage from "../pages/CalendarPage";
 import CreateAthlete from "./Dashboard/CreateAthlete";
 import RosterPage from "../pages/RosterPage";
 import EditWorkout from "./Dashboard/EditWorkout";
+import { useMeQuery } from "../generated/graphql";
 
 const Navigation = [
   {
@@ -47,7 +44,7 @@ const Navigation = [
 const userNavigation = [
   { name: "Your Profile", href: "#" },
   { name: "Settings", href: "#" },
-  { name: "Logout", href: "#" },
+  { name: "Logout", href: "/logout" },
 ];
 
 const addNav = [
@@ -67,8 +64,13 @@ const user = {
 };
 const Laay: FC = () => {
   const { path, url } = useRouteMatch();
-  const params = useParams<Params>();
-  const { data: meData } = useMeQuery();
+  const history = useHistory();
+  const { data, loading, error } = useMeQuery();
+
+  if (!data) {
+    history.push("/");
+  }
+
   return (
     <div className="max-h-screen">
       <Disclosure as="nav" className="bg-gray-800">

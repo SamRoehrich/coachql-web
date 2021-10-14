@@ -1,19 +1,33 @@
-import React, { FC } from "react";
+import React, { FC, useEffect } from "react";
+import { useHistory } from "react-router";
+import { setAccessToken } from "../accessToken";
 import Loading from "../components/Loading";
-import { useByeQuery } from "../generated/graphql";
+import { useByeQuery, useLogoutMutation } from "../generated/graphql";
 
 interface Props {}
 
 const ByePage: FC<Props> = () => {
-  const { data, error, loading } = useByeQuery();
+  const [logout, { client }] = useLogoutMutation();
+  const history = useHistory();
 
-  if (loading) return <Loading />;
-  if (error) {
-    console.log(error);
-    return <div>error</div>;
-  }
+  useEffect(() => {
+    logout();
+    setAccessToken("");
+    client.resetStore();
+  });
 
-  return <div>{data?.bye}</div>;
+  return (
+    <div>
+      You have been logged out{" "}
+      <button
+        onClick={() => {
+          history.push("/");
+        }}
+      >
+        Go Home
+      </button>
+    </div>
+  );
 };
 
 export default ByePage;

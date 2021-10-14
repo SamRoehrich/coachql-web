@@ -14,7 +14,7 @@ const PublicHomePage: FC<Props> = () => {
   }
   if (data) {
     console.log(data);
-    history.push(`/app/${data.me?.id}`);
+    history.push(`/layout/${data.me?.id}/home`);
   }
   return (
     <div className="h-screen bg-gray-100">
