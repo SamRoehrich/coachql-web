@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import { FC } from "react";
 import { useHistory } from "react-router";
 import { Link } from "react-router-dom";
 import { useMeQuery } from "../generated/graphql";
@@ -13,7 +13,6 @@ const PublicHomePage: FC<Props> = () => {
     return <Loading />;
   }
   if (data) {
-    console.log(data);
     history.push(`/layout/${data.me?.id}/home`);
   }
   return (

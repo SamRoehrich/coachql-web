@@ -62,9 +62,7 @@ interface Params {
 const WorkoutsPage: FC = () => {
   const [getWorkout, { loading: workoutLoading, data: workoutData }] =
     useGetWorkoutLazyQuery();
-
   const currentWorkout = useReactiveVar(currentWorkoutId);
-  const params = useParams<Params>();
 
   useEffect(() => {
     if (currentWorkout !== null) {
@@ -84,7 +82,7 @@ const WorkoutsPage: FC = () => {
       <div className="grid grid-flow-row grid-cols-6 grid-rows-8 gap-x-4 gap-y-8 w-full max-h-screen px-2">
         <WorkoutList />
         <div className="flex justify-between items-end px-2 h-16 col-start-2 col-span-5">
-          <p className="text-2xl font-semibold text-gray-900">
+          <p className="text-2xl font-semibold text-gray-800">
             {workoutData?.getWorkout.name}
           </p>
           <div className="flex space-x-4">
@@ -115,10 +113,15 @@ const WorkoutsPage: FC = () => {
           </div>
         </div>
         <div className="px-2 col-start-3 col-span-4 row-span-full row-start-2 white mb-2 rounded-md shadow-lg">
-          <div className="mt-2 h-1/2 rounded overflow-auto">
-            <div className="grid grid-cols-6 rounded w-full text-sm text-gray-700 bg-gray-100 p-2">
+          <div className="h-1/3">
+            <p>Description</p>
+            <div className="">
+              <p>{workoutData.getWorkout.description}</p>
+            </div>
+          </div>
+          <div className="rounded overflow-scroll h-4/6">
+            <div className="grid grid-cols-5 rounded w-full text-sm text-gray-700 bg-gray-100 p-2">
               <p className="text-center">Name</p>
-              <p className="text-center">Intensity</p>
               <p className="text-center">Pace</p>
               <p className="text-center">Minutes</p>
               <p className="text-center">Seconds</p>
@@ -128,28 +131,20 @@ const WorkoutsPage: FC = () => {
               <div
                 className={classNames(
                   idx % 2 === 0 ? "bg-white" : "bg-gray-100",
-                  "p-2 grid grid-cols-6 w-full text-center text-md rounded"
+                  "p-2 grid grid-cols-5 w-full text-center text-md rounded"
                 )}
                 key={set.intensity + idx}
               >
                 <p>{set.title}</p>
-                <p>{set.intensity}</p>
                 <p>{set.timer}</p>
 
                 <>
-                  <p>{set.minutes}</p>
-                  <p>{set.seconds}</p>
+                  <p>{set.minutes > 0 ? set.minutes : "--"}</p>
+                  <p>{set.seconds > 0 ? set.seconds : "--"}</p>
                   <p>{set.reps}</p>
                 </>
               </div>
             ))}
-          </div>
-          <div className="border-t border-gray-200" />
-          <div className="">
-            <p>Description</p>
-            <div className="">
-              <p>{workoutData.getWorkout.description}</p>
-            </div>
           </div>
         </div>
       </div>
@@ -159,17 +154,6 @@ const WorkoutsPage: FC = () => {
   return (
     <div className="grid grid-flow-row grid-cols-6 grid-rows-8 gap-x-4 gap-y-8 w-full max-h-screen px-2">
       <WorkoutList />
-      <div className="flex justify-between items-end px-2 h-16 col-start-2 col-span-5">
-        <p className="text-xl font-semibold text-gray-800"></p>
-        <div className="flex space-x-4">
-          <button className="shadow-md hover:shadow-lg rounded-md bg-gray-100 hover:cursor-pointer h-9 p-1">
-            Edit
-          </button>
-          <button className="shadow-md hover:shadow-lg rounded-md bg-gray-100 hover:cursor-pointer h-9 p-1">
-            Delete
-          </button>
-        </div>
-      </div>
     </div>
   );
 };

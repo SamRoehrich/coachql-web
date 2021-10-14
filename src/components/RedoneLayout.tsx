@@ -12,6 +12,7 @@ import CreateAthlete from "./Dashboard/CreateAthlete";
 import RosterPage from "../pages/RosterPage";
 import EditWorkout from "./Dashboard/EditWorkout";
 import { useMeQuery } from "../generated/graphql";
+import { setAccessToken } from "../accessToken";
 
 const Navigation = [
   {
@@ -65,9 +66,11 @@ const user = {
 const Laay: FC = () => {
   const { path, url } = useRouteMatch();
   const history = useHistory();
-  const { data, loading, error } = useMeQuery();
+  const { data, error, client } = useMeQuery();
 
-  if (!data) {
+  if (!data || error) {
+    client.resetStore();
+    setAccessToken("");
     history.push("/");
   }
 

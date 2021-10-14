@@ -1,9 +1,7 @@
-import { PlusIcon, TrashIcon, XIcon } from "@heroicons/react/outline";
-import { FieldArray, Form, Formik, useFormik } from "formik";
-import { useState } from "react";
+import { PlusIcon, TrashIcon } from "@heroicons/react/outline";
+import { FieldArray, Form, Formik } from "formik";
 import { FC } from "react";
 import { useCreateWorkoutMutation } from "../../generated/graphql";
-import WorkoutIntervalItem from "./WorkoutIntervalItem";
 
 export interface Interval {
   minutes: number;
@@ -20,14 +18,16 @@ export const ActiveSet = {
   title: "",
   minutes: 0,
   seconds: 0,
+  reps: 1,
 };
 
 export const RestSet = {
   intensity: "Rest",
   timer: "Self Paced",
-  title: "",
+  title: "Rest",
   minutes: 0,
   seconds: 0,
+  reps: 1,
 };
 
 const CreateWorkout: FC = () => {
@@ -401,49 +401,49 @@ const CreateWorkout: FC = () => {
                                         type="text"
                                         id="title"
                                         name={`sets[${idx}].title`}
+                                        value={set.title}
                                         onChange={handleChange}
                                         className="mt-1 focus:ring-indigo-500 focus:border-indigo-500  shadow-sm sm:text-sm border-gray-300 rounded-md"
                                       />
                                     </div>
-                                    {set.timer === "Self Paced" ? (
-                                      <>
-                                        <div className="flex flex-col mt-1 p-1">
-                                          <label className="text-sm">
-                                            Reps
-                                          </label>
-                                          <input
-                                            type="number"
-                                            className="w-full mt-1 focus:ring-indigo-500 focus:border-indigo-500  shadow-sm sm:text-sm border-gray-300 rounded-md"
-                                          />
-                                        </div>
-                                      </>
-                                    ) : (
-                                      <>
-                                        <div className="flex flex-col text-left mt-1 p-1">
-                                          <label className="text-sm font-medium text-gray-700">
-                                            Minutes
-                                          </label>
-                                          <input
-                                            type="number"
-                                            id="minutes"
-                                            name={`sets[${idx}].minutes`}
-                                            onChange={handleChange}
-                                            className="w-full mt-1 focus:ring-indigo-500 focus:border-indigo-500  shadow-sm sm:text-sm border-gray-300 rounded-md"
-                                          />
-                                        </div>
-                                        <div className="flex flex-col text-left mt-1 p-1">
-                                          <label className=" text-sm font-medium text-gray-700">
-                                            Seconds
-                                          </label>
-                                          <input
-                                            type="number"
-                                            name={`sets[${idx}].seconds`}
-                                            onChange={handleChange}
-                                            className="w-full mt-1 focus:ring-indigo-500 focus:border-indigo-500  shadow-sm sm:text-sm border-gray-300 rounded-md"
-                                          />
-                                        </div>
-                                      </>
-                                    )}
+                                    <>
+                                      <div className="flex flex-col text-left mt-1 p-1">
+                                        <label className="text-sm font-medium text-gray-700">
+                                          Minutes
+                                        </label>
+                                        <input
+                                          type="number"
+                                          id="minutes"
+                                          name={`sets[${idx}].minutes`}
+                                          value={set.minutes}
+                                          onChange={handleChange}
+                                          className="w-full mt-1 focus:ring-indigo-500 focus:border-indigo-500  shadow-sm sm:text-sm border-gray-300 rounded-md"
+                                        />
+                                      </div>
+                                      <div className="flex flex-col text-left mt-1 p-1">
+                                        <label className=" text-sm font-medium text-gray-700">
+                                          Seconds
+                                        </label>
+                                        <input
+                                          type="number"
+                                          name={`sets[${idx}].seconds`}
+                                          value={set.seconds}
+                                          onChange={handleChange}
+                                          className="w-full mt-1 focus:ring-indigo-500 focus:border-indigo-500  shadow-sm sm:text-sm border-gray-300 rounded-md"
+                                        />
+                                      </div>
+                                      <div className="flex flex-col mt-1 p-1">
+                                        <label className="text-sm">Reps</label>
+                                        <input
+                                          type="number"
+                                          id="reps"
+                                          name={`sets[${idx}].reps`}
+                                          value={set.reps}
+                                          onChange={handleChange}
+                                          className="w-full mt-1 focus:ring-indigo-500 focus:border-indigo-500  shadow-sm sm:text-sm border-gray-300 rounded-md"
+                                        />
+                                      </div>
+                                    </>
                                   </div>
                                 ))}
                               </div>
