@@ -84,7 +84,7 @@ const WorkoutsPage: FC = () => {
       <div className="grid grid-flow-row grid-cols-6 grid-rows-8 gap-x-4 gap-y-8 w-full max-h-screen px-2">
         <WorkoutList />
         <div className="flex justify-between items-end px-2 h-16 col-start-2 col-span-5">
-          <p className="text-xl font-semibold text-gray-800">
+          <p className="text-2xl font-semibold text-gray-900">
             {workoutData?.getWorkout.name}
           </p>
           <div className="flex space-x-4">
@@ -115,7 +115,7 @@ const WorkoutsPage: FC = () => {
           </div>
         </div>
         <div className="px-2 col-start-3 col-span-4 row-span-full row-start-2 white mb-2 rounded-md shadow-lg">
-          <div className="mt-2 h-1/2 rounded">
+          <div className="mt-2 h-1/2 rounded overflow-auto">
             <div className="grid grid-cols-6 rounded w-full text-sm text-gray-700 bg-gray-100 p-2">
               <p className="text-center">Name</p>
               <p className="text-center">Intensity</p>

@@ -324,6 +324,7 @@ export type Query = {
   getOrganization: Organization;
   athletes: Array<Athlete>;
   getAthleteById: Athlete;
+  getCompletedSessionsForAthlete: Array<Session>;
   getStacks: Array<Stack>;
   getBoulders: Array<Boulder>;
   getBouldersForEvent: Array<Boulder>;
@@ -351,6 +352,11 @@ export type QueryGetTeamByCoachIdArgs = {
 
 export type QueryGetAthleteByIdArgs = {
   athleteId: Scalars['Float'];
+};
+
+
+export type QueryGetCompletedSessionsForAthleteArgs = {
+  athleteId: Scalars['String'];
 };
 
 
@@ -841,6 +847,23 @@ export type GetWorkoutsForTeamQuery = (
   & { getWorkoutsForTeam: Array<(
     { __typename?: 'Workout' }
     & Pick<Workout, 'id' | 'workoutType' | 'name'>
+  )> }
+);
+
+export type GetSessionsForAthleteQueryVariables = Exact<{
+  athleteId: Scalars['String'];
+}>;
+
+
+export type GetSessionsForAthleteQuery = (
+  { __typename?: 'Query' }
+  & { getCompletedSessionsForAthlete: Array<(
+    { __typename?: 'Session' }
+    & Pick<Session, 'id' | 'date' | 'percentCompleted' | 'rpe'>
+    & { workout: (
+      { __typename?: 'Workout' }
+      & Pick<Workout, 'name'>
+    ) }
   )> }
 );
 
@@ -1867,3 +1890,44 @@ export function useGetWorkoutsForTeamLazyQuery(baseOptions?: Apollo.LazyQueryHoo
 export type GetWorkoutsForTeamQueryHookResult = ReturnType<typeof useGetWorkoutsForTeamQuery>;
 export type GetWorkoutsForTeamLazyQueryHookResult = ReturnType<typeof useGetWorkoutsForTeamLazyQuery>;
 export type GetWorkoutsForTeamQueryResult = Apollo.QueryResult<GetWorkoutsForTeamQuery, GetWorkoutsForTeamQueryVariables>;
+export const GetSessionsForAthleteDocument = gql`
+    query GetSessionsForAthlete($athleteId: String!) {
+  getCompletedSessionsForAthlete(athleteId: $athleteId) {
+    id
+    date
+    percentCompleted
+    rpe
+    workout {
+      name
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetSessionsForAthleteQuery__
+ *
+ * To run a query within a React component, call `useGetSessionsForAthleteQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetSessionsForAthleteQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetSessionsForAthleteQuery({
+ *   variables: {
+ *      athleteId: // value for 'athleteId'
+ *   },
+ * });
+ */
+export function useGetSessionsForAthleteQuery(baseOptions: Apollo.QueryHookOptions<GetSessionsForAthleteQuery, GetSessionsForAthleteQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetSessionsForAthleteQuery, GetSessionsForAthleteQueryVariables>(GetSessionsForAthleteDocument, options);
+      }
+export function useGetSessionsForAthleteLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetSessionsForAthleteQuery, GetSessionsForAthleteQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetSessionsForAthleteQuery, GetSessionsForAthleteQueryVariables>(GetSessionsForAthleteDocument, options);
+        }
+export type GetSessionsForAthleteQueryHookResult = ReturnType<typeof useGetSessionsForAthleteQuery>;
+export type GetSessionsForAthleteLazyQueryHookResult = ReturnType<typeof useGetSessionsForAthleteLazyQuery>;
+export type GetSessionsForAthleteQueryResult = Apollo.QueryResult<GetSessionsForAthleteQuery, GetSessionsForAthleteQueryVariables>;

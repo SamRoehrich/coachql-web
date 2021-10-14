@@ -79,3 +79,15 @@ query getWorkoutsForTeam($teamId: String!) {
     name
   }
 }
+
+query GetSessionsForAthlete($athleteId: String!) {
+  getCompletedSessionsForAthlete(athleteId: $athleteId) {
+    id
+    date
+    percentCompleted
+    rpe
+    workout {
+      name
+    }
+  }
+}
