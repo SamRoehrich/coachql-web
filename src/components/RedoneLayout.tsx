@@ -13,6 +13,7 @@ import RosterPage from "../pages/RosterPage";
 import EditWorkout from "./Dashboard/EditWorkout";
 import { useMeQuery } from "../generated/graphql";
 import { setAccessToken } from "../accessToken";
+import CreateAssessment from "./Dashboard/CreateAssessment";
 
 const Navigation = [
   {
@@ -54,7 +55,7 @@ const addNav = [
   { name: "Create Coach Profile", href: "#" },
   { name: "Create A Workout", href: "/create/workout" },
   { name: "Create Training Plan", href: "#" },
-  { name: "Create Assessment Test", href: "#" },
+  { name: "Create Assessment Test", href: "/create/assessment" },
 ];
 
 const user = {
@@ -264,6 +265,11 @@ const Laay: FC = () => {
           <Route
             path="/layout/:userId/create/athlete"
             component={CreateAthlete}
+            exact
+          />
+          <Route
+            path="/layout/:userId/create/assessment"
+            component={CreateAssessment}
             exact
           />
           <Route
