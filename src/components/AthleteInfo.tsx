@@ -4,107 +4,14 @@ import { FC, useEffect } from "react";
 import { Route, Switch, useRouteMatch } from "react-router";
 import {
   useGetAthleteLazyQuery,
-  useGetAthleteQuery,
   useGetSessionsForAthleteQuery,
 } from "../generated/graphql";
 import { currentAthleteId } from "../graphql/cache";
 import { classNames } from "../utils/classNames";
 import AthleteCalendar from "./Dashboard/AthleteCalendar";
 import AthleteInfoHeader from "./Dashboard/AthleteHeaderInfo";
+import AthleteTraining from "./Dashboard/AthleteTraining";
 import Metrics from "./Dashboard/Metrics";
-
-const trainingLog = [
-  {
-    name: "5 by 3",
-    type: "Strength and Power",
-    percent: "100%",
-    rpe: 8,
-  },
-  {
-    name: "Bar Core",
-    type: "Conditioning",
-    percent: "100%",
-    rpe: 5,
-  },
-  {
-    name: "Comp Wall Session",
-    type: "Competition Training",
-    percent: "100%",
-    rpe: 8,
-  },
-  {
-    name: "Pull Up 3",
-    type: "Conditioning",
-    percent: "100%",
-    rpe: 6,
-  },
-  {
-    name: "Shoulder Mobility",
-    type: "Mobility",
-    percent: "100%",
-    rpe: 8,
-  },
-  {
-    name: "Hip Mobility",
-    type: "Mobility",
-    percent: "100%",
-    rpe: 2,
-  },
-  {
-    name: "Supine IYT",
-    type: "Conditioning",
-    percent: "100%",
-    rpe: 5,
-  },
-  {
-    name: "Board Session",
-    type: "Strength and Power",
-    percent: "100%",
-    rpe: 8,
-  },
-  {
-    name: "Supine IYT",
-    type: "Conditioning",
-    percent: "100%",
-    rpe: 5,
-  },
-  {
-    name: "Board Session",
-    type: "Strength and Power",
-    percent: "100%",
-    rpe: 8,
-  },
-  {
-    name: "Supine IYT",
-    type: "Conditioning",
-    percent: "100%",
-    rpe: 5,
-  },
-  {
-    name: "Board Session",
-    type: "Strength and Power",
-    percent: "100%",
-    rpe: 8,
-  },
-  {
-    name: "Comp Wall Session",
-    type: "Competition Training",
-    percent: "100%",
-    rpe: 8,
-  },
-  {
-    name: "Pull Up 3",
-    type: "Conditioning",
-    percent: "100%",
-    rpe: 6,
-  },
-  {
-    name: "Shoulder Mobility",
-    type: "Mobility",
-    percent: "100%",
-    rpe: 8,
-  },
-];
 
 const AthleteOverviewTab = () => {
   return (
@@ -121,6 +28,7 @@ const AthleteInfoRecentTraining = () => {
     variables: {
       athleteId: currentAthleteId()!.toString(),
     },
+    fetchPolicy: "cache-and-network",
   });
   return (
     <div className=" col-start-2 col-span-5 row-span-4 row-start-5 bg-gray-100 mb-2 rounded-md shadow-md overflow-auto">
@@ -259,6 +167,11 @@ const AthleteInfo: FC = () => {
           <Route
             path={`${path}/:athleteId/overview`}
             component={AthleteOverviewTab}
+            exact
+          />
+          <Route
+            path={`${path}/:athleteId/training`}
+            component={AthleteTraining}
             exact
           />
           <Route
