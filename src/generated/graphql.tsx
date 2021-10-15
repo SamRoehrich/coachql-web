@@ -14,6 +14,16 @@ export type Scalars = {
   Float: number;
 };
 
+export type Assessment = {
+  __typename?: 'Assessment';
+  id: Scalars['Int'];
+  name: Scalars['String'];
+  description: Scalars['String'];
+  organization: Organization;
+  dataPoints: Scalars['String'];
+  testMethod: Scalars['String'];
+};
+
 export type Athlete = {
   __typename?: 'Athlete';
   id: Scalars['Int'];
@@ -112,6 +122,7 @@ export type Mutation = {
   deleteWorkout: Scalars['Boolean'];
   createCoachProfile: Scalars['Boolean'];
   logSession: Scalars['Boolean'];
+  createAssessment: Scalars['Boolean'];
 };
 
 
@@ -294,6 +305,14 @@ export type MutationLogSessionArgs = {
   workoutId: Scalars['Float'];
 };
 
+
+export type MutationCreateAssessmentArgs = {
+  testMethod: Scalars['String'];
+  dataPoints: Scalars['String'];
+  description: Scalars['String'];
+  name: Scalars['String'];
+};
+
 export type Organization = {
   __typename?: 'Organization';
   id: Scalars['Int'];
@@ -332,6 +351,7 @@ export type Query = {
   getWorkout: Workout;
   getWorkoutsForTeam: Array<Workout>;
   getCoaches: Array<Coach>;
+  getAssessments: Array<Assessment>;
 };
 
 
@@ -862,7 +882,7 @@ export type GetSessionsForAthleteQuery = (
     & Pick<Session, 'id' | 'date' | 'percentCompleted' | 'rpe'>
     & { workout: (
       { __typename?: 'Workout' }
-      & Pick<Workout, 'name'>
+      & Pick<Workout, 'name' | 'workoutType'>
     ) }
   )> }
 );
@@ -1899,6 +1919,7 @@ export const GetSessionsForAthleteDocument = gql`
     rpe
     workout {
       name
+      workoutType
     }
   }
 }
