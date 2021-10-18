@@ -1,11 +1,12 @@
 import { useReactiveVar } from "@apollo/client";
-import { useEffect } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 import Chart from "react-google-charts";
 import {
   GetSessionsForAthleteQuery,
   useGetSessionsForAthleteQuery,
 } from "../../generated/graphql";
 import { currentAthleteId } from "../../graphql/cache";
+import AthleteRecentWorkouts from "./AthleteRecentWorkouts";
 
 const AthleteTraining = () => {
   const currentAthlete = useReactiveVar(currentAthleteId);
@@ -17,7 +18,10 @@ const AthleteTraining = () => {
   console.log(data);
   return (
     <div className="col-span-5 col-start-2 flex">
-      <div className="">
+      <div>
+        <AthleteRecentWorkouts />
+      </div>
+      <div>
         <AthleteTrainingPieChart />
       </div>
     </div>
@@ -42,26 +46,30 @@ const AthleteTrainingPieChart = () => {
     ["Mobility", 0],
     ["Open Session", 0],
   ];
-  const fillGraphData = (data: GetSessionsForAthleteQuery) => {
-    for (let i = 0; i < graphData.length; i++) {
-      for (let session of data.getCompletedSessionsForAthlete) {
-        if (graphData[i][0] === session.workout.workoutType) {
-          graphData[i][1]++;
+
+  const fillGraphData = useCallback(
+    (data: GetSessionsForAthleteQuery) => {
+      for (let i = 0; i < graphData.length; i++) {
+        for (let session of data.getCompletedSessionsForAthlete) {
+          if (graphData[i][0] === session.workout.workoutType) {
+            graphData[i][1]++;
+          }
         }
       }
-    }
-    console.log(graphData);
-  };
+      console.log(graphData);
+    },
+    [graphData]
+  );
   useEffect(() => {
     if (sessionData) {
       fillGraphData(sessionData);
     }
-  }, [sessionData]);
+  }, [sessionData, fillGraphData]);
   return (
-    <div>
+    <div className="border">
       <Chart
-        height={"400px"}
-        width={"600px"}
+        height={"200px"}
+        width={"400px"}
         chartType="PieChart"
         loader={<div>Loading Chart</div>}
         data={[["Workout Type", "Units of Work"], ...graphData]}
