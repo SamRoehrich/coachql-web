@@ -16,11 +16,8 @@ const AthleteTraining = () => {
   });
   console.log(data);
   return (
-    <div className="col-span-5 col-start-2">
-      <div>
-        <p>Athlete Training</p>
-      </div>
-      <div>
+    <div className="col-span-5 col-start-2 flex">
+      <div className="">
         <AthleteTrainingPieChart />
       </div>
     </div>
@@ -36,22 +33,24 @@ const AthleteTrainingPieChart = () => {
       },
     });
 
-  const graphData = {
-    strengthandPower: [],
-    conditioning: [],
-    aerobicCapacity: [],
-    anaerobicCapacity: {
-      name: "Anaerobic Capacity",
-      sessions: [],
-    },
-    openSession: {
-      name: "Open Session",
-      sessions: [],
-    },
-  };
+  const graphData: [string, number][] = [
+    ["Strength and Power", 0],
+    ["Conditioning", 0],
+    ["Anaerobic Capacity", 0],
+    ["Aerobic Capacity", 0],
+    ["Aerobic Power", 0],
+    ["Mobility", 0],
+    ["Open Session", 0],
+  ];
   const fillGraphData = (data: GetSessionsForAthleteQuery) => {
-    for (const session of data.getCompletedSessionsForAthlete) {
+    for (let i = 0; i < graphData.length; i++) {
+      for (let session of data.getCompletedSessionsForAthlete) {
+        if (graphData[i][0] === session.workout.workoutType) {
+          graphData[i][1]++;
+        }
+      }
     }
+    console.log(graphData);
   };
   useEffect(() => {
     if (sessionData) {
@@ -61,20 +60,13 @@ const AthleteTrainingPieChart = () => {
   return (
     <div>
       <Chart
-        height={"500px"}
-        width={"500px"}
+        height={"400px"}
+        width={"600px"}
         chartType="PieChart"
         loader={<div>Loading Chart</div>}
-        data={[
-          ["Task", "Hours per Day"],
-          ["Work", 11],
-          ["Eat", 2],
-          ["Commute", 2],
-          ["Watch TV", 2],
-          ["Sleep", 7],
-        ]}
+        data={[["Workout Type", "Units of Work"], ...graphData]}
         options={{
-          title: "My Daily Activities",
+          title: "Training History",
         }}
         rootProps={{ "data-testid": "1" }}
       />
