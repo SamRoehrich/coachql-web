@@ -7,7 +7,7 @@ const Calculate: FC = () => {
   const [results, setResults] = useState<number[]>([]);
   function calculatePercentages() {
     let results = [];
-    let percentages = [0.6, 0.7, 0.8, 0.9];
+    let percentages = [0.6, 0.7, 0.8, 0.9, 1.05];
     let total = parseInt(bw) + parseInt(added);
     for (let i = 0; i < percentages.length; i++) {
       results.push(total * percentages[i] - parseInt(bw));

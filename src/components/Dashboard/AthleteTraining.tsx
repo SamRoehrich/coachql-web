@@ -66,15 +66,17 @@ const AthleteTrainingPieChart = () => {
     }
   }, [sessionData, fillGraphData]);
   return (
-    <div className="border">
+    <div className="">
       <Chart
-        height={"200px"}
-        width={"400px"}
+        height={"370px"}
+        width={"600px"}
         chartType="PieChart"
         loader={<div>Loading Chart</div>}
         data={[["Workout Type", "Units of Work"], ...graphData]}
         options={{
-          title: "Training History",
+          legend: {
+            alignment: "center",
+          },
         }}
         rootProps={{ "data-testid": "1" }}
       />

@@ -1,5 +1,6 @@
 import { FC, useEffect } from "react";
 import {
+  useDeleteWorkoutMutation,
   useGetWorkoutLazyQuery,
   useGetWorkoutsQuery,
 } from "../generated/graphql";
@@ -62,6 +63,7 @@ interface Params {
 const WorkoutsPage: FC = () => {
   const [getWorkout, { loading: workoutLoading, data: workoutData }] =
     useGetWorkoutLazyQuery();
+  const [deleteWorkout, { data, client }] = useDeleteWorkoutMutation();
   const currentWorkout = useReactiveVar(currentWorkoutId);
 
   useEffect(() => {
@@ -89,7 +91,17 @@ const WorkoutsPage: FC = () => {
             <button className="shadow-md hover:shadow-lg rounded-md bg-gray-100 hover:cursor-pointer h-9 p-1">
               <Link to={`workouts/edit-workout/${workout.id}`}>Edit</Link>
             </button>
-            <button className="shadow-md hover:shadow-lg rounded-md bg-gray-100 hover:cursor-pointer h-9 p-1">
+            <button
+              className="shadow-md hover:shadow-lg rounded-md bg-gray-100 hover:cursor-pointer h-9 p-1"
+              onClick={() => {
+                deleteWorkout({
+                  variables: {
+                    workoutId: workoutData.getWorkout.id,
+                  },
+                });
+                client.cache.removeOptimistic(`Workout: ${currentWorkout}`);
+              }}
+            >
               Delete
             </button>
           </div>

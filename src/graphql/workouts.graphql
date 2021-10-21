@@ -44,6 +44,10 @@ mutation editWorkout(
   )
 }
 
+mutation DeleteWorkout($workoutId: Float!) {
+  deleteWorkout(workoutId: $workoutId)
+}
+
 query getWorkout($workoutId: Float!) {
   getWorkout(workoutId: $workoutId) {
     name
