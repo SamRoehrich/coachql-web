@@ -16,11 +16,13 @@ const AthleteList = () => {
     currentAthleteId(athleteId);
   };
 
-  return (
-    <div>
-      <div className="flex flex-col col-span-1 w-full row-span-full">
-        {athletes && athletes.getAthletesInOrg.length > 0 ? (
-          athletes.getAthletesInOrg.map((athlete, idx) => (
+  if (athletes?.getAthletesInOrg) {
+    const sorted = [...athletes.getAthletesInOrg];
+    sorted.sort((a, b) => a.user.lastName.localeCompare(b.user.lastName));
+    return (
+      <div>
+        <div className="flex flex-col col-span-1 w-full row-span-full">
+          {sorted.map((athlete, idx) => (
             <>
               <div
                 key={athlete.id + "" + idx}
@@ -34,13 +36,13 @@ const AthleteList = () => {
                 <p>{athlete.user.lastName}</p>
               </div>
             </>
-          ))
-        ) : (
-          <></>
-        )}
+          ))}
+        </div>
       </div>
-    </div>
-  );
+    );
+  }
+
+  return <div></div>;
 };
 
 export default AthleteList;

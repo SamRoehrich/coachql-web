@@ -259,7 +259,7 @@ const Laay: FC = () => {
           </>
         )}
       </Disclosure>
-      <main className="max-w-7xl lg:max-w-screen mx-auto py-6 sm:px-6 lg:px-0 h-full">
+      <main className="max-w-7xl lg:max-w-screen mx-auto py-6 sm:px-6 lg:px-0 max-h-screen">
         <div className="flex flex-row flex-auto bg-white shadow-xl w-full">
           <Route path={`${path}/roster`} component={RosterPage} />
           <Route

@@ -2,6 +2,7 @@ import { FC, useEffect } from "react";
 import {
   useDeleteWorkoutMutation,
   useGetWorkoutLazyQuery,
+  useGetWorkoutsLazyQuery,
   useGetWorkoutsQuery,
 } from "../generated/graphql";
 
@@ -36,9 +37,11 @@ const WorkoutList = () => {
 
   if (data && data.getWorkoutsInOrg.length > 0) {
     const workouts = data.getWorkoutsInOrg;
+    const sorted = [...workouts];
+    sorted.sort((a, b) => a.name.localeCompare(b.name));
     return (
       <div className="col-span-1">
-        {workouts.map((workout, idx) => (
+        {sorted.map((workout, idx) => (
           <div
             onClick={() => handleWorkoutListItemClick(workout.id)}
             className={classNames(
@@ -63,6 +66,7 @@ interface Params {
 const WorkoutsPage: FC = () => {
   const [getWorkout, { loading: workoutLoading, data: workoutData }] =
     useGetWorkoutLazyQuery();
+  const [getWorkouts, { called }] = useGetWorkoutsLazyQuery();
   const [deleteWorkout, { data, client }] = useDeleteWorkoutMutation();
   const currentWorkout = useReactiveVar(currentWorkoutId);
 
@@ -74,7 +78,7 @@ const WorkoutsPage: FC = () => {
         },
       });
     }
-  }, [currentWorkout]);
+  }, [currentWorkout, called]);
 
   if (workoutData !== undefined) {
     const { getWorkout: workout } = workoutData;
@@ -83,7 +87,7 @@ const WorkoutsPage: FC = () => {
     return (
       <div className="grid grid-flow-row grid-cols-6 grid-rows-8 gap-x-4 gap-y-8 w-full max-h-screen px-2">
         <WorkoutList />
-        <div className="flex justify-between items-end px-2 h-16 col-start-2 col-span-5">
+        <div className="flex justify-between items-end px-2 h-16 col-start-2 col-span-5 border-b-2 py-2">
           <p className="text-2xl font-semibold text-gray-800">
             {workoutData?.getWorkout.name}
           </p>
@@ -99,7 +103,7 @@ const WorkoutsPage: FC = () => {
                     workoutId: workoutData.getWorkout.id,
                   },
                 });
-                client.cache.removeOptimistic(`Workout: ${currentWorkout}`);
+                getWorkouts();
               }}
             >
               Delete
@@ -131,7 +135,7 @@ const WorkoutsPage: FC = () => {
               <p>{workoutData.getWorkout.description}</p>
             </div>
           </div>
-          <div className="rounded overflow-scroll h-4/6">
+          <div className="rounded overflow-scroll">
             <div className="grid grid-cols-5 rounded w-full text-sm text-gray-700 bg-gray-100 p-2">
               <p className="text-center">Name</p>
               <p className="text-center">Pace</p>
