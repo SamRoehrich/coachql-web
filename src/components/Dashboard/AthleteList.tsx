@@ -17,12 +17,10 @@ const AthleteList = () => {
   };
 
   if (athletes?.getAthletesInOrg) {
-    const sorted = [...athletes.getAthletesInOrg];
-    sorted.sort((a, b) => a.user.lastName.localeCompare(b.user.lastName));
     return (
       <div>
         <div className="flex flex-col col-span-1 w-full row-span-full">
-          {sorted.map((athlete, idx) => (
+          {athletes.getAthletesInOrg.map((athlete, idx) => (
             <>
               <div
                 key={athlete.id + "" + idx}

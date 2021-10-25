@@ -18,8 +18,17 @@ const AthleteOverviewTab = () => {
     <>
       <AthleteInfoOverviewPanel />
       <AthleteCalendar />
-      <AthleteInfoRecentTraining />
+      <AthleteNotes />
     </>
+  );
+};
+
+const AthleteNotes = () => {
+  return (
+    <div className="col-start-2 col-span-5 row-span-4 row-start-5 bg-gray-100 mb-2 rounded-md shadow-md overflow-auto">
+      <span className="p-2 text-xl">Notes</span>
+      <textarea className="w-full h-full border-none ring-0"></textarea>
+    </div>
   );
 };
 
