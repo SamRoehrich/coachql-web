@@ -11,6 +11,7 @@ import { currentWorkoutId } from "../graphql/cache";
 import { classNames } from "../utils/classNames";
 import { Link, useParams } from "react-router-dom";
 import { Disclosure } from "@headlessui/react";
+import { ChevronRightIcon, ChevronUpIcon } from "@heroicons/react/outline";
 
 interface Set {
   intensity: string;
@@ -41,7 +42,7 @@ const WorkoutList = () => {
     const sorted = [...workouts];
     sorted.sort((a, b) => a.name.localeCompare(b.name));
     return (
-      <div className="col-span-1">
+      <div className="col-span-1 flex flex-col space-y-4">
         {/* {sorted.map((workout, idx) => (
           <div
             onClick={() => handleWorkoutListItemClick(workout.id)}
@@ -56,13 +57,21 @@ const WorkoutList = () => {
         <Disclosure>
           {({ open }) => (
             <>
-              <Disclosure.Button>
-                <span>Strength and Conditioning</span>
+              <Disclosure.Button className="flex items-center">
+                <span className="text-sm">Strength and Conditioning</span>
+                <ChevronRightIcon
+                  className={`${
+                    open ? "transform rotate-90" : ""
+                  } w-4 h-4 text-gray-500`}
+                />
               </Disclosure.Button>
               <Disclosure.Panel>
                 {sorted.map((workout, idx) => {
                   return workout.workoutType === "Strength and Power" ? (
-                    <div>
+                    <div
+                      onClick={() => handleWorkoutListItemClick(workout.id)}
+                      className="cursor-pointer bg-gray-100 rounded"
+                    >
                       <p>{workout.name}</p>
                     </div>
                   ) : null;
@@ -74,13 +83,21 @@ const WorkoutList = () => {
         <Disclosure>
           {({ open }) => (
             <>
-              <Disclosure.Button>
-                <span>Anaerobic Capacity</span>
+              <Disclosure.Button className="flex items-center">
+                <span className="text-sm">Anaerobic Capacity</span>
+                <ChevronRightIcon
+                  className={`${
+                    open ? "transform rotate-90" : ""
+                  } w-4 h-4 text-gray-500`}
+                />
               </Disclosure.Button>
               <Disclosure.Panel>
                 {sorted.map((workout, idx) => {
                   return workout.workoutType === "Anaerobic Capacity" ? (
-                    <div>
+                    <div
+                      onClick={() => handleWorkoutListItemClick(workout.id)}
+                      className="cursor-pointer bg-gray-100 rounded"
+                    >
                       <p>{workout.name}</p>
                     </div>
                   ) : null;
@@ -92,13 +109,21 @@ const WorkoutList = () => {
         <Disclosure>
           {({ open }) => (
             <>
-              <Disclosure.Button>
-                <span>Aerobic Capacity</span>
+              <Disclosure.Button className="flex items-center">
+                <span className="text-sm">Aerobic Capacity</span>
+                <ChevronRightIcon
+                  className={`${
+                    open ? "transform rotate-90" : ""
+                  } w-4 h-4 text-gray-500`}
+                />
               </Disclosure.Button>
               <Disclosure.Panel>
                 {sorted.map((workout, idx) => {
                   return workout.workoutType === "Aerobic Capacity" ? (
-                    <div>
+                    <div
+                      onClick={() => handleWorkoutListItemClick(workout.id)}
+                      className="cursor-pointer bg-gray-100 rounded"
+                    >
                       <p>{workout.name}</p>
                     </div>
                   ) : null;
@@ -110,13 +135,21 @@ const WorkoutList = () => {
         <Disclosure>
           {({ open }) => (
             <>
-              <Disclosure.Button>
-                <span>Conditioning</span>
+              <Disclosure.Button className="flex items-center">
+                <span className="text-sm">Aerobic Power</span>
+                <ChevronRightIcon
+                  className={`${
+                    open ? "transform rotate-90" : ""
+                  } w-4 h-4 text-gray-500`}
+                />
               </Disclosure.Button>
               <Disclosure.Panel>
                 {sorted.map((workout, idx) => {
-                  return workout.workoutType === "Conditioning" ? (
-                    <div>
+                  return workout.workoutType === "Aerobic Power" ? (
+                    <div
+                      onClick={() => handleWorkoutListItemClick(workout.id)}
+                      className="cursor-pointer bg-gray-100 rounded"
+                    >
                       <p>{workout.name}</p>
                     </div>
                   ) : null;
@@ -128,13 +161,47 @@ const WorkoutList = () => {
         <Disclosure>
           {({ open }) => (
             <>
-              <Disclosure.Button>
-                <span>Open Session</span>
+              <Disclosure.Button className="flex items-center">
+                <span className="text-sm">Competition</span>
+                <ChevronRightIcon
+                  className={`${
+                    open ? "transform rotate-90" : ""
+                  } w-4 h-4 text-gray-500`}
+                />
+              </Disclosure.Button>
+              <Disclosure.Panel>
+                {sorted.map((workout, idx) => {
+                  return workout.workoutType === "Competition" ? (
+                    <div
+                      onClick={() => handleWorkoutListItemClick(workout.id)}
+                      className="cursor-pointer bg-gray-100 rounded"
+                    >
+                      <p>{workout.name}</p>
+                    </div>
+                  ) : null;
+                })}
+              </Disclosure.Panel>
+            </>
+          )}
+        </Disclosure>
+        <Disclosure>
+          {({ open }) => (
+            <>
+              <Disclosure.Button className="flex items-center">
+                <span className="text-sm">Open Session</span>
+                <ChevronRightIcon
+                  className={`${
+                    open ? "transform rotate-90" : ""
+                  } w-4 h-4 text-gray-500`}
+                />
               </Disclosure.Button>
               <Disclosure.Panel>
                 {sorted.map((workout, idx) => {
                   return workout.workoutType === "Open Session" ? (
-                    <div>
+                    <div
+                      onClick={() => handleWorkoutListItemClick(workout.id)}
+                      className="cursor-pointer bg-gray-100 rounded"
+                    >
                       <p>{workout.name}</p>
                     </div>
                   ) : (
@@ -148,13 +215,21 @@ const WorkoutList = () => {
         <Disclosure>
           {({ open }) => (
             <>
-              <Disclosure.Button>
-                <span>Mobility</span>
+              <Disclosure.Button className="flex items-center">
+                <span className="text-sm">Conditioning</span>
+                <ChevronRightIcon
+                  className={`${
+                    open ? "transform rotate-90" : ""
+                  } w-4 h-4 text-gray-500`}
+                />
               </Disclosure.Button>
               <Disclosure.Panel>
                 {sorted.map((workout, idx) => {
-                  return workout.workoutType === "Mobility" ? (
-                    <div>
+                  return workout.workoutType === "Conditioning" ? (
+                    <div
+                      onClick={() => handleWorkoutListItemClick(workout.id)}
+                      className="cursor-pointer bg-gray-100 rounded"
+                    >
                       <p>{workout.name}</p>
                     </div>
                   ) : null;
@@ -166,13 +241,21 @@ const WorkoutList = () => {
         <Disclosure>
           {({ open }) => (
             <>
-              <Disclosure.Button>
-                <span>Strength and Conditioning</span>
+              <Disclosure.Button className="flex items-center">
+                <span className="text-sm">Mobility</span>
+                <ChevronRightIcon
+                  className={`${
+                    open ? "transform rotate-90" : ""
+                  } w-4 h-4 text-gray-500`}
+                />
               </Disclosure.Button>
               <Disclosure.Panel>
                 {sorted.map((workout, idx) => {
-                  return workout.workoutType === "Strength and Power" ? (
-                    <div>
+                  return workout.workoutType === "Mobility" ? (
+                    <div
+                      onClick={() => handleWorkoutListItemClick(workout.id)}
+                      className="cursor-pointer bg-gray-100 rounded"
+                    >
                       <p>{workout.name}</p>
                     </div>
                   ) : null;
