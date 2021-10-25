@@ -26,7 +26,7 @@ const AthleteList = () => {
                 key={athlete.id + "" + idx}
                 className={classNames(
                   idx % 2 === 0 ? "bg-gray-100" : "",
-                  "text-sm h-10 w-full flex space-x-1 flex-none items-center"
+                  "text-sm h-10 w-full flex space-x-1 flex-none items-center cursor-pointer"
                 )}
                 onClick={() => handleListItemClick(athlete.id)}
               >

@@ -6,6 +6,7 @@ import {
   useGetSessionsForAthleteQuery,
 } from "../../generated/graphql";
 import { currentAthleteId } from "../../graphql/cache";
+import Loading from "../Loading";
 import AthleteRecentWorkouts from "./AthleteRecentWorkouts";
 
 const AthleteTraining = () => {
@@ -16,6 +17,9 @@ const AthleteTraining = () => {
     },
   });
   console.log(data);
+  if (dataLoading) {
+    return <Loading />;
+  }
   return (
     <div className="col-span-5 col-start-2 flex">
       <div>

@@ -10,6 +10,7 @@ import { useReactiveVar } from "@apollo/client";
 import { currentWorkoutId } from "../graphql/cache";
 import { classNames } from "../utils/classNames";
 import { Link, useParams } from "react-router-dom";
+import { Disclosure } from "@headlessui/react";
 
 interface Set {
   intensity: string;
@@ -41,7 +42,7 @@ const WorkoutList = () => {
     sorted.sort((a, b) => a.name.localeCompare(b.name));
     return (
       <div className="col-span-1">
-        {sorted.map((workout, idx) => (
+        {/* {sorted.map((workout, idx) => (
           <div
             onClick={() => handleWorkoutListItemClick(workout.id)}
             className={classNames(
@@ -51,7 +52,135 @@ const WorkoutList = () => {
           >
             <p className="cursor-pointer font-semibold">{workout.name}</p>
           </div>
-        ))}
+        ))} */}
+        <Disclosure>
+          {({ open }) => (
+            <>
+              <Disclosure.Button>
+                <span>Strength and Conditioning</span>
+              </Disclosure.Button>
+              <Disclosure.Panel>
+                {sorted.map((workout, idx) => {
+                  return workout.workoutType === "Strength and Power" ? (
+                    <div>
+                      <p>{workout.name}</p>
+                    </div>
+                  ) : null;
+                })}
+              </Disclosure.Panel>
+            </>
+          )}
+        </Disclosure>
+        <Disclosure>
+          {({ open }) => (
+            <>
+              <Disclosure.Button>
+                <span>Anaerobic Capacity</span>
+              </Disclosure.Button>
+              <Disclosure.Panel>
+                {sorted.map((workout, idx) => {
+                  return workout.workoutType === "Anaerobic Capacity" ? (
+                    <div>
+                      <p>{workout.name}</p>
+                    </div>
+                  ) : null;
+                })}
+              </Disclosure.Panel>
+            </>
+          )}
+        </Disclosure>
+        <Disclosure>
+          {({ open }) => (
+            <>
+              <Disclosure.Button>
+                <span>Aerobic Capacity</span>
+              </Disclosure.Button>
+              <Disclosure.Panel>
+                {sorted.map((workout, idx) => {
+                  return workout.workoutType === "Aerobic Capacity" ? (
+                    <div>
+                      <p>{workout.name}</p>
+                    </div>
+                  ) : null;
+                })}
+              </Disclosure.Panel>
+            </>
+          )}
+        </Disclosure>
+        <Disclosure>
+          {({ open }) => (
+            <>
+              <Disclosure.Button>
+                <span>Conditioning</span>
+              </Disclosure.Button>
+              <Disclosure.Panel>
+                {sorted.map((workout, idx) => {
+                  return workout.workoutType === "Conditioning" ? (
+                    <div>
+                      <p>{workout.name}</p>
+                    </div>
+                  ) : null;
+                })}
+              </Disclosure.Panel>
+            </>
+          )}
+        </Disclosure>
+        <Disclosure>
+          {({ open }) => (
+            <>
+              <Disclosure.Button>
+                <span>Open Session</span>
+              </Disclosure.Button>
+              <Disclosure.Panel>
+                {sorted.map((workout, idx) => {
+                  return workout.workoutType === "Open Session" ? (
+                    <div>
+                      <p>{workout.name}</p>
+                    </div>
+                  ) : (
+                    <div></div>
+                  );
+                })}
+              </Disclosure.Panel>
+            </>
+          )}
+        </Disclosure>
+        <Disclosure>
+          {({ open }) => (
+            <>
+              <Disclosure.Button>
+                <span>Mobility</span>
+              </Disclosure.Button>
+              <Disclosure.Panel>
+                {sorted.map((workout, idx) => {
+                  return workout.workoutType === "Mobility" ? (
+                    <div>
+                      <p>{workout.name}</p>
+                    </div>
+                  ) : null;
+                })}
+              </Disclosure.Panel>
+            </>
+          )}
+        </Disclosure>
+        <Disclosure>
+          {({ open }) => (
+            <>
+              <Disclosure.Button>
+                <span>Strength and Conditioning</span>
+              </Disclosure.Button>
+              <Disclosure.Panel>
+                {sorted.map((workout, idx) => {
+                  return workout.workoutType === "Strength and Power" ? (
+                    <div>
+                      <p>{workout.name}</p>
+                    </div>
+                  ) : null;
+                })}
+              </Disclosure.Panel>
+            </>
+          )}
+        </Disclosure>
       </div>
     );
   }
