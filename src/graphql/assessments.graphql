@@ -13,3 +13,9 @@ mutation CreateAssessment(
     type: $type
   )
 }
+
+query GetAssessmentsInOrg {
+  getAssessmentsInOrg {
+    name
+  }
+}

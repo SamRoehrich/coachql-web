@@ -123,6 +123,7 @@ export type Mutation = {
   deleteWorkout: Scalars['Boolean'];
   createCoachProfile: Scalars['Boolean'];
   logSession: Scalars['Boolean'];
+  deleteAssessment: Scalars['Boolean'];
   createAssessment: Scalars['Boolean'];
 };
 
@@ -307,6 +308,11 @@ export type MutationLogSessionArgs = {
 };
 
 
+export type MutationDeleteAssessmentArgs = {
+  assessmentId: Scalars['Float'];
+};
+
+
 export type MutationCreateAssessmentArgs = {
   type: Scalars['String'];
   tools: Scalars['String'];
@@ -354,6 +360,7 @@ export type Query = {
   getWorkoutsForTeam: Array<Workout>;
   getCoaches: Array<Coach>;
   getAssessments: Array<Assessment>;
+  getAssessmentsInOrg: Array<Assessment>;
 };
 
 
@@ -489,6 +496,17 @@ export type CreateAssessmentMutationVariables = Exact<{
 export type CreateAssessmentMutation = (
   { __typename?: 'Mutation' }
   & Pick<Mutation, 'createAssessment'>
+);
+
+export type GetAssessmentsInOrgQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetAssessmentsInOrgQuery = (
+  { __typename?: 'Query' }
+  & { getAssessmentsInOrg: Array<(
+    { __typename?: 'Assessment' }
+    & Pick<Assessment, 'name'>
+  )> }
 );
 
 export type GetAthleteQueryVariables = Exact<{
@@ -981,6 +999,40 @@ export function useCreateAssessmentMutation(baseOptions?: Apollo.MutationHookOpt
 export type CreateAssessmentMutationHookResult = ReturnType<typeof useCreateAssessmentMutation>;
 export type CreateAssessmentMutationResult = Apollo.MutationResult<CreateAssessmentMutation>;
 export type CreateAssessmentMutationOptions = Apollo.BaseMutationOptions<CreateAssessmentMutation, CreateAssessmentMutationVariables>;
+export const GetAssessmentsInOrgDocument = gql`
+    query GetAssessmentsInOrg {
+  getAssessmentsInOrg {
+    name
+  }
+}
+    `;
+
+/**
+ * __useGetAssessmentsInOrgQuery__
+ *
+ * To run a query within a React component, call `useGetAssessmentsInOrgQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAssessmentsInOrgQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetAssessmentsInOrgQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetAssessmentsInOrgQuery(baseOptions?: Apollo.QueryHookOptions<GetAssessmentsInOrgQuery, GetAssessmentsInOrgQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetAssessmentsInOrgQuery, GetAssessmentsInOrgQueryVariables>(GetAssessmentsInOrgDocument, options);
+      }
+export function useGetAssessmentsInOrgLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetAssessmentsInOrgQuery, GetAssessmentsInOrgQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetAssessmentsInOrgQuery, GetAssessmentsInOrgQueryVariables>(GetAssessmentsInOrgDocument, options);
+        }
+export type GetAssessmentsInOrgQueryHookResult = ReturnType<typeof useGetAssessmentsInOrgQuery>;
+export type GetAssessmentsInOrgLazyQueryHookResult = ReturnType<typeof useGetAssessmentsInOrgLazyQuery>;
+export type GetAssessmentsInOrgQueryResult = Apollo.QueryResult<GetAssessmentsInOrgQuery, GetAssessmentsInOrgQueryVariables>;
 export const GetAthleteDocument = gql`
     query GetAthlete($AthleteId: Float!) {
   getAthleteById(athleteId: $AthleteId) {
