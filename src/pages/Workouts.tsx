@@ -43,17 +43,6 @@ const WorkoutList = () => {
     sorted.sort((a, b) => a.name.localeCompare(b.name));
     return (
       <div className="col-span-1 flex flex-col space-y-4">
-        {/* {sorted.map((workout, idx) => (
-          <div
-            onClick={() => handleWorkoutListItemClick(workout.id)}
-            className={classNames(
-              idx % 2 === 0 ? "bg-gray-100" : "",
-              "text-sm h-10 w-full flex space-x-1 flex-none items-center p-2"
-            )}
-          >
-            <p className="cursor-pointer font-semibold">{workout.name}</p>
-          </div>
-        ))} */}
         <Disclosure>
           {({ open }) => (
             <>

@@ -1,0 +1,15 @@
+mutation CreateAssessment(
+  $name: String!
+  $description: String!
+  $tools: String!
+  $dataPoints: String!
+  $type: String!
+) {
+  createAssessment(
+    name: $name
+    description: $description
+    tools: $tools
+    dataPoints: $dataPoints
+    type: $type
+  )
+}

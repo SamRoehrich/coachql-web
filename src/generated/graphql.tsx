@@ -22,6 +22,7 @@ export type Assessment = {
   organization: Organization;
   dataPoints: Scalars['String'];
   testMethod: Scalars['String'];
+  assessmentType: Scalars['String'];
 };
 
 export type Athlete = {
@@ -307,7 +308,8 @@ export type MutationLogSessionArgs = {
 
 
 export type MutationCreateAssessmentArgs = {
-  testMethod: Scalars['String'];
+  type: Scalars['String'];
+  tools: Scalars['String'];
   dataPoints: Scalars['String'];
   description: Scalars['String'];
   name: Scalars['String'];
@@ -474,6 +476,20 @@ export type Workout = {
   recordClimbs: Scalars['Boolean'];
   notifications: Scalars['Boolean'];
 };
+
+export type CreateAssessmentMutationVariables = Exact<{
+  name: Scalars['String'];
+  description: Scalars['String'];
+  tools: Scalars['String'];
+  dataPoints: Scalars['String'];
+  type: Scalars['String'];
+}>;
+
+
+export type CreateAssessmentMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'createAssessment'>
+);
 
 export type GetAthleteQueryVariables = Exact<{
   AthleteId: Scalars['Float'];
@@ -924,6 +940,47 @@ export const RunningOrderFragmentDoc = gql`
   }
 }
     `;
+export const CreateAssessmentDocument = gql`
+    mutation CreateAssessment($name: String!, $description: String!, $tools: String!, $dataPoints: String!, $type: String!) {
+  createAssessment(
+    name: $name
+    description: $description
+    tools: $tools
+    dataPoints: $dataPoints
+    type: $type
+  )
+}
+    `;
+export type CreateAssessmentMutationFn = Apollo.MutationFunction<CreateAssessmentMutation, CreateAssessmentMutationVariables>;
+
+/**
+ * __useCreateAssessmentMutation__
+ *
+ * To run a mutation, you first call `useCreateAssessmentMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateAssessmentMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createAssessmentMutation, { data, loading, error }] = useCreateAssessmentMutation({
+ *   variables: {
+ *      name: // value for 'name'
+ *      description: // value for 'description'
+ *      tools: // value for 'tools'
+ *      dataPoints: // value for 'dataPoints'
+ *      type: // value for 'type'
+ *   },
+ * });
+ */
+export function useCreateAssessmentMutation(baseOptions?: Apollo.MutationHookOptions<CreateAssessmentMutation, CreateAssessmentMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateAssessmentMutation, CreateAssessmentMutationVariables>(CreateAssessmentDocument, options);
+      }
+export type CreateAssessmentMutationHookResult = ReturnType<typeof useCreateAssessmentMutation>;
+export type CreateAssessmentMutationResult = Apollo.MutationResult<CreateAssessmentMutation>;
+export type CreateAssessmentMutationOptions = Apollo.BaseMutationOptions<CreateAssessmentMutation, CreateAssessmentMutationVariables>;
 export const GetAthleteDocument = gql`
     query GetAthlete($AthleteId: Float!) {
   getAthleteById(athleteId: $AthleteId) {
