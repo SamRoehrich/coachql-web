@@ -14,6 +14,7 @@ import EditWorkout from "./Dashboard/EditWorkout";
 import { useMeQuery } from "../generated/graphql";
 import { setAccessToken } from "../accessToken";
 import CreateAssessment from "./Dashboard/CreateAssessment";
+import AssessmentsPage from "../pages/AssessmentsPage";
 
 const Navigation = [
   {
@@ -32,8 +33,8 @@ const Navigation = [
     current: false,
   },
   {
-    name: "Records",
-    href: "#",
+    name: "Assessments",
+    href: "/assessments",
     current: false,
   },
   {
@@ -50,12 +51,12 @@ const userNavigation = [
 ];
 
 const addNav = [
-  { name: "Create Team", href: "#" },
+  { name: "Create Assessment Test", href: "/create/assessment" },
+  { name: "Create Training Plan", href: "#" },
+  { name: "Create Workout", href: "/create/workout" },
   { name: "Create Athlete Profile", href: "/create/athlete" },
   { name: "Create Coach Profile", href: "#" },
-  { name: "Create A Workout", href: "/create/workout" },
-  { name: "Create Training Plan", href: "#" },
-  { name: "Create Assessment Test", href: "/create/assessment" },
+  { name: "Create Team", href: "#" },
 ];
 
 const user = {
@@ -262,6 +263,7 @@ const Laay: FC = () => {
       <main className="max-w-7xl lg:max-w-screen mx-auto py-6 sm:px-6 lg:px-0 max-h-screen">
         <div className="flex flex-row flex-auto bg-white shadow-xl w-full">
           <Route path={`${path}/roster`} component={RosterPage} />
+          <Route path={`${path}/assessments`} component={AssessmentsPage} />
           <Route
             path="/layout/:userId/create/athlete"
             component={CreateAthlete}
