@@ -12,13 +12,23 @@ import AthleteCalendar from "./Dashboard/AthleteCalendar";
 import AthleteInfoHeader from "./Dashboard/AthleteHeaderInfo";
 import AthleteTraining from "./Dashboard/AthleteTraining";
 import Metrics from "./Dashboard/Metrics";
+import RecentTrainingSunburst from "./Graphs/RecentTrainingSunburst";
 
 const AthleteOverviewTab = () => {
   return (
     <>
       <AthleteInfoOverviewPanel />
+      <AthleteRecentTraining />
       <AthleteCalendar />
     </>
+  );
+};
+
+const AthleteRecentTraining = () => {
+  return (
+    <div className="col-start-2 col-span-2 row-span-5 row-start-3 bg-gray-100 rounded-md shadow-md overflow-auto">
+      {/* <RecentTrainingSunburst /> */}
+    </div>
   );
 };
 
@@ -41,44 +51,52 @@ const AthleteInfoOverviewPanel = () => {
     }
   }, [currentAthlete]);
   return (
-    <div className="flex flex-col justify-between bg-gray-100 shadow-md rounded-md col-span-2 col-start-2 row-span-3">
-      <div className="flex flex-col md:flex-row md:justify-between items-center justify-center text-center">
-        <div className="flex flex-col p-2">
-          <span className="text-xs text-gray-500">Age</span>
-          <p className="text-lg text-gray-900">
-            {date.getFullYear() - data?.getAthleteById.birthYear!}
-          </p>
-        </div>
-        <div className="flex flex-col p-2">
-          <span className="text-xs text-gray-500">Catagory</span>
-          <p className="text-lg md:text-right">JR</p>
-        </div>
-      </div>
-      <div className="flex md:justify-between justify-center text-center">
-        <div className="flex flex-col p-2 md:text-left">
-          <span className="text-xs text-gray-500">Status</span>
-          <p className="text-lg">Active</p>
-        </div>
-        <div className="hidden md:flex flex-col p-2">
-          <span className="text-xs text-gray-500 text-right">Email</span>
-          <div className="flex space-x-2">
-            <p className="text-lg cursor-pointer hover:border-b-2">Parent</p>
-            <p className="text-lg cursor-pointer">Athlete</p>
+    <div className="flex flex-col justify-between bg-gray-100 shadow-md rounded-md col-span-5 col-start-2 row-span-1">
+      <div className="flex md:justify-between items-center justify-center text-center">
+        <div>
+          <div className="flex flex-col p-2 text-left">
+            <span className="text-xs text-gray-500">Age</span>
+            <p className="text-lg text-gray-900">
+              {date.getFullYear() - data?.getAthleteById.birthYear!}
+            </p>
+          </div>
+          <div className="flex flex-col p-2 text-left">
+            <span className="text-xs text-gray-500">Catagory</span>
+            <p className="text-lg">JR</p>
           </div>
         </div>
-      </div>
-      <div className="flex md:justify-between justify-center text-center">
-        <div className="flex flex-col p-2">
-          <span className="text-xs text-gray-500 md:text-right">
-            Last Session
-          </span>
-          <p className="text-lg md:text-left">Sept 1</p>
+        <div>
+          <div className="flex justify-center text-center flex-col">
+            <div className="flex flex-col p-2">
+              <span className="text-xs text-gray-500">Status</span>
+              <p className="text-lg">Active</p>
+            </div>
+            <div className="hidden md:flex flex-col p-2">
+              <span className="text-xs text-gray-500">Email</span>
+              <div className="flex space-x-2">
+                <p className="text-lg cursor-pointer hover:border-b-2">
+                  Parent
+                </p>
+                <p className="text-lg cursor-pointer">Athlete</p>
+              </div>
+            </div>
+          </div>
         </div>
-        <div className="flex-col p-2 hidden md:flex">
-          <span className="text-xs text-gray-500 md:text-right">
-            Last Assessment
-          </span>
-          <p className="text-lg text-right">July 30</p>
+        <div>
+          <div className="flex justify-center text-center flex-col">
+            <div className="flex flex-col p-2">
+              <span className="text-xs text-gray-500 md:text-right">
+                Last Session
+              </span>
+              <p className="text-lg text-right">Sept 1</p>
+            </div>
+            <div className="flex-col p-2 hidden md:flex">
+              <span className="text-xs text-gray-500 md:text-right">
+                Last Assessment
+              </span>
+              <p className="text-lg text-right">July 30</p>
+            </div>
+          </div>
         </div>
       </div>
     </div>

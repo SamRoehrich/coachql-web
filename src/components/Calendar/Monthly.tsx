@@ -1,12 +1,41 @@
-import { FC, useState } from "react";
+import { FC, useState, useEffect } from "react";
 import { format, addMonths, subMonths, addDays, startOfMonth } from "date-fns";
 import { endOfMonth, endOfWeek, startOfWeek, parse } from "date-fns/esm";
+import {
+  GetSessionsForAthleteQuery,
+  GetSessionsForAthleteQueryResult,
+  Session,
+  Workout,
+} from "../../generated/graphql";
 
-interface Props {}
+interface Props {
+  sessions?: GetSessionsForAthleteQuery;
+}
 
-const Monthly: FC<Props> = () => {
+const Monthly: FC<Props> = ({ sessions }) => {
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState(new Date());
+  const [currentSessions, setCurrentSessions] = useState<Array<
+    {
+      __typename?: "Session";
+    } & Pick<Session, "id" | "date" | "percentCompleted" | "rpe"> & {
+        workout: {
+          __typename?: "Workout";
+        } & Pick<Workout, "name" | "workoutType">;
+      }
+  > | null>(null);
+
+  useEffect(() => {
+    const formattedMonth = format(currentMonth, "MM");
+    const completedSessions = sessions!.getCompletedSessionsForAthlete;
+    setCurrentSessions(
+      completedSessions.filter(
+        (session) => format(new Date(session.date), "MM") === formattedMonth
+      )
+    );
+  }, [currentMonth, sessions]);
+
+  console.log(sessions);
 
   function renderHeader() {
     const dateFormat = "MM yyyy";
@@ -84,15 +113,25 @@ const Monthly: FC<Props> = () => {
     while (day <= endDate) {
       for (let i = 0; i < 7; i++) {
         formattedDate = format(day, dateFormat);
+        console.log("FORMATTED DATE" + formattedDate);
+
         const cloneDay = day;
 
         days.push(
           <div
             key={"calendar" + i}
-            className="flex border w-full"
+            className="flex flex-col border w-full"
             onClick={() => onDateClick()}
           >
             <span className="text-sm text-gray-600">{formattedDate}</span>
+            {currentSessions?.map((session, idx) =>
+              format(new Date(session.date), dateFormat) ===
+                format(day, dateFormat) &&
+              format(new Date(session.date), "MM") ===
+                format(currentMonth, "MM") ? (
+                <span className="text-xs">{session.workout.name}</span>
+              ) : null
+            )}
           </div>
         );
         day = addDays(day, 1);
