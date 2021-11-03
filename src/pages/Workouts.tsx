@@ -47,7 +47,7 @@ const WorkoutList = () => {
           {({ open }) => (
             <>
               <Disclosure.Button className="flex items-center">
-                <span className="text-sm">Strength and Conditioning</span>
+                <span className="text-sm">Strength & Power</span>
                 <ChevronRightIcon
                   className={`${
                     open ? "transform rotate-90" : ""
