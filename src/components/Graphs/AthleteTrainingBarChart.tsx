@@ -1,5 +1,5 @@
 import { useReactiveVar } from "@apollo/client";
-import { useCallback, useEffect } from "react";
+import { FC, useCallback, useEffect } from "react";
 import Chart from "react-google-charts";
 import {
   GetSessionsForAthleteQuery,
@@ -8,14 +8,17 @@ import {
 import { currentAthleteId } from "../../graphql/cache";
 import Loading from "../Loading";
 
-const AthleteTrainingBarChart = () => {
+const AthleteTrainingBarChart: FC = () => {
   const currentAthlete = useReactiveVar(currentAthleteId);
-  const { data: sessionData, loading: dataLoading } =
-    useGetSessionsForAthleteQuery({
-      variables: {
-        athleteId: currentAthlete!.toString(),
-      },
-    });
+  const {
+    data: sessionData,
+    loading: dataLoading,
+    called,
+  } = useGetSessionsForAthleteQuery({
+    variables: {
+      athleteId: currentAthlete!.toString(),
+    },
+  });
 
   const graphData: [string, number][] = [
     ["Strength and Power", 0],
@@ -48,25 +51,28 @@ const AthleteTrainingBarChart = () => {
   if (dataLoading) {
     return <Loading />;
   }
-  return (
-    <div className="">
-      <Chart
-        height={"450px"}
-        width={"410px"}
-        chartType="BarChart"
-        loader={<div>Loading Chart</div>}
-        data={[["Workout Type", "Sessions"], ...graphData]}
-        options={{
-          legend: {
-            alignment: "center",
-            position: "none",
-            fontSize: 8,
-          },
-        }}
-        rootProps={{ "data-testid": "1" }}
-      />
-    </div>
-  );
+  if (sessionData) {
+    return (
+      <div className="">
+        <Chart
+          height={"450px"}
+          width={"410px"}
+          chartType="BarChart"
+          loader={<div>Loading Chart</div>}
+          data={[["Workout Type", "Sessions"], ...graphData]}
+          options={{
+            legend: {
+              alignment: "center",
+              position: "none",
+              fontSize: 8,
+            },
+          }}
+          rootProps={{ "data-testid": "1" }}
+        />
+      </div>
+    );
+  }
+  return <div>No data</div>;
 };
 
 export default AthleteTrainingBarChart;
