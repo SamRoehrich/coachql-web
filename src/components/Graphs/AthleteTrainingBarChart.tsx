@@ -1,5 +1,5 @@
 import { useReactiveVar } from "@apollo/client";
-import { useCallback, useEffect, useMemo } from "react";
+import { useCallback, useEffect } from "react";
 import Chart from "react-google-charts";
 import {
   GetSessionsForAthleteQuery,
@@ -7,32 +7,8 @@ import {
 } from "../../generated/graphql";
 import { currentAthleteId } from "../../graphql/cache";
 import Loading from "../Loading";
-import AthleteRecentWorkouts from "./AthleteRecentWorkouts";
 
-const AthleteTraining = () => {
-  const currentAthlete = useReactiveVar(currentAthleteId);
-  const { data, loading: dataLoading } = useGetSessionsForAthleteQuery({
-    variables: {
-      athleteId: currentAthlete!.toString(),
-    },
-  });
-  console.log(data);
-  if (dataLoading) {
-    return <Loading />;
-  }
-  return (
-    <div className="col-span-5 col-start-2 flex">
-      <div>
-        <AthleteRecentWorkouts />
-      </div>
-      <div>
-        <AthleteTrainingPieChart />
-      </div>
-    </div>
-  );
-};
-
-const AthleteTrainingPieChart = () => {
+const AthleteTrainingBarChart = () => {
   const currentAthlete = useReactiveVar(currentAthleteId);
   const { data: sessionData, loading: dataLoading } =
     useGetSessionsForAthleteQuery({
@@ -69,17 +45,22 @@ const AthleteTrainingPieChart = () => {
       fillGraphData(sessionData);
     }
   }, [sessionData, fillGraphData]);
+  if (dataLoading) {
+    return <Loading />;
+  }
   return (
     <div className="">
       <Chart
-        height={"370px"}
-        width={"600px"}
+        height={"450px"}
+        width={"410px"}
         chartType="BarChart"
         loader={<div>Loading Chart</div>}
-        data={[["Workout Type", "Units of Work"], ...graphData]}
+        data={[["Workout Type", "Sessions"], ...graphData]}
         options={{
           legend: {
             alignment: "center",
+            position: "none",
+            fontSize: 8,
           },
         }}
         rootProps={{ "data-testid": "1" }}
@@ -88,4 +69,4 @@ const AthleteTrainingPieChart = () => {
   );
 };
 
-export default AthleteTraining;
+export default AthleteTrainingBarChart;

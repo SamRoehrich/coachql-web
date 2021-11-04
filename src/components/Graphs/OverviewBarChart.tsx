@@ -1,4 +1,5 @@
 import { FC } from "react";
+import AthleteTrainingBarChart from "./AthleteTrainingBarChart";
 
 const OverviewBarChart: FC = () => {
   return (
@@ -12,18 +13,7 @@ const OverviewBarChart: FC = () => {
         </button>
       </div>
       <div>
-        <svg
-          style={{
-            height: 500,
-            width: "100%",
-            marginRight: "0px",
-            marginLeft: "0px",
-          }}
-        >
-          <g className="plot-area" />
-          <g className="x-axis" />
-          <g className="y-axis" />
-        </svg>
+        <AthleteTrainingBarChart />
       </div>
     </div>
   );
