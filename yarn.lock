@@ -1902,6 +1902,14 @@
     "mkdirp" "^1.0.4"
     "rimraf" "^3.0.2"
 
+"@observablehq/plot@^0.2.9":
+  "integrity" "sha512-9qXatKkH40lVYnPpNNm2IdKjP0KkBsv9OcV1FaGE+DYPDC60yjc2+a7b0pKKqt66wT/9ld7DKZAKnyoeFwMvCQ=="
+  "resolved" "https://registry.npmjs.org/@observablehq/plot/-/plot-0.2.9.tgz"
+  "version" "0.2.9"
+  dependencies:
+    "d3" "^7.1.0"
+    "isoformat" "^0.2.0"
+
 "@pmmmwh/react-refresh-webpack-plugin@0.4.3":
   "integrity" "sha512-br5Qwvh8D2OQqSXpd1g/xqXKnK0r+Jz6qVKBbWmpUcrbGOxUrf39V5oZ1876084CGn18uMdR5uvPqBv9UqtBjQ=="
   "resolved" "https://registry.npmjs.org/@pmmmwh/react-refresh-webpack-plugin/-/react-refresh-webpack-plugin-0.4.3.tgz"
@@ -5484,7 +5492,7 @@
     "d3-selection" "2 - 3"
     "d3-transition" "2 - 3"
 
-"d3@^7.1.1":
+"d3@^7.1.0", "d3@^7.1.1":
   "integrity" "sha512-8zkLMwSvUAnfN9pcJDfkuxU0Nvg4RLUD0A4BZN1KxJPtlnCGzMx3xM5cRl4m8fym/Vy8rlq52tl90UF3m91OnA=="
   "resolved" "https://registry.npmjs.org/d3/-/d3-7.1.1.tgz"
   "version" "7.1.1"
@@ -8446,6 +8454,11 @@
   "integrity" "sha512-S/2fF5wH8SJA/kmwr6HYhK/RI/OkhD84k8ntalo0iJjZikgq1XFvR5M8NPT1x5F7fBwCG3qHfnzeP/Vh/ZxCUA=="
   "resolved" "https://registry.npmjs.org/isobject/-/isobject-4.0.0.tgz"
   "version" "4.0.0"
+
+"isoformat@^0.2.0":
+  "integrity" "sha512-tFLRAygk9NqrRPhJSnNGh7g7oaVWDwR0wKh/GM2LgmPa50Eg4UfyaCO4I8k6EqJHl1/uh2RAD6g06n5ygEnrjQ=="
+  "resolved" "https://registry.npmjs.org/isoformat/-/isoformat-0.2.1.tgz"
+  "version" "0.2.1"
 
 "isomorphic-fetch@^3.0.0":
   "integrity" "sha512-qvUtwJ3j6qwsF3jLxkZ72qCgjMysPzDfeV240JHiGZsANBYd+EEuu35v7dfrJ9Up0Ak07D7GGSkGhCHTqg/5wA=="

@@ -1,9 +1,8 @@
 import { FC, useState, useEffect } from "react";
 import { format, addMonths, subMonths, addDays, startOfMonth } from "date-fns";
-import { endOfMonth, endOfWeek, startOfWeek, parse } from "date-fns/esm";
+import { endOfMonth, endOfWeek, startOfWeek } from "date-fns/esm";
 import {
   GetSessionsForAthleteQuery,
-  GetSessionsForAthleteQueryResult,
   Session,
   Workout,
 } from "../../generated/graphql";

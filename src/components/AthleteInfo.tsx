@@ -12,7 +12,7 @@ import AthleteCalendar from "./Dashboard/AthleteCalendar";
 import AthleteInfoHeader from "./Dashboard/AthleteHeaderInfo";
 import AthleteTraining from "./Dashboard/AthleteTraining";
 import Metrics from "./Dashboard/Metrics";
-import RecentTrainingSunburst from "./Graphs/RecentTrainingSunburst";
+import OverviewBarChart from "./Graphs/OverviewBarChart";
 
 const AthleteOverviewTab = () => {
   return (
@@ -26,8 +26,34 @@ const AthleteOverviewTab = () => {
 
 const AthleteRecentTraining = () => {
   return (
-    <div className="col-start-2 col-span-2 row-span-5 row-start-3 bg-gray-100 rounded-md shadow-md overflow-auto">
-      {/* <RecentTrainingSunburst /> */}
+    <div className="col-start-2 col-span-2 row-span-5 row-start-3 bg-gray-100 rounded-md shadow-md overflow-auto flex flex-col justify-center">
+      <OverviewBarChart />
+      <div>
+        <div className="flex justify-between">
+          <div className="flex flex-col p-2">
+            <span className="text-xs text-gray-500">Sessions Past 30 Days</span>
+            <p className="text-lg">21</p>
+          </div>
+          <div className="flex flex-col p-2">
+            <span className="text-xs text-gray-500">
+              Training Hours Past 30 Days
+            </span>
+            <p className="text-lg text-right">23.5</p>
+          </div>
+        </div>
+        <div className="flex justify-between">
+          <div className="flex flex-col p-2">
+            <span className="text-xs text-gray-500">Sessions Past 90 Days</span>
+            <p className="text-lg">45</p>
+          </div>
+          <div className="flex flex-col p-2">
+            <span className="text-xs text-gray-500">
+              Training Hours Past 90 Days
+            </span>
+            <p className="text-lg text-right">100</p>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
