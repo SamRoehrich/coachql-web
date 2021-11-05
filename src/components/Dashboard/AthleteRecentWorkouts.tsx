@@ -15,13 +15,13 @@ const AthleteRecentWorkouts: FC = () => {
     currentSessionId(sessionId);
   };
   return (
-    <div className="col-start-2 col-span-2 row-span-4 row-start-5 bg-gray-100 mb-2 rounded-md shadow-md overflow-auto">
+    <div className="col-start-2 col-span-2 row-start-auto row-span-6 bg-gray-100 mb-2 rounded-md shadow-md overflow-auto">
       {data?.getCompletedSessionsForAthlete.map((item, idx) => (
         <button
           key={idx}
           className={classNames(
             idx % 2 === 0 ? "bg-white" : "",
-            "h-14 grid grid-cols-8 p-1 grid-rows-2 gap-x-4 w-full"
+            "h-14 grid grid-cols-8 p-1 grid-rows-2 gap-x-4"
           )}
           onClick={() => handleSessionClick(item.id)}
         >

@@ -17,9 +17,8 @@ const AthleteTraining = () => {
     return <Loading />;
   }
   return (
-    <div className="col-span-5 col-start-2 flex">
-      <div></div>
-      <div>
+    <div className="col-span-5 col-start-2 flex row-start-auto row-span-6">
+      <div className="">
         <AthleteRecentWorkouts />
       </div>
       <div>
