@@ -1,33 +1,27 @@
 import { FC, useEffect } from "react";
-import { useGetSessionsForAthleteQuery } from "../../generated/graphql";
+import {
+  GetSessionsForAthleteQuery,
+  useGetSessionsForAthleteQuery,
+} from "../../generated/graphql";
 import { currentAthleteId, currentSessionId } from "../../graphql/cache";
 import { classNames } from "../../utils/classNames";
 
-const AthleteRecentWorkouts: FC = () => {
-  const { data, loading, error } = useGetSessionsForAthleteQuery({
-    variables: {
-      athleteId: currentAthleteId()!.toString(),
-    },
-    fetchPolicy: "cache-and-network",
-  });
+interface Props {
+  sessions: GetSessionsForAthleteQuery;
+}
+
+const AthleteRecentWorkouts: FC<Props> = ({ sessions }) => {
   const handleSessionClick = (sessionId: number) => {
     currentSessionId(sessionId);
   };
 
   useEffect(() => {
-    console.log("recent workout rerender");
-
-    if (data!.getCompletedSessionsForAthlete.length > 0) {
-      currentSessionId(data?.getCompletedSessionsForAthlete[0].id);
-    }
-    if (data!.getCompletedSessionsForAthlete.length === 0) {
-      currentSessionId(null);
-    }
-  }, [data]);
+    currentSessionId(sessions.getCompletedSessionsForAthlete[0].id);
+  }, [sessions]);
 
   return (
     <div className="bg-gray-100 rounded-md shadow-md overflow-auto w-1/2">
-      {data?.getCompletedSessionsForAthlete.map((item, idx) => (
+      {sessions.getCompletedSessionsForAthlete.map((item, idx) => (
         <button
           key={idx}
           className={classNames(
