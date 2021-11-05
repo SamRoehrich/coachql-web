@@ -1,13 +1,9 @@
 import { useReactiveVar } from "@apollo/client";
-import { useCallback, useEffect, useMemo } from "react";
-import Chart from "react-google-charts";
-import {
-  GetSessionsForAthleteQuery,
-  useGetSessionsForAthleteQuery,
-} from "../../generated/graphql";
+import { useGetSessionsForAthleteQuery } from "../../generated/graphql";
 import { currentAthleteId } from "../../graphql/cache";
 import Loading from "../Loading";
 import AthleteRecentWorkouts from "./AthleteRecentWorkouts";
+import CompletedSessionInfo from "./CompletedSessionInfo";
 
 const AthleteTraining = () => {
   const currentAthlete = useReactiveVar(currentAthleteId);
@@ -22,10 +18,13 @@ const AthleteTraining = () => {
   }
   return (
     <div className="col-span-5 col-start-2 flex">
+      <div></div>
       <div>
         <AthleteRecentWorkouts />
       </div>
-      <div></div>
+      <div>
+        <CompletedSessionInfo />
+      </div>
     </div>
   );
 };

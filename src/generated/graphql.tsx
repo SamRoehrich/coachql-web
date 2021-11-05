@@ -359,6 +359,7 @@ export type Query = {
   getWorkout: Workout;
   getWorkoutsForTeam: Array<Workout>;
   getCoaches: Array<Coach>;
+  getSessionById: Session;
   getAssessments: Array<Assessment>;
   getAssessmentsInOrg: Array<Assessment>;
 };
@@ -411,6 +412,11 @@ export type QueryGetWorkoutArgs = {
 
 export type QueryGetWorkoutsForTeamArgs = {
   teamId: Scalars['String'];
+};
+
+
+export type QueryGetSessionByIdArgs = {
+  sessionId: Scalars['Float'];
 };
 
 export type RunningOrder = {
@@ -806,6 +812,23 @@ export type EditRunningOrderMutationVariables = Exact<{
 export type EditRunningOrderMutation = (
   { __typename?: 'Mutation' }
   & Pick<Mutation, 'editRunningOrder'>
+);
+
+export type GetSessionByIdQueryVariables = Exact<{
+  sessionId: Scalars['Float'];
+}>;
+
+
+export type GetSessionByIdQuery = (
+  { __typename?: 'Query' }
+  & { getSessionById: (
+    { __typename?: 'Session' }
+    & Pick<Session, 'id' | 'notes' | 'rpe' | 'percentCompleted' | 'date'>
+    & { workout: (
+      { __typename?: 'Workout' }
+      & Pick<Workout, 'name' | 'description' | 'workoutType' | 'sets' | 'numSets'>
+    ) }
+  ) }
 );
 
 export type GetStacksForEventQueryVariables = Exact<{
@@ -1737,6 +1760,52 @@ export function useEditRunningOrderMutation(baseOptions?: Apollo.MutationHookOpt
 export type EditRunningOrderMutationHookResult = ReturnType<typeof useEditRunningOrderMutation>;
 export type EditRunningOrderMutationResult = Apollo.MutationResult<EditRunningOrderMutation>;
 export type EditRunningOrderMutationOptions = Apollo.BaseMutationOptions<EditRunningOrderMutation, EditRunningOrderMutationVariables>;
+export const GetSessionByIdDocument = gql`
+    query GetSessionById($sessionId: Float!) {
+  getSessionById(sessionId: $sessionId) {
+    id
+    notes
+    rpe
+    percentCompleted
+    date
+    workout {
+      name
+      description
+      workoutType
+      sets
+      numSets
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetSessionByIdQuery__
+ *
+ * To run a query within a React component, call `useGetSessionByIdQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetSessionByIdQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetSessionByIdQuery({
+ *   variables: {
+ *      sessionId: // value for 'sessionId'
+ *   },
+ * });
+ */
+export function useGetSessionByIdQuery(baseOptions: Apollo.QueryHookOptions<GetSessionByIdQuery, GetSessionByIdQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetSessionByIdQuery, GetSessionByIdQueryVariables>(GetSessionByIdDocument, options);
+      }
+export function useGetSessionByIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetSessionByIdQuery, GetSessionByIdQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetSessionByIdQuery, GetSessionByIdQueryVariables>(GetSessionByIdDocument, options);
+        }
+export type GetSessionByIdQueryHookResult = ReturnType<typeof useGetSessionByIdQuery>;
+export type GetSessionByIdLazyQueryHookResult = ReturnType<typeof useGetSessionByIdLazyQuery>;
+export type GetSessionByIdQueryResult = Apollo.QueryResult<GetSessionByIdQuery, GetSessionByIdQueryVariables>;
 export const GetStacksForEventDocument = gql`
     query GetStacksForEvent($eventId: String!) {
   getStacks(eventId: $eventId) {

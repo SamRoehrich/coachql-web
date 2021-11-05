@@ -20,6 +20,7 @@ import {
   currentStackVar,
   currentAthleteId,
   currentWorkoutId,
+  currentSessionId,
 } from "./graphql/cache";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
@@ -42,6 +43,11 @@ const cache = new InMemoryCache({
         //     });
         //   },
         // },
+        currentSessionId: {
+          read() {
+            return currentSessionId();
+          },
+        },
         currentEventId: {
           read() {
             return currentEventIdVar();

@@ -10,15 +10,12 @@ import Loading from "../Loading";
 
 const AthleteTrainingBarChart: FC = () => {
   const currentAthlete = useReactiveVar(currentAthleteId);
-  const {
-    data: sessionData,
-    loading: dataLoading,
-    called,
-  } = useGetSessionsForAthleteQuery({
-    variables: {
-      athleteId: currentAthlete!.toString(),
-    },
-  });
+  const { data: sessionData, loading: dataLoading } =
+    useGetSessionsForAthleteQuery({
+      variables: {
+        athleteId: currentAthlete!.toString(),
+      },
+    });
 
   const graphData: [string, number][] = [
     ["Strength and Power", 0],

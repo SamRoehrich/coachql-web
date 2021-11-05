@@ -6,6 +6,13 @@ export const currentTabVar = makeVar("stacks");
 export const currentStackVar = makeVar({});
 export const currentAthleteId = makeVar<number | null>(null);
 export const currentWorkoutId = makeVar<number | null>(null);
+export const currentSessionId = makeVar<number | null>(null);
+
+export const GET_CURRENT_SESSION_ID = gql`
+  query GetCurrentSessionId {
+    currentSessionId @client
+  }
+`;
 
 export const GET_CURRENT_WORKOUT_ID = gql`
   query GetCurrentWorkoutId {

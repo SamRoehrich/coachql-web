@@ -1,0 +1,16 @@
+query GetSessionById($sessionId: Float!) {
+  getSessionById(sessionId: $sessionId) {
+    id
+    notes
+    rpe
+    percentCompleted
+    date
+    workout {
+      name
+      description
+      workoutType
+      sets
+      numSets
+    }
+  }
+}

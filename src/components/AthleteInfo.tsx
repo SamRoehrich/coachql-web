@@ -1,13 +1,8 @@
 import { useReactiveVar } from "@apollo/client";
-import { Disclosure } from "@headlessui/react";
 import { FC, useEffect } from "react";
 import { Route, Switch, useRouteMatch } from "react-router";
-import {
-  useGetAthleteLazyQuery,
-  useGetSessionsForAthleteQuery,
-} from "../generated/graphql";
+import { useGetAthleteLazyQuery } from "../generated/graphql";
 import { currentAthleteId } from "../graphql/cache";
-import { classNames } from "../utils/classNames";
 import AthleteCalendar from "./Dashboard/AthleteCalendar";
 import AthleteInfoHeader from "./Dashboard/AthleteHeaderInfo";
 import AthleteTraining from "./Dashboard/AthleteTraining";

@@ -1,7 +1,7 @@
 import { Disclosure } from "@headlessui/react";
 import { FC } from "react";
 import { useGetSessionsForAthleteQuery } from "../../generated/graphql";
-import { currentAthleteId } from "../../graphql/cache";
+import { currentAthleteId, currentSessionId } from "../../graphql/cache";
 import { classNames } from "../../utils/classNames";
 
 const AthleteRecentWorkouts: FC = () => {
@@ -11,16 +11,19 @@ const AthleteRecentWorkouts: FC = () => {
     },
     fetchPolicy: "cache-and-network",
   });
+  const handleSessionClick = (sessionId: number) => {
+    currentSessionId(sessionId);
+  };
   return (
-    <div className=" col-start-2 col-span-5 row-span-4 row-start-5 bg-gray-100 mb-2 rounded-md shadow-md overflow-auto">
-      <span>Training Logs</span>
+    <div className="col-start-2 col-span-2 row-span-4 row-start-5 bg-gray-100 mb-2 rounded-md shadow-md overflow-auto">
       {data?.getCompletedSessionsForAthlete.map((item, idx) => (
-        <div
+        <button
           key={idx}
           className={classNames(
             idx % 2 === 0 ? "bg-white" : "",
             "h-14 grid grid-cols-8 p-1 grid-rows-2 gap-x-4 w-full"
           )}
+          onClick={() => handleSessionClick(item.id)}
         >
           <div className="flex flex-col col-span-3">
             <span className="text-xs text-gray-500">Name</span>
@@ -41,7 +44,7 @@ const AthleteRecentWorkouts: FC = () => {
             <span className="text-xs text-gray-500">Percent</span>
             <p className="text-sm">{item.percentCompleted}</p>
           </div>
-        </div>
+        </button>
       ))}
     </div>
   );
