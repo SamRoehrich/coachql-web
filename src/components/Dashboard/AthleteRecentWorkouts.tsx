@@ -15,13 +15,18 @@ const AthleteRecentWorkouts: FC = () => {
   };
 
   useEffect(() => {
+    console.log("recent workout rerender");
+
     if (data!.getCompletedSessionsForAthlete.length > 0) {
       currentSessionId(data?.getCompletedSessionsForAthlete[0].id);
+    }
+    if (data!.getCompletedSessionsForAthlete.length === 0) {
+      currentSessionId(null);
     }
   }, [data]);
 
   return (
-    <div className="bg-gray-100 rounded-md shadow-md overflow-auto">
+    <div className="bg-gray-100 rounded-md shadow-md overflow-auto w-1/2">
       {data?.getCompletedSessionsForAthlete.map((item, idx) => (
         <button
           key={idx}
