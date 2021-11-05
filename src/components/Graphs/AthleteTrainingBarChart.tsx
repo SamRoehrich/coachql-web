@@ -1,34 +1,25 @@
-import { useReactiveVar } from "@apollo/client";
-import { FC, useCallback, useEffect } from "react";
+import { FC, useCallback, useEffect, useState } from "react";
 import Chart from "react-google-charts";
-import {
-  GetSessionsForAthleteQuery,
-  useGetSessionsForAthleteQuery,
-} from "../../generated/graphql";
-import { currentAthleteId } from "../../graphql/cache";
-import Loading from "../Loading";
+import { GetSessionsForAthleteQuery } from "../../generated/graphql";
 
-const AthleteTrainingBarChart: FC = () => {
-  const currentAthlete = useReactiveVar(currentAthleteId);
-  const { data: sessionData, loading: dataLoading } =
-    useGetSessionsForAthleteQuery({
-      variables: {
-        athleteId: currentAthlete!.toString(),
-      },
-    });
+interface Props {
+  sessions: GetSessionsForAthleteQuery;
+}
 
-  const graphData: [string, number][] = [
-    ["Strength and Power", 0],
-    ["Conditioning", 0],
-    ["Anaerobic Capacity", 0],
-    ["Aerobic Capacity", 0],
-    ["Aerobic Power", 0],
-    ["Mobility", 0],
-    ["Open Session", 0],
-  ];
+const AthleteTrainingBarChart: FC<Props> = ({ sessions }) => {
+  const [graphData, setGraphData] = useState<[string, number][]>([]);
 
-  const fillGraphData = useCallback(
-    (data: GetSessionsForAthleteQuery) => {
+  useEffect(() => {
+    const fillGraphData = (data: GetSessionsForAthleteQuery) => {
+      const graphData: [string, number][] = [
+        ["Strength and Power", 0],
+        ["Conditioning", 0],
+        ["Anaerobic Capacity", 0],
+        ["Aerobic Capacity", 0],
+        ["Aerobic Power", 0],
+        ["Mobility", 0],
+        ["Open Session", 0],
+      ];
       for (let i = 0; i < graphData.length; i++) {
         for (let session of data.getCompletedSessionsForAthlete) {
           if (graphData[i][0] === session.workout.workoutType) {
@@ -36,40 +27,29 @@ const AthleteTrainingBarChart: FC = () => {
           }
         }
       }
-      console.log(graphData);
-    },
-    [graphData]
+      setGraphData(graphData);
+    };
+    fillGraphData(sessions);
+  }, [sessions]);
+  return (
+    <div className="">
+      <Chart
+        height={"450px"}
+        width={"410px"}
+        chartType="BarChart"
+        loader={<div>Loading Chart</div>}
+        data={[["Workout Type", "Sessions"], ...graphData]}
+        options={{
+          legend: {
+            alignment: "center",
+            position: "none",
+            fontSize: 8,
+          },
+        }}
+        rootProps={{ "data-testid": "1" }}
+      />
+    </div>
   );
-  useEffect(() => {
-    if (sessionData) {
-      fillGraphData(sessionData);
-    }
-  }, [sessionData, fillGraphData]);
-  if (dataLoading) {
-    return <Loading />;
-  }
-  if (sessionData) {
-    return (
-      <div className="">
-        <Chart
-          height={"450px"}
-          width={"410px"}
-          chartType="BarChart"
-          loader={<div>Loading Chart</div>}
-          data={[["Workout Type", "Sessions"], ...graphData]}
-          options={{
-            legend: {
-              alignment: "center",
-              position: "none",
-              fontSize: 8,
-            },
-          }}
-          rootProps={{ "data-testid": "1" }}
-        />
-      </div>
-    );
-  }
-  return <div>No data</div>;
 };
 
 export default AthleteTrainingBarChart;
