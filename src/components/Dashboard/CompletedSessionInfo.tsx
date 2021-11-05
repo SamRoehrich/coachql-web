@@ -22,7 +22,7 @@ const CompletedSessionInfo: FC = () => {
 
   if (data) {
     return (
-      <div className="col-start-5 col-span-2 shadow-md h-full">
+      <div className="shadow-md w-1/2">
         <div className="flex flex-col">
           <span>Session: {data.getSessionById.workout.name}</span>
           <span>
@@ -38,7 +38,7 @@ const CompletedSessionInfo: FC = () => {
     );
   }
   return (
-    <div className="col-start-4 col-span-5 row-span-4 row-start-5 mb-2 rounded-md shadow-md overflow-auto w-full">
+    <div className="col-start-4 col-span-5 row-span-4 row-start-5 mb-2 rounded-md shadow-md overflow-auto w-1/2">
       <p>Loading...</p>
     </div>
   );

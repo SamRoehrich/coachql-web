@@ -18,10 +18,8 @@ const AthleteTraining = () => {
   }
   return (
     <div className="col-span-5 col-start-2 flex row-start-auto row-span-6">
-      <div className="">
+      <div className="flex justify-between w-full">
         <AthleteRecentWorkouts />
-      </div>
-      <div>
         <CompletedSessionInfo />
       </div>
     </div>
