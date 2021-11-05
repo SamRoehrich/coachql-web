@@ -73,7 +73,7 @@ const AthleteInfoOverviewPanel = () => {
   }, [currentAthlete]);
   return (
     <div className="flex flex-col justify-between bg-gray-100 shadow-md rounded-md col-span-5 col-start-2 row-span-1">
-      <div className="flex md:justify-between items-center justify-center text-center">
+      <div className="flex md:justify-between items-center justify-center text-center h-full">
         <div>
           <div className="flex flex-col p-2 text-left">
             <span className="text-xs text-gray-500">Age</span>

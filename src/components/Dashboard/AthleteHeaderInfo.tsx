@@ -12,7 +12,7 @@ const AthleteInfoHeader: FC<AthleteInfoHeaderProps> = ({ user }) => {
   const { path, url } = useRouteMatch();
   const currentAthlete = useReactiveVar(currentAthleteId);
   return (
-    <div className="flex justify-between px-2 h-16 col-span-5 items-center rounded-lg">
+    <div className="flex justify-between px-2 h-20 col-span-5 items-center rounded-lg">
       <p className="text-2xl font-semibold text-gray-900">
         {user.firstName} {user.lastName}
       </p>
