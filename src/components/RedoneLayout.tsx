@@ -14,6 +14,7 @@ import { useMeQuery } from "../generated/graphql";
 import { setAccessToken } from "../accessToken";
 import CreateAssessment from "./Dashboard/CreateAssessment";
 import AssessmentsPage from "../pages/AssessmentsPage";
+import ByePage from "../pages/bye";
 
 const Navigation = [
   {
@@ -261,6 +262,7 @@ const Laay: FC = () => {
       </Disclosure>
       <main className="max-w-7xl lg:max-w-screen mx-auto py-6 sm:px-6 lg:px-0 max-h-screen">
         <div className="flex flex-row flex-auto bg-white shadow-xl w-full">
+          <Route path={`${path}/logout`} component={ByePage} />
           <Route path={`${path}/roster`} component={RosterPage} />
           <Route path={`${path}/assessments`} component={AssessmentsPage} />
           <Route
