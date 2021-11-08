@@ -1,3 +1,4 @@
+/* eslint-disable no-loop-func */
 import { FC, useState, useEffect } from "react";
 import { format, addMonths, subMonths, addDays, startOfMonth } from "date-fns";
 import { endOfMonth, endOfWeek, startOfWeek } from "date-fns/esm";
@@ -13,7 +14,6 @@ interface Props {
 
 const Monthly: FC<Props> = ({ sessions }) => {
   const [currentMonth, setCurrentMonth] = useState(new Date());
-  const [selectedDate, setSelectedDate] = useState(new Date());
   const [currentSessions, setCurrentSessions] = useState<Array<
     {
       __typename?: "Session";
@@ -82,17 +82,17 @@ const Monthly: FC<Props> = ({ sessions }) => {
       </div>
     );
   }
-  function renderDays() {
-    const dateFormat = "dd";
-    const days = [];
+  // function renderDays() {
+  //   const dateFormat = "dd";
+  //   const days = [];
 
-    let startDate = startOfWeek(currentMonth);
+  //   let startDate = startOfWeek(currentMonth);
 
-    for (let i = 0; i < 7; i++) {
-      days.push(<div key={i}>{format(addDays(startDate, i), dateFormat)}</div>);
-    }
-    return <div className="flex flex-col">{days}</div>;
-  }
+  //   for (let i = 0; i < 7; i++) {
+  //     days.push(<div key={i}>{format(addDays(startDate, i), dateFormat)}</div>);
+  //   }
+  //   return <div className="flex flex-col">{days}</div>;
+  // }
 
   function renderCells() {
     const monthStart = startOfMonth(currentMonth);
@@ -112,9 +112,6 @@ const Monthly: FC<Props> = ({ sessions }) => {
     while (day <= endDate) {
       for (let i = 0; i < 7; i++) {
         formattedDate = format(day, dateFormat);
-        console.log("FORMATTED DATE" + formattedDate);
-
-        const cloneDay = day;
 
         days.push(
           <div
@@ -123,7 +120,7 @@ const Monthly: FC<Props> = ({ sessions }) => {
             onClick={() => onDateClick()}
           >
             <span className="text-sm text-gray-600">{formattedDate}</span>
-            {currentSessions?.map((session, idx) =>
+            {currentSessions?.map((session) =>
               format(new Date(session.date), dateFormat) ===
                 format(day, dateFormat) &&
               format(new Date(session.date), "MM") ===

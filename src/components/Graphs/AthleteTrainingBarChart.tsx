@@ -1,4 +1,4 @@
-import { FC, useCallback, useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import Chart from "react-google-charts";
 import { GetSessionsForAthleteQuery } from "../../generated/graphql";
 

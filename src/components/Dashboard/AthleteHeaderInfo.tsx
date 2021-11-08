@@ -1,6 +1,6 @@
 import { useReactiveVar } from "@apollo/client";
 import { FC } from "react";
-import { Link, useLocation, useRouteMatch } from "react-router-dom";
+import { Link, useRouteMatch } from "react-router-dom";
 import { User } from "../../generated/graphql";
 import { currentAthleteId } from "../../graphql/cache";
 
@@ -9,7 +9,7 @@ interface AthleteInfoHeaderProps {
 }
 
 const AthleteInfoHeader: FC<AthleteInfoHeaderProps> = ({ user }) => {
-  const { path, url } = useRouteMatch();
+  const { url } = useRouteMatch();
   const currentAthlete = useReactiveVar(currentAthleteId);
   return (
     <div className="flex justify-between px-2 h-20 col-span-5 items-center rounded-lg">

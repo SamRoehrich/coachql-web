@@ -6,7 +6,7 @@ import { currentSessionId } from "../../graphql/cache";
 
 const CompletedSessionInfo: FC = () => {
   const currentSession = useReactiveVar(currentSessionId);
-  const [getSessionById, { data, loading }] = useGetSessionByIdLazyQuery();
+  const [getSessionById, { data }] = useGetSessionByIdLazyQuery();
 
   useEffect(() => {
     if (currentSession) {

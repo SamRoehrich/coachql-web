@@ -1,9 +1,6 @@
 import { FC, useEffect } from "react";
-import {
-  GetSessionsForAthleteQuery,
-  useGetSessionsForAthleteQuery,
-} from "../../generated/graphql";
-import { currentAthleteId, currentSessionId } from "../../graphql/cache";
+import { GetSessionsForAthleteQuery } from "../../generated/graphql";
+import { currentSessionId } from "../../graphql/cache";
 import { classNames } from "../../utils/classNames";
 
 interface Props {

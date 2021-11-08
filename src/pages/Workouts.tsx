@@ -9,9 +9,9 @@ import {
 import { useReactiveVar } from "@apollo/client";
 import { currentWorkoutId } from "../graphql/cache";
 import { classNames } from "../utils/classNames";
-import { Link, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Disclosure } from "@headlessui/react";
-import { ChevronRightIcon, ChevronUpIcon } from "@heroicons/react/outline";
+import { ChevronRightIcon } from "@heroicons/react/outline";
 
 interface Set {
   intensity: string;
@@ -23,7 +23,7 @@ interface Set {
 }
 
 const WorkoutList = () => {
-  const { data, loading } = useGetWorkoutsQuery({
+  const { data } = useGetWorkoutsQuery({
     fetchPolicy: "cache-and-network",
   });
 
@@ -260,15 +260,10 @@ const WorkoutList = () => {
   return <></>;
 };
 
-interface Params {
-  userId: string;
-}
-
 const WorkoutsPage: FC = () => {
-  const [getWorkout, { loading: workoutLoading, data: workoutData }] =
-    useGetWorkoutLazyQuery();
+  const [getWorkout, { data: workoutData }] = useGetWorkoutLazyQuery();
   const [getWorkouts, { called }] = useGetWorkoutsLazyQuery();
-  const [deleteWorkout, { data, client }] = useDeleteWorkoutMutation();
+  const [deleteWorkout] = useDeleteWorkoutMutation();
   const currentWorkout = useReactiveVar(currentWorkoutId);
 
   useEffect(() => {
@@ -279,7 +274,7 @@ const WorkoutsPage: FC = () => {
         },
       });
     }
-  }, [currentWorkout, called]);
+  }, [currentWorkout, called, getWorkout]);
 
   if (workoutData !== undefined) {
     const { getWorkout: workout } = workoutData;

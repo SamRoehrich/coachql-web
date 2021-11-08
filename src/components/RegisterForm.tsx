@@ -1,15 +1,10 @@
-import { Form, Field, Formik, yupToFormErrors } from "formik";
-import { FC, useState } from "react";
-import { useHistory } from "react-router";
+import { FC } from "react";
 // import { useRegisterMutation, useTeamsQuery } from "../generated/graphql";
-import * as Yup from "yup";
-import { CustomInputComponent } from "./Forms/Inputs";
 
 const RegisterForm: FC = () => {
   // const [register] = useRegisterMutation();
   // const history = useHistory();
   // const { data } = useTeamsQuery();
-  const [createTeam, setCreateTeam] = useState(false);
   return (
     <div>
       {/* <Formik

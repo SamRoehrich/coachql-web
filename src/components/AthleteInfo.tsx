@@ -56,7 +56,7 @@ const AthleteRecentTraining = () => {
 const AthleteInfoOverviewPanel = () => {
   const date = new Date();
   const currentAthlete = currentAthleteId();
-  const [getAthlete, { data, loading }] = useGetAthleteLazyQuery();
+  const [getAthlete, { data }] = useGetAthleteLazyQuery();
 
   // THIS IS VERY GROSS
   useEffect(() => {
@@ -70,7 +70,7 @@ const AthleteInfoOverviewPanel = () => {
         });
       }
     }
-  }, [currentAthlete]);
+  }, [currentAthlete, getAthlete]);
   return (
     <div className="flex flex-col justify-between bg-gray-100 shadow-md rounded-md col-span-5 col-start-2 row-span-1">
       <div className="flex md:justify-between items-center justify-center text-center h-full">
@@ -140,7 +140,7 @@ const AthleteInfo: FC = () => {
         },
       });
     }
-  }, [currentAthlete]);
+  }, [currentAthlete, getAthlete]);
 
   if (athleteData && athleteData.getAthleteById) {
     return (

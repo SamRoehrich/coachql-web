@@ -1,27 +1,10 @@
-import { Disclosure } from "@headlessui/react";
 import { FC } from "react";
-import { FaDumbbell } from "react-icons/fa";
-import { Route, useLocation, useParams, useRouteMatch } from "react-router";
-import { Link, NavLink } from "react-router-dom";
-import WorkoutsPage from "../pages/Workouts";
-import AthleteInfo from "./AthleteInfo";
-import Loading from "./Loading";
-import SubMenu from "./SubMenu";
-import CreateWorkout from "../components/Dashboard/CreateWorkout";
-import EventPage from "../pages/EventDashboard";
-import {
-  useMeQuery,
-  useMeLazyQuery,
-} from "../generated/graphql";
-import CalendarPage from "../pages/CalendarPage";
-import { useEffect } from "react";
-import CoachDashboard from "./Dashboard/CoachDashboard";
+import { useParams, useRouteMatch } from "react-router";
 import { Params } from "../utils/interfaces";
 
 const Layout: FC = () => {
   const { path, url } = useRouteMatch();
   const params = useParams<Params>();
-  const { data: meData } = useMeQuery();
   console.log(path, url);
   console.log(params);
   // const [getTeamByCoachId, { loading, data }] = useGetTeamByCoachIdLazyQuery();

@@ -1,5 +1,5 @@
 import { FieldArray, Form, Formik } from "formik";
-import { FC, useState } from "react";
+import { FC } from "react";
 import { useCreateAssessmentMutation } from "../../generated/graphql";
 
 const DataPoint = {

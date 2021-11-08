@@ -1,11 +1,8 @@
 import { FC } from "react";
-import { useParams } from "react-router";
 import { useGetOrgQuery } from "../../generated/graphql";
-import { Params } from "../../utils/interfaces";
 
 const CoachDashboard: FC = () => {
-  const params = useParams<Params>();
-  const { data, loading, error } = useGetOrgQuery();
+  const { data, loading } = useGetOrgQuery();
   if (loading) {
     return <h1>Loading</h1>;
   }

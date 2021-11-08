@@ -9,8 +9,7 @@ import Loading from "../Loading";
 const CreateAthlete: FC = () => {
   const { data: teamData, loading: teamsLoading } = useGetTeamsInOrgQuery();
 
-  const [createAthleteProfile, { data, loading, error }] =
-    useCreateAthleteProfileMutation();
+  const [createAthleteProfile, { data }] = useCreateAthleteProfileMutation();
 
   if (teamsLoading) {
     return <Loading />;

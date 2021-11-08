@@ -13,7 +13,7 @@ import { useHistory, useRouteMatch } from "react-router";
 const RosterPage: FC = () => {
   const currentAthlete = useReactiveVar(currentAthleteId);
   const history = useHistory();
-  const { path, url } = useRouteMatch();
+  const { url } = useRouteMatch();
   const { data: athletes, loading } = useGetAthletesInOrgQuery({
     fetchPolicy: "cache-first",
   });
@@ -29,7 +29,7 @@ const RosterPage: FC = () => {
       });
       history.push(`${url}/${currentAthlete}/overview`);
     }
-  }, [currentAthlete]);
+  }, [currentAthlete, getAthlete, history, url]);
 
   if (loading) {
     return <Loading />;

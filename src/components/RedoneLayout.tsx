@@ -7,7 +7,6 @@ import CoachDashboard from "./Dashboard/CoachDashboard";
 import WorkoutsPage from "../pages/Workouts";
 import CreateWorkout from "./Dashboard/CreateWorkout";
 import EventPage from "../pages/EventDashboard";
-import CalendarPage from "../pages/CalendarPage";
 import CreateAthlete from "./Dashboard/CreateAthlete";
 import RosterPage from "../pages/RosterPage";
 import EditWorkout from "./Dashboard/EditWorkout";
@@ -295,7 +294,6 @@ const Laay: FC = () => {
             component={CreateWorkout}
           />
           <Route path="/events/:eventId" component={EventPage} />
-          <Route path="/app/:userId/calendar" component={CalendarPage} />
         </div>
       </main>
     </div>

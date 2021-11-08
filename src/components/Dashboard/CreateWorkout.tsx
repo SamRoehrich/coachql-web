@@ -31,7 +31,7 @@ export const RestSet = {
 };
 
 const CreateWorkout: FC = () => {
-  const [createWorkout, { data, loading, error }] = useCreateWorkoutMutation();
+  const [createWorkout] = useCreateWorkoutMutation();
   return (
     <>
       <div className="w-full">
