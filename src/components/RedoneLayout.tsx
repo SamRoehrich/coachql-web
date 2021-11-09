@@ -68,9 +68,9 @@ const user = {
 const Laay: FC = () => {
   const { path, url } = useRouteMatch();
   const history = useHistory();
-  const { data, error, client } = useMeQuery();
+  const { data, error, client, loading } = useMeQuery();
 
-  if (!data || error) {
+  if (!loading && (!data || error)) {
     client.resetStore();
     setAccessToken("");
     history.push("/");
