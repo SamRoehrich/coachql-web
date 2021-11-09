@@ -1,0 +1,13 @@
+mutation CreateRecord(
+  $assessmentId: Float!
+  $date: String!
+  $data: String!
+  $athleteId: Float!
+) {
+  createRecord(
+    assessmentId: $assessmentId
+    date: $date
+    data: $data
+    athleteId: $athleteId
+  )
+}

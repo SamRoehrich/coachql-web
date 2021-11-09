@@ -2,6 +2,7 @@ import { FieldArray, Form, Formik } from "formik";
 import { FC, useEffect } from "react";
 import { useParams } from "react-router";
 import {
+  useCreateRecordMutation,
   useGetAssessmentByIdQuery,
   useGetAthletesInOrgQuery,
 } from "../generated/graphql";
@@ -19,6 +20,7 @@ interface DataPoint {
 
 const RecordAssessment: FC = () => {
   const params = useParams<Params>();
+  const [createRecord] = useCreateRecordMutation();
   const { data, loading: loadingAssessment } = useGetAssessmentByIdQuery({
     variables: {
       assessmentId: Number.parseInt(params.assessmentId),
@@ -47,8 +49,22 @@ const RecordAssessment: FC = () => {
             initialValues={{
               athlete: "",
               data: dataPoints,
+              date: "",
             }}
-            onSubmit={() => {}}
+            onSubmit={async ({ athlete, data, date }, actions) => {
+              const res = await createRecord({
+                variables: {
+                  assessmentId: Number.parseInt(params.assessmentId),
+                  athleteId: Number.parseInt(athlete),
+                  data: JSON.stringify(data),
+                  date,
+                },
+              });
+              if (res) {
+                alert("Assessment Recorded");
+                actions.resetForm();
+              }
+            }}
             render={({ values, handleChange }) => (
               <Form autoComplete="off">
                 <div className="mt-10 sm:mt-0">
@@ -61,7 +77,7 @@ const RecordAssessment: FC = () => {
                   </header>
                   <div className="md:grid md:grid-cols-3 md:gap-6">
                     <div className="md:col-span-1">
-                      <div className="px-4 sm:px-0">
+                      <div className="px-4 sm:px-0 py-2">
                         <h3 className="text-lg font-medium leading-6 text-gray-900 px-2">
                           Description
                         </h3>
@@ -69,7 +85,7 @@ const RecordAssessment: FC = () => {
                           {data.getAssessmentById.description}
                         </p>
                       </div>
-                      <div className="px-0">
+                      <div className="px-0 py-2">
                         <label
                           htmlFor="country"
                           className="text-lg font-medium leading-6 text-gray-900 px-2"
@@ -94,6 +110,17 @@ const RecordAssessment: FC = () => {
                           ))}
                         </select>
                       </div>
+                      <div className="flex flex-col py-2">
+                        <label className="text-lg font-medium leading-6 text-gray-900 px-2">
+                          Date
+                        </label>
+                        <input
+                          type="date"
+                          name="date"
+                          className="rounded-md shadow-sm border border-gray-300"
+                          onChange={handleChange}
+                        />
+                      </div>
                     </div>
                     <div className="mt-5 md:mt-0 md:col-span-2">
                       <FieldArray name="dataPoints" validateOnChange={false}>
@@ -104,7 +131,7 @@ const RecordAssessment: FC = () => {
                                 <div className="px-4 py-5 bg-white space-y-6 sm:p-6">
                                   {values.data.map((dataPoint, idx) => (
                                     <div className="flex w-full">
-                                      <div className="flex flex-col text-left mt-1 p-1 w-1/2">
+                                      <div className="flex flex-col text-left mt-1 p-1 w-full">
                                         <label className=" text-sm font-medium text-gray-700">
                                           {dataPoint.name}
                                         </label>

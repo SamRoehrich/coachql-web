@@ -125,6 +125,7 @@ export type Mutation = {
   logSession: Scalars['Boolean'];
   deleteAssessment: Scalars['Boolean'];
   createAssessment: Scalars['Boolean'];
+  createRecord: Scalars['Boolean'];
 };
 
 
@@ -321,6 +322,14 @@ export type MutationCreateAssessmentArgs = {
   name: Scalars['String'];
 };
 
+
+export type MutationCreateRecordArgs = {
+  assessmentId: Scalars['Float'];
+  date: Scalars['String'];
+  data: Scalars['String'];
+  athleteId: Scalars['Float'];
+};
+
 export type Organization = {
   __typename?: 'Organization';
   id: Scalars['Int'];
@@ -363,6 +372,7 @@ export type Query = {
   getAssessmentById: Assessment;
   getAssessments: Array<Assessment>;
   getAssessmentsInOrg: Array<Assessment>;
+  getRecords: Array<Record>;
 };
 
 
@@ -423,6 +433,15 @@ export type QueryGetSessionByIdArgs = {
 
 export type QueryGetAssessmentByIdArgs = {
   assessmentId: Scalars['Float'];
+};
+
+export type Record = {
+  __typename?: 'Record';
+  id: Scalars['Int'];
+  data: Scalars['String'];
+  assessment: Assessment;
+  athlete: Athlete;
+  date: Scalars['String'];
 };
 
 export type RunningOrder = {
@@ -817,6 +836,19 @@ export type GetTeamsInOrgQuery = (
     { __typename?: 'Team' }
     & Pick<Team, 'id' | 'teamName'>
   )> }
+);
+
+export type CreateRecordMutationVariables = Exact<{
+  assessmentId: Scalars['Float'];
+  date: Scalars['String'];
+  data: Scalars['String'];
+  athleteId: Scalars['Float'];
+}>;
+
+
+export type CreateRecordMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'createRecord'>
 );
 
 export type EditRunningOrderMutationVariables = Exact<{
@@ -1779,6 +1811,45 @@ export function useGetTeamsInOrgLazyQuery(baseOptions?: Apollo.LazyQueryHookOpti
 export type GetTeamsInOrgQueryHookResult = ReturnType<typeof useGetTeamsInOrgQuery>;
 export type GetTeamsInOrgLazyQueryHookResult = ReturnType<typeof useGetTeamsInOrgLazyQuery>;
 export type GetTeamsInOrgQueryResult = Apollo.QueryResult<GetTeamsInOrgQuery, GetTeamsInOrgQueryVariables>;
+export const CreateRecordDocument = gql`
+    mutation CreateRecord($assessmentId: Float!, $date: String!, $data: String!, $athleteId: Float!) {
+  createRecord(
+    assessmentId: $assessmentId
+    date: $date
+    data: $data
+    athleteId: $athleteId
+  )
+}
+    `;
+export type CreateRecordMutationFn = Apollo.MutationFunction<CreateRecordMutation, CreateRecordMutationVariables>;
+
+/**
+ * __useCreateRecordMutation__
+ *
+ * To run a mutation, you first call `useCreateRecordMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateRecordMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createRecordMutation, { data, loading, error }] = useCreateRecordMutation({
+ *   variables: {
+ *      assessmentId: // value for 'assessmentId'
+ *      date: // value for 'date'
+ *      data: // value for 'data'
+ *      athleteId: // value for 'athleteId'
+ *   },
+ * });
+ */
+export function useCreateRecordMutation(baseOptions?: Apollo.MutationHookOptions<CreateRecordMutation, CreateRecordMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateRecordMutation, CreateRecordMutationVariables>(CreateRecordDocument, options);
+      }
+export type CreateRecordMutationHookResult = ReturnType<typeof useCreateRecordMutation>;
+export type CreateRecordMutationResult = Apollo.MutationResult<CreateRecordMutation>;
+export type CreateRecordMutationOptions = Apollo.BaseMutationOptions<CreateRecordMutation, CreateRecordMutationVariables>;
 export const EditRunningOrderDocument = gql`
     mutation editRunningOrder($runningOrderId: String!, $unordered: [Int!]!, $first: [Int!]!, $second: [Int!]!, $third: [Int!]!) {
   editRunningOrder(
