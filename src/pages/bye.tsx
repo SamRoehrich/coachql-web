@@ -13,7 +13,7 @@ const ByePage: FC<Props> = () => {
     logout();
     setAccessToken("");
     client.resetStore();
-  });
+  }, [client, logout]);
 
   return (
     <div>
