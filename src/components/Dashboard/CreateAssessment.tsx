@@ -148,7 +148,7 @@ const CreateAssessment: FC = () => {
               </div>
 
               <div className="mt-10 sm:mt-0">
-                <div className="md:grid md:grid-cols-3 md:gap-6">
+                <div className="md:grid md:grid-cols-3 md:gap-6 overflow-auto">
                   <FieldArray name="dataPoints" validateOnChange={false}>
                     {({ insert, remove, push }) => (
                       <>
@@ -199,11 +199,10 @@ const CreateAssessment: FC = () => {
                                       value={dataPoint.type}
                                       onChange={handleChange}
                                     >
-                                      <>
-                                        <option value="Rest">Text</option>
-                                        <option value="Active">Number</option>
-                                        <option value="Time">Time</option>
-                                      </>
+                                      <option>---</option>
+                                      <option value="text">Text</option>
+                                      <option value="number">Number</option>
+                                      <option value="time">Time</option>
                                     </select>
                                   </div>
                                 </div>
@@ -270,9 +269,9 @@ const DataPointInput: FC<DataPointInputProps> = ({ handleChange }) => {
           className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
         >
           <option> -- </option>
-          <option>Text</option>
-          <option>Number</option>
-          <option>Time</option>
+          <option value="text">Text</option>
+          <option value="number">Number</option>
+          <option value="time">Time</option>
         </select>
       </div>
     </div>

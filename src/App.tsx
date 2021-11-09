@@ -14,6 +14,9 @@ const App: FC<Props> = () => {
       setAccessToken(accessToken);
     });
   }, []);
+  useEffect(() => {
+    document.title = "CoachQL";
+  }, []);
   return <Routes />;
 };
 

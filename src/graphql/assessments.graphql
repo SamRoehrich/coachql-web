@@ -16,6 +16,18 @@ mutation CreateAssessment(
 
 query GetAssessmentsInOrg {
   getAssessmentsInOrg {
+    id
     name
+  }
+}
+
+query GetAssessmentById($assessmentId: Float!) {
+  getAssessmentById(assessmentId: $assessmentId) {
+    name
+    id
+    description
+    dataPoints
+    testMethod
+    assessmentType
   }
 }

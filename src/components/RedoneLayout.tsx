@@ -15,6 +15,7 @@ import { setAccessToken } from "../accessToken";
 import CreateAssessment from "./Dashboard/CreateAssessment";
 import AssessmentsPage from "../pages/AssessmentsPage";
 import ByePage from "../pages/bye";
+import RecordAssessment from "./RecordAssessment";
 
 const Navigation = [
   {
@@ -77,7 +78,7 @@ const Laay: FC = () => {
   }
 
   return (
-    <div className="max-h-screen">
+    <div className="h-screen">
       <Disclosure as="nav" className="bg-gray-800">
         {({ open }) => (
           <>
@@ -260,11 +261,15 @@ const Laay: FC = () => {
           </>
         )}
       </Disclosure>
-      <main className="max-w-7xl lg:max-w-screen mx-auto py-6 sm:px-6 lg:px-0 max-h-screen">
+      <main className="max-w-7xl lg:max-w-screen mx-auto py-6 sm:px-6 lg:px-0">
         <div className="flex flex-row flex-auto bg-white shadow-xl w-full">
           <Route path={`${path}/logout`} component={ByePage} />
           <Route path={`${path}/roster`} component={RosterPage} />
           <Route path={`${path}/assessments`} component={AssessmentsPage} />
+          <Route
+            path={`${path}/record/assessment/:assessmentId`}
+            component={RecordAssessment}
+          />
           <Route
             path="/layout/:userId/create/athlete"
             component={CreateAthlete}

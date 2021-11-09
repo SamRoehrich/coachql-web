@@ -7,6 +7,13 @@ export const currentStackVar = makeVar({});
 export const currentAthleteId = makeVar<number | null>(null);
 export const currentWorkoutId = makeVar<number | null>(null);
 export const currentSessionId = makeVar<number | null>(null);
+export const currentAssessmentId = makeVar<number | null>(null);
+
+export const GET_CURRENT_ASSESSMENT_ID = gql`
+  query GetCurrentAssessmentId {
+    currentAssessmentId @client
+  }
+`;
 
 export const GET_CURRENT_SESSION_ID = gql`
   query GetCurrentSessionId {

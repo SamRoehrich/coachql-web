@@ -21,6 +21,7 @@ import {
   currentAthleteId,
   currentWorkoutId,
   currentSessionId,
+  currentAssessmentId,
 } from "./graphql/cache";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
@@ -43,6 +44,12 @@ const cache = new InMemoryCache({
         //     });
         //   },
         // },
+
+        currentAssessmentId: {
+          read() {
+            return currentAssessmentId();
+          },
+        },
         currentSessionId: {
           read() {
             return currentSessionId();
