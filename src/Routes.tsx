@@ -20,7 +20,7 @@ import Calculate from "./components/Calculate";
 const Routes: React.FC = () => {
   return (
     <BrowserRouter>
-      <div className="mx-auto">
+      <div className="mx-auto min-h-screen">
         {/* <Header /> */}
         <Switch>
           <Route path="/layout/:userId" component={Laay} />

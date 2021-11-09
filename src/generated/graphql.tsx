@@ -360,6 +360,7 @@ export type Query = {
   getWorkoutsForTeam: Array<Workout>;
   getCoaches: Array<Coach>;
   getSessionById: Session;
+  getAssessmentById: Assessment;
   getAssessments: Array<Assessment>;
   getAssessmentsInOrg: Array<Assessment>;
 };
@@ -417,6 +418,11 @@ export type QueryGetWorkoutsForTeamArgs = {
 
 export type QueryGetSessionByIdArgs = {
   sessionId: Scalars['Float'];
+};
+
+
+export type QueryGetAssessmentByIdArgs = {
+  assessmentId: Scalars['Float'];
 };
 
 export type RunningOrder = {
@@ -511,8 +517,21 @@ export type GetAssessmentsInOrgQuery = (
   { __typename?: 'Query' }
   & { getAssessmentsInOrg: Array<(
     { __typename?: 'Assessment' }
-    & Pick<Assessment, 'name'>
+    & Pick<Assessment, 'id' | 'name'>
   )> }
+);
+
+export type GetAssessmentByIdQueryVariables = Exact<{
+  assessmentId: Scalars['Float'];
+}>;
+
+
+export type GetAssessmentByIdQuery = (
+  { __typename?: 'Query' }
+  & { getAssessmentById: (
+    { __typename?: 'Assessment' }
+    & Pick<Assessment, 'name' | 'id' | 'description' | 'dataPoints' | 'testMethod' | 'assessmentType'>
+  ) }
 );
 
 export type GetAthleteQueryVariables = Exact<{
@@ -1025,6 +1044,7 @@ export type CreateAssessmentMutationOptions = Apollo.BaseMutationOptions<CreateA
 export const GetAssessmentsInOrgDocument = gql`
     query GetAssessmentsInOrg {
   getAssessmentsInOrg {
+    id
     name
   }
 }
@@ -1056,6 +1076,46 @@ export function useGetAssessmentsInOrgLazyQuery(baseOptions?: Apollo.LazyQueryHo
 export type GetAssessmentsInOrgQueryHookResult = ReturnType<typeof useGetAssessmentsInOrgQuery>;
 export type GetAssessmentsInOrgLazyQueryHookResult = ReturnType<typeof useGetAssessmentsInOrgLazyQuery>;
 export type GetAssessmentsInOrgQueryResult = Apollo.QueryResult<GetAssessmentsInOrgQuery, GetAssessmentsInOrgQueryVariables>;
+export const GetAssessmentByIdDocument = gql`
+    query GetAssessmentById($assessmentId: Float!) {
+  getAssessmentById(assessmentId: $assessmentId) {
+    name
+    id
+    description
+    dataPoints
+    testMethod
+    assessmentType
+  }
+}
+    `;
+
+/**
+ * __useGetAssessmentByIdQuery__
+ *
+ * To run a query within a React component, call `useGetAssessmentByIdQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAssessmentByIdQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetAssessmentByIdQuery({
+ *   variables: {
+ *      assessmentId: // value for 'assessmentId'
+ *   },
+ * });
+ */
+export function useGetAssessmentByIdQuery(baseOptions: Apollo.QueryHookOptions<GetAssessmentByIdQuery, GetAssessmentByIdQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetAssessmentByIdQuery, GetAssessmentByIdQueryVariables>(GetAssessmentByIdDocument, options);
+      }
+export function useGetAssessmentByIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetAssessmentByIdQuery, GetAssessmentByIdQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetAssessmentByIdQuery, GetAssessmentByIdQueryVariables>(GetAssessmentByIdDocument, options);
+        }
+export type GetAssessmentByIdQueryHookResult = ReturnType<typeof useGetAssessmentByIdQuery>;
+export type GetAssessmentByIdLazyQueryHookResult = ReturnType<typeof useGetAssessmentByIdLazyQuery>;
+export type GetAssessmentByIdQueryResult = Apollo.QueryResult<GetAssessmentByIdQuery, GetAssessmentByIdQueryVariables>;
 export const GetAthleteDocument = gql`
     query GetAthlete($AthleteId: Float!) {
   getAthleteById(athleteId: $AthleteId) {
