@@ -8,7 +8,9 @@ import {
 import { currentAssessmentId } from "../graphql/cache";
 
 const AssessmentsPage: FC = () => {
-  const { data, loading } = useGetAssessmentsInOrgQuery();
+  const { data, loading } = useGetAssessmentsInOrgQuery({
+    fetchPolicy: "cache-and-network",
+  });
   const currentAssessment = useReactiveVar(currentAssessmentId);
   const [
     getAssessmentById,
