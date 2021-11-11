@@ -1,25 +1,49 @@
-import { FC } from "react";
+import { FC, useEffect } from "react";
+import {
+  useGetAssessmentByIdLazyQuery,
+  useGetAssessmentsInOrgQuery,
+} from "../../generated/graphql";
+import Loading from "../Loading";
 
 const Metrics: FC = () => {
-  return (
-    <div className="col-span-5 col-start-2">
-      <div className="p-2">
-        <div>
-          <h2 className="font-semibold text-2xl">Metrics</h2>
-        </div>
-        <div>
+  const { data, loading } = useGetAssessmentsInOrgQuery();
+  const [
+    getAssessmentById,
+    { data: assessmentData, loading: assessmentLoading },
+  ] = useGetAssessmentByIdLazyQuery();
+  useEffect(() => {
+    if (data && data.getAssessmentsInOrg.length > 0) {
+      getAssessmentById({
+        variables: {
+          assessmentId: data.getAssessmentsInOrg[0].id,
+        },
+      });
+    }
+  }, [data, getAssessmentById]);
+
+  console.log(assessmentData);
+
+  if (!loading && !assessmentLoading) {
+    return (
+      <div className="col-span-5 col-start-2">
+        <div className="p-2">
           <div>
-            <p>Tests</p>
+            <h2 className="font-semibold text-2xl">Metrics</h2>
           </div>
           <div>
-            <p>Basic Assessment</p>
-            <p>2 Rep Pull Up Max</p>
-            <p>Pull Up Capacity</p>
-            <p>Hollow Body Capacity</p>
+            {data?.getAssessmentsInOrg.map((assessment, idx) => (
+              <div>
+                <p>{assessment.name}</p>
+              </div>
+            ))}
           </div>
         </div>
-        <div></div>
       </div>
+    );
+  }
+  return (
+    <div>
+      <Loading />
     </div>
   );
 };
