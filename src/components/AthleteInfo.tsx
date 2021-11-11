@@ -21,7 +21,7 @@ const AthleteOverviewTab = () => {
 
 const AthleteRecentTraining = () => {
   return (
-    <div className="col-start-2 col-span-2 row-span-5 row-start-3 bg-gray-100 rounded-md shadow-md overflow-auto flex flex-col justify-center">
+    <div className="bg-gray-100 rounded-md shadow-md overflow-auto flex flex-col justify-center">
       <OverviewBarChart />
       <div>
         <div className="flex justify-between">
@@ -72,7 +72,7 @@ const AthleteInfoOverviewPanel = () => {
     }
   }, [currentAthlete, getAthlete]);
   return (
-    <div className="flex flex-col justify-between bg-gray-100 shadow-md rounded-md col-span-5 col-start-2 row-span-1">
+    <div className="flex flex-col justify-between bg-gray-100 shadow-md rounded-md">
       <div className="flex md:justify-between items-center justify-center text-center h-full">
         <div>
           <div className="flex flex-col p-2 text-left">
@@ -144,7 +144,7 @@ const AthleteInfo: FC = () => {
 
   if (athleteData && athleteData.getAthleteById) {
     return (
-      <>
+      <div className="">
         <AthleteInfoHeader user={athleteData.getAthleteById.user} />
         <Switch>
           <Route
@@ -163,7 +163,7 @@ const AthleteInfo: FC = () => {
             exact
           />
         </Switch>
-      </>
+      </div>
     );
   }
 

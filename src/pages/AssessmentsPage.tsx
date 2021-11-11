@@ -49,7 +49,7 @@ const AssessmentsPage: FC = () => {
       assessmentData.getAssessmentById.dataPoints
     );
     return (
-      <div className="p-4 flex justify-between w-full h-screen">
+      <div className="p-4 flex justify-between w-full">
         <div className="flex flex-col w-52">
           {data.getAssessmentsInOrg.map((assessment, idx) => (
             <button

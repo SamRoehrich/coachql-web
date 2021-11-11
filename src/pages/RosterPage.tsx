@@ -37,7 +37,7 @@ const RosterPage: FC = () => {
 
   if (athletes) {
     return (
-      <div className="grid grid-flow-row grid-cols-6 grid-rows-8 gap-x-4 gap-y-2 w-full max-h-screen px-2">
+      <div className="flex px-2 w-full">
         <AthleteList />
         <AthleteInfo />
       </div>

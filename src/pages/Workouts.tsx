@@ -281,7 +281,7 @@ const WorkoutsPage: FC = () => {
     const sets: Set[] = JSON.parse(workout.sets);
 
     return (
-      <div className="grid grid-flow-row grid-cols-6 grid-rows-8 gap-x-4 gap-y-8 w-full max-h-screen px-2">
+      <div className="w-fullpx-2 flex">
         <WorkoutList />
         <div className="flex justify-between items-end px-2 h-16 col-start-2 col-span-5 border-b-2 py-2">
           <p className="text-2xl font-semibold text-gray-800">
@@ -306,7 +306,7 @@ const WorkoutsPage: FC = () => {
             </button>
           </div>
         </div>
-        <div className="flex flex-col justify-between bg-gray-100 shadow-md rounded-md col-span-1 row-span-3 col-start-2">
+        <div className="flex flex-col justify-between bg-gray-100 shadow-md rounded-md col-span-1 col-start-2">
           <div className="flex flex-col md:flex-row items-center justify-center text-center">
             <div className="flex flex-col p-2 text-center">
               <span className="text-xs text-gray-500">Type</span>

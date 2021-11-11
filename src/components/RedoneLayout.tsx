@@ -78,7 +78,7 @@ const Laay: FC = () => {
   }
 
   return (
-    <div className="h-screen">
+    <div className="h-screen flex flex-col">
       <Disclosure as="nav" className="bg-gray-800">
         {({ open }) => (
           <>
@@ -261,8 +261,8 @@ const Laay: FC = () => {
           </>
         )}
       </Disclosure>
-      <main className="max-w-7xl lg:max-w-screen mx-auto py-6 sm:px-6 lg:px-0">
-        <div className="flex flex-row flex-auto bg-white shadow-xl w-full">
+      <main className="max-w-7xl lg:max-w-screen mx-auto flex-1 h-full py-6">
+        <div className="flex flex-row flex-auto bg-white shadow-xl w-full h-full">
           <Route path={`${path}/logout`} component={ByePage} />
           <Route path={`${path}/roster`} component={RosterPage} />
           <Route path={`${path}/assessments`} component={AssessmentsPage} />
