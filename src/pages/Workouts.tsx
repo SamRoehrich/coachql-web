@@ -42,7 +42,7 @@ const WorkoutList = () => {
     const sorted = [...workouts];
     sorted.sort((a, b) => a.name.localeCompare(b.name));
     return (
-      <div className="col-span-1 flex flex-col space-y-4">
+      <div className="flex flex-col space-y-4 w-44">
         <Disclosure>
           {({ open }) => (
             <>
@@ -281,82 +281,86 @@ const WorkoutsPage: FC = () => {
     const sets: Set[] = JSON.parse(workout.sets);
 
     return (
-      <div className="w-fullpx-2 flex">
+      <div className="w-screen px-2 flex h-full">
         <WorkoutList />
-        <div className="flex justify-between items-end px-2 h-16 col-start-2 col-span-5 border-b-2 py-2">
-          <p className="text-2xl font-semibold text-gray-800">
-            {workoutData?.getWorkout.name}
-          </p>
-          <div className="flex space-x-4">
-            <button className="shadow-md hover:shadow-lg rounded-md bg-gray-100 hover:cursor-pointer h-9 p-1">
-              <Link to={`workouts/edit-workout/${workout.id}`}>Edit</Link>
-            </button>
-            <button
-              className="shadow-md hover:shadow-lg rounded-md bg-gray-100 hover:cursor-pointer h-9 p-1"
-              onClick={() => {
-                deleteWorkout({
-                  variables: {
-                    workoutId: workoutData.getWorkout.id,
-                  },
-                });
-                getWorkouts();
-              }}
-            >
-              Delete
-            </button>
-          </div>
-        </div>
-        <div className="flex flex-col justify-between bg-gray-100 shadow-md rounded-md col-span-1 col-start-2">
-          <div className="flex flex-col md:flex-row items-center justify-center text-center">
-            <div className="flex flex-col p-2 text-center">
-              <span className="text-xs text-gray-500">Type</span>
-              <p className="text-lg">{workoutData?.getWorkout.workoutType}</p>
-            </div>
-          </div>
-          <div className="flex flex-col p-2 text-center">
-            <span className="text-xs text-gray-500">Facality</span>
-            <p className="text-lg">{workoutData?.getWorkout.equiptment}</p>
-          </div>
-          <div className="flex justify-center text-center">
-            <div className="flex flex-col p-2">
-              <span className="text-xs text-gray-500">Sets</span>
-              <p className="text-lg">{workoutData?.getWorkout.numSets}</p>
-            </div>
-          </div>
-        </div>
-        <div className="px-2 col-start-3 col-span-4 row-span-full row-start-2 white mb-2 rounded-md shadow-lg">
-          <div className="h-1/3">
-            <p>Description</p>
-            <div className="">
-              <p>{workoutData.getWorkout.description}</p>
-            </div>
-          </div>
-          <div className="rounded overflow-scroll">
-            <div className="grid grid-cols-5 rounded w-full text-sm text-gray-700 bg-gray-100 p-2">
-              <p className="text-center">Name</p>
-              <p className="text-center">Pace</p>
-              <p className="text-center">Minutes</p>
-              <p className="text-center">Seconds</p>
-              <p className="text-center">Reps</p>
-            </div>
-            {sets.map((set, idx) => (
-              <div
-                className={classNames(
-                  idx % 2 === 0 ? "bg-white" : "bg-gray-100",
-                  "p-2 grid grid-cols-5 w-full text-center text-md rounded"
-                )}
-                key={set.intensity + idx}
+        <div className="w-full">
+          <div className="flex justify-between items-end px-2 h-16 py-2">
+            <p className="text-2xl font-semibold text-gray-800">
+              {workoutData?.getWorkout.name}
+            </p>
+            <div className="flex space-x-4">
+              <button className="shadow-md hover:shadow-lg rounded-md bg-gray-100 hover:cursor-pointer h-9 p-1">
+                <Link to={`workouts/edit-workout/${workout.id}`}>Edit</Link>
+              </button>
+              <button
+                className="shadow-md hover:shadow-lg rounded-md bg-gray-100 hover:cursor-pointer h-9 p-1"
+                onClick={() => {
+                  deleteWorkout({
+                    variables: {
+                      workoutId: workoutData.getWorkout.id,
+                    },
+                  });
+                  getWorkouts();
+                }}
               >
-                <p>{set.title}</p>
-                <p>{set.timer}</p>
-
-                <>
-                  <p>{set.minutes > 0 ? set.minutes : "--"}</p>
-                  <p>{set.seconds > 0 ? set.seconds : "--"}</p>
-                  <p>{set.reps}</p>
-                </>
+                Delete
+              </button>
+            </div>
+          </div>
+          <div className="flex justify-between bg-gray-100 shadow-md rounded-md p-2">
+            <div className="flex flex-col md:flex-row items-center justify-center text-center">
+              <div className="flex flex-col p-2 text-center">
+                <span className="text-xs text-gray-500">Type</span>
+                <p className="text-lg">{workoutData?.getWorkout.workoutType}</p>
               </div>
-            ))}
+            </div>
+            <div className="flex justify-center text-center">
+              <div className="flex flex-col p-2">
+                <span className="text-xs text-gray-500">Sets</span>
+                <p className="text-lg">{workoutData?.getWorkout.numSets}</p>
+              </div>
+            </div>
+            <div className="flex flex-col p-2 text-center">
+              <span className="text-xs text-gray-500">Facality</span>
+              <p className="text-lg">{workoutData?.getWorkout.equiptment}</p>
+            </div>
+          </div>
+          <div className="px-2 mb-2 rounded-md shadow-lg">
+            <div className="h-52 py-4">
+              <p className="text-2xl font-semibold text-gray-800">
+                Description
+              </p>
+              <div className="">
+                <p>{workoutData.getWorkout.description}</p>
+              </div>
+            </div>
+            <div className="rounded overflow-scroll h-96">
+              <div className="grid grid-cols-5 rounded w-full text-sm text-gray-700 bg-gray-100 p-2">
+                <p className="text-center">Name</p>
+                <p className="text-center">Pace</p>
+                <p className="text-center">Minutes</p>
+                <p className="text-center">Seconds</p>
+                <p className="text-center">Reps</p>
+              </div>
+              {sets.map((set, idx) => (
+                <div
+                  className={classNames(
+                    idx % 2 === 0 ? "bg-white" : "bg-gray-100",
+                    "p-2 grid grid-cols-5 w-full text-center text-md rounded"
+                  )}
+                  key={set.intensity + idx}
+                >
+                  <p>{set.title}</p>
+                  <p>{set.timer}</p>
+
+                  <>
+                    <p>{set.minutes > 0 ? set.minutes : "--"}</p>
+                    <p>{set.seconds > 0 ? set.seconds : "--"}</p>
+                    <p>{set.reps}</p>
+                  </>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>

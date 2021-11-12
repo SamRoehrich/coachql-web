@@ -19,13 +19,13 @@ const AthleteCalendar: FC = () => {
 
   if (data) {
     return (
-      <div className="col-start-4 col-span-3 row-span-5 row-start-3 bg-gray-100 rounded-md shadow-md overflow-auto">
+      <div className="w-full bg-gray-100 rounded-md shadow-md overflow-auto">
         <Monthly sessions={data} />
       </div>
     );
   }
   return (
-    <div className="col-start-4 col-span-3 row-span-5 row-start-3 bg-gray-100 rounded-md shadow-md overflow-auto">
+    <div className="w-full bg-gray-100 rounded-md shadow-md overflow-auto">
       <Monthly />
     </div>
   );

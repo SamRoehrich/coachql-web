@@ -38,8 +38,12 @@ const RosterPage: FC = () => {
   if (athletes) {
     return (
       <div className="flex px-2 w-full">
-        <AthleteList />
-        <AthleteInfo />
+        <div className="w-1/5">
+          <AthleteList />
+        </div>
+        <div className="w-full">
+          <AthleteInfo />
+        </div>
       </div>
     );
   }
