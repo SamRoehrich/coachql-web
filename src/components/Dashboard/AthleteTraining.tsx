@@ -29,11 +29,12 @@ const AthleteTraining = () => {
 
   if (data) {
     return (
-      <div className="col-span-5 col-start-2 flex row-start-auto row-span-6">
-        <div className="flex justify-between w-full space-x-2">
+      <div className="flex flex-col px-2">
+        <div className="flex h-96 justify-between w-full space-x-2">
           <AthleteRecentWorkouts sessions={data} />
           <CompletedSessionInfo />
         </div>
+        <div>training plan</div>
       </div>
     );
   }

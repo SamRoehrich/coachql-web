@@ -23,8 +23,6 @@ import {
   currentSessionId,
   currentAssessmentId,
 } from "./graphql/cache";
-import { DndProvider } from "react-dnd";
-import { HTML5Backend } from "react-dnd-html5-backend";
 
 interface DecodedToken {
   user: number;
@@ -170,9 +168,7 @@ const client = new ApolloClient({
 
 ReactDOM.render(
   <ApolloProvider client={client}>
-    <DndProvider backend={HTML5Backend}>
-      <App />
-    </DndProvider>
+    <App />
   </ApolloProvider>,
   document.getElementById("root")
 );
