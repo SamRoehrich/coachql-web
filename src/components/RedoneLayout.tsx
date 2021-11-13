@@ -261,8 +261,8 @@ const Laay: FC = () => {
           </>
         )}
       </Disclosure>
-      <main className="w-screen mx-auto h-full py-6 px-4">
-        <div className="flex flex-row bg-white shadow-xl h-full w-full">
+      <main className="w-screen mx-auto py-6 px-4">
+        <div className="flex flex-row bg-white shadow-xl w-full">
           <Route path={`${path}/logout`} component={ByePage} />
           <Route path={`${path}/roster`} component={RosterPage} />
           <Route path={`${path}/assessments`} component={AssessmentsPage} />

@@ -34,8 +34,6 @@ const Monthly: FC<Props> = ({ sessions }) => {
     );
   }, [currentMonth, sessions]);
 
-  console.log(sessions);
-
   function renderHeader() {
     const dateFormat = "MM yyyy";
     return (
@@ -152,7 +150,7 @@ const Monthly: FC<Props> = ({ sessions }) => {
     setCurrentMonth(subMonths(currentMonth, 1));
   };
   return (
-    <div className="flex flex-col border h-full">
+    <div className="flex flex-col h-full">
       {renderHeader()}
       {/* {renderDays()} */}
       {renderCells()}

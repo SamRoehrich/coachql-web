@@ -11,7 +11,7 @@ import OverviewBarChart from "./Graphs/OverviewBarChart";
 
 const AthleteOverviewTab = () => {
   return (
-    <div className="flex justify-between overflow-hidden h-full">
+    <div className="flex justify-between overflow-clip">
       <div className="flex flex-col p-1">
         <AthleteInfoOverviewPanel />
         <AthleteRecentTraining />
@@ -24,7 +24,7 @@ const AthleteOverviewTab = () => {
 
 const AthleteRecentTraining = () => {
   return (
-    <div className="h-full bg-gray-100 rounded-md shadow-md overflow-auto flex flex-col justify-center">
+    <div className="bg-gray-100 rounded-md shadow-md overflow-auto flex flex-col justify-center">
       <OverviewBarChart />
       <div>
         <div className="flex justify-between">
@@ -76,7 +76,7 @@ const AthleteInfoOverviewPanel = () => {
   }, [currentAthlete, getAthlete]);
   return (
     <div className="flex justify-between bg-gray-100 shadow-md rounded-md">
-      <div className="flex md:justify-between items-center justify-center text-center h-full">
+      <div className="flex md:justify-between items-center justify-center text-center">
         <div>
           <div className="flex flex-col p-2 text-left">
             <span className="text-xs text-gray-500">Age</span>
