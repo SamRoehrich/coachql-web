@@ -124,6 +124,7 @@ export type Mutation = {
   createCoachProfile: Scalars['Boolean'];
   logSession: Scalars['Boolean'];
   deleteAssessment: Scalars['Boolean'];
+  editAssessment: Scalars['Boolean'];
   createAssessment: Scalars['Boolean'];
   createRecord: Scalars['Boolean'];
 };
@@ -310,6 +311,16 @@ export type MutationLogSessionArgs = {
 
 
 export type MutationDeleteAssessmentArgs = {
+  assessmentId: Scalars['Float'];
+};
+
+
+export type MutationEditAssessmentArgs = {
+  type: Scalars['String'];
+  tools: Scalars['String'];
+  dataPoints: Scalars['String'];
+  description: Scalars['String'];
+  name: Scalars['String'];
   assessmentId: Scalars['Float'];
 };
 
@@ -557,6 +568,21 @@ export type GetAssessmentByIdQuery = (
     { __typename?: 'Assessment' }
     & Pick<Assessment, 'name' | 'id' | 'description' | 'dataPoints' | 'testMethod' | 'assessmentType'>
   ) }
+);
+
+export type EditAssessmentMutationVariables = Exact<{
+  assessmentId: Scalars['Float'];
+  type: Scalars['String'];
+  dataPoints: Scalars['String'];
+  description: Scalars['String'];
+  tools: Scalars['String'];
+  name: Scalars['String'];
+}>;
+
+
+export type EditAssessmentMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'editAssessment'>
 );
 
 export type GetAthleteQueryVariables = Exact<{
@@ -1178,6 +1204,49 @@ export function useGetAssessmentByIdLazyQuery(baseOptions?: Apollo.LazyQueryHook
 export type GetAssessmentByIdQueryHookResult = ReturnType<typeof useGetAssessmentByIdQuery>;
 export type GetAssessmentByIdLazyQueryHookResult = ReturnType<typeof useGetAssessmentByIdLazyQuery>;
 export type GetAssessmentByIdQueryResult = Apollo.QueryResult<GetAssessmentByIdQuery, GetAssessmentByIdQueryVariables>;
+export const EditAssessmentDocument = gql`
+    mutation EditAssessment($assessmentId: Float!, $type: String!, $dataPoints: String!, $description: String!, $tools: String!, $name: String!) {
+  editAssessment(
+    assessmentId: $assessmentId
+    type: $type
+    dataPoints: $dataPoints
+    description: $description
+    tools: $tools
+    name: $name
+  )
+}
+    `;
+export type EditAssessmentMutationFn = Apollo.MutationFunction<EditAssessmentMutation, EditAssessmentMutationVariables>;
+
+/**
+ * __useEditAssessmentMutation__
+ *
+ * To run a mutation, you first call `useEditAssessmentMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useEditAssessmentMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [editAssessmentMutation, { data, loading, error }] = useEditAssessmentMutation({
+ *   variables: {
+ *      assessmentId: // value for 'assessmentId'
+ *      type: // value for 'type'
+ *      dataPoints: // value for 'dataPoints'
+ *      description: // value for 'description'
+ *      tools: // value for 'tools'
+ *      name: // value for 'name'
+ *   },
+ * });
+ */
+export function useEditAssessmentMutation(baseOptions?: Apollo.MutationHookOptions<EditAssessmentMutation, EditAssessmentMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<EditAssessmentMutation, EditAssessmentMutationVariables>(EditAssessmentDocument, options);
+      }
+export type EditAssessmentMutationHookResult = ReturnType<typeof useEditAssessmentMutation>;
+export type EditAssessmentMutationResult = Apollo.MutationResult<EditAssessmentMutation>;
+export type EditAssessmentMutationOptions = Apollo.BaseMutationOptions<EditAssessmentMutation, EditAssessmentMutationVariables>;
 export const GetAthleteDocument = gql`
     query GetAthlete($AthleteId: Float!) {
   getAthleteById(athleteId: $AthleteId) {

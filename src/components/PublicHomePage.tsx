@@ -34,33 +34,13 @@ const PublicHomePage: FC<Props> = () => {
       </header>
       <div className="mx-auto w-full h-96 flex justify-around items-center p-4">
         <div className="flex flex-col">
-          <h1 className="text-gray-800 text-6xl font-extrabold">Coachql</h1>
+          <h1 className="text-gray-800 text-6xl font-extrabold py-4">
+            Coachql
+          </h1>
           <h2 className="font-semibold text-2xl text-gray-600">
             The most advanced toolset for climbing coaches.
           </h2>
         </div>
-        <div>
-          <h3 className="font-semibold text-xl text-gray-800">
-            Create Custom Training Plans
-          </h3>
-          <h3 className="font-semibold text-xl text-gray-800">
-            Create Workouts
-          </h3>
-          <h3 className="font-semibold text-xl text-gray-800">
-            Track Athlete Progression
-          </h3>
-          <h3 className="font-semibold text-xl text-gray-800">
-            Sync Workouts With Mobile Application
-          </h3>
-        </div>
-      </div>
-      <div className="flex w-full justify-center">
-        <Link
-          to="/demo"
-          className="border p-8 rounded bg-gray-100 hover:border-blue-600 hover:shadow-md"
-        >
-          Live Demo
-        </Link>
       </div>
     </div>
   );

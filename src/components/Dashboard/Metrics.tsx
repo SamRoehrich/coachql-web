@@ -25,7 +25,7 @@ const Metrics: FC = () => {
 
   if (!loading && !assessmentLoading) {
     return (
-      <div className="col-span-5 col-start-2">
+      <div className="h-screen">
         <div className="p-2">
           <div>
             <h2 className="font-semibold text-2xl">Metrics</h2>

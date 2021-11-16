@@ -1,4 +1,5 @@
 import { useReactiveVar } from "@apollo/client";
+import { Chart } from "chart.js";
 import { FC, useEffect } from "react";
 import {
   GetAssessmentByIdQuery,
@@ -29,6 +30,29 @@ const AssessmentGraph: FC<Props> = ({ data }) => {
     }
   }, [data, getRecordsByAssessmentId, currentAssessment]);
 
+  useEffect(() => {
+    const parent = document.getElementById("assessment-graph");
+    var ctx = document.createElement("canvas");
+
+    if (recordData) {
+      const labels = JSON.parse(
+        recordData!.getRecordsByAssessmentId[0].assessment.dataPoints
+      );
+      console.log(labels);
+    }
+
+    // if(ctx) {
+    //   const myChart = new Chart(ctx, {
+    //     type: "scatter",
+    //     data: {
+    //       labels: recordData?.getRecordsByAssessmentId.map((record) => (
+    //         record.
+    //       ))
+    //     }
+    //   })
+    // }
+  }, [recordData]);
+
   if (
     !loading &&
     recordData &&
@@ -46,15 +70,6 @@ const AssessmentGraph: FC<Props> = ({ data }) => {
 
     return (
       <div>
-        <div>
-          <ul>
-            {athletes.map((athlete, idx) => (
-              <li key={"recordAthleteListItem" + idx}>
-                {athlete.user.firstName} {athlete.user.lastName}
-              </li>
-            ))}
-          </ul>
-        </div>
         <div id="assessment-graph"></div>
       </div>
     );
