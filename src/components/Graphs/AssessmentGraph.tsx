@@ -7,6 +7,7 @@ interface Props {
 
 const AssessmentGraph: FC<Props> = ({ data }) => {
   const dataPoints = JSON.stringify(data.getAssessmentById.dataPoints);
+  console.log(dataPoints);
 
   return (
     <div>
