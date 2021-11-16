@@ -141,7 +141,7 @@ const client = new ApolloClient({
         }
       },
       fetchAccessToken: () => {
-        return fetch("https://cql-remote.herokuapp.com//refresh_token", {
+        return fetch("https://cql-remote.herokuapp.com/refresh_token", {
           method: "POST",
           credentials: "include",
         });
