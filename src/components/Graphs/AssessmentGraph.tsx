@@ -1,16 +1,76 @@
-import { FC } from "react";
-import { GetAssessmentByIdQuery } from "../../generated/graphql";
+import { useReactiveVar } from "@apollo/client";
+import { FC, useEffect } from "react";
+import {
+  GetAssessmentByIdQuery,
+  useGetRecordsByAssessmentIdLazyQuery,
+} from "../../generated/graphql";
+import { currentAssessmentId } from "../../graphql/cache";
+import Loading from "../Loading";
 
 interface Props {
   data: GetAssessmentByIdQuery;
 }
 
 const AssessmentGraph: FC<Props> = ({ data }) => {
-  const dataPoints = JSON.stringify(data.getAssessmentById.dataPoints);
+  //   const dataPoints = JSON.stringify(data.getAssessmentById.dataPoints);
+
+  const currentAssessment = useReactiveVar(currentAssessmentId);
+
+  const [getRecordsByAssessmentId, { data: recordData, loading, error }] =
+    useGetRecordsByAssessmentIdLazyQuery();
+
+  useEffect(() => {
+    if (currentAssessment) {
+      getRecordsByAssessmentId({
+        variables: {
+          assessmentId: currentAssessment,
+        },
+      });
+    }
+  }, [data, getRecordsByAssessmentId, currentAssessment]);
+
+  if (
+    !loading &&
+    recordData &&
+    recordData.getRecordsByAssessmentId.length > 0
+  ) {
+    const records = recordData.getRecordsByAssessmentId;
+
+    const athletes = records.map((record) => record.athlete);
+
+    console.log(athletes);
+
+    const assessments = records.map((record) => record.data);
+
+    console.log(assessments);
+
+    return (
+      <div>
+        <div>
+          <ul>
+            {athletes.map((athlete, idx) => (
+              <li key={"recordAthleteListItem" + idx}>
+                {athlete.user.firstName} {athlete.user.lastName}
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div id="assessment-graph"></div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div>
+        <p>Error occured in getting record data.</p>
+      </div>
+    );
+  }
 
   return (
     <div>
-      <div id="assessment-graph"></div>
+      <Loading />
     </div>
   );
 };
