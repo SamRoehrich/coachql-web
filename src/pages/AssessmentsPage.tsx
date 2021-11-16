@@ -1,5 +1,6 @@
 import { useReactiveVar } from "@apollo/client";
 import { FC, useEffect } from "react";
+import AssessmentGraph from "../components/Graphs/AssessmentGraph";
 import Loading from "../components/Loading";
 import {
   useGetAssessmentByIdLazyQuery,
@@ -111,7 +112,9 @@ const AssessmentsPage: FC = () => {
                 ))}
               </div>
             </div>
-            <div>Graphssss</div>
+            <div className="border w-4/5">
+              <AssessmentGraph data={assessmentData} />
+            </div>
           </div>
         </div>
       </div>
