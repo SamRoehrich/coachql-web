@@ -25,7 +25,7 @@ const OverviewBarChart: FC = () => {
   }
   if (sessionData) {
     return (
-      <div className="h-full w-full">
+      <div className="h-96 w-full">
         <div className="p-2 flex justify-end space-x-2">
           <button className="flex items-center justify-center rounded-md bg-white shadow-md p-2 hover:shadow-xl text-sm h-6">
             <span>30 Days</span>
@@ -34,7 +34,7 @@ const OverviewBarChart: FC = () => {
             <span>90 Days</span>
           </button>
         </div>
-        <div>
+        <div className="h-80">
           <AthleteTrainingBarChart sessions={sessionData} />
         </div>
       </div>
