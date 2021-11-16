@@ -124,6 +124,7 @@ export type Mutation = {
   createCoachProfile: Scalars['Boolean'];
   logSession: Scalars['Boolean'];
   deleteAssessment: Scalars['Boolean'];
+  editAssessment: Scalars['Boolean'];
   createAssessment: Scalars['Boolean'];
   createRecord: Scalars['Boolean'];
 };
@@ -314,6 +315,16 @@ export type MutationDeleteAssessmentArgs = {
 };
 
 
+export type MutationEditAssessmentArgs = {
+  type: Scalars['String'];
+  tools: Scalars['String'];
+  dataPoints: Scalars['String'];
+  description: Scalars['String'];
+  name: Scalars['String'];
+  assessmentId: Scalars['Float'];
+};
+
+
 export type MutationCreateAssessmentArgs = {
   type: Scalars['String'];
   tools: Scalars['String'];
@@ -373,6 +384,7 @@ export type Query = {
   getAssessments: Array<Assessment>;
   getAssessmentsInOrg: Array<Assessment>;
   getRecords: Array<Record>;
+  getRecordsByAssessmentId: Array<Record>;
 };
 
 
@@ -432,6 +444,11 @@ export type QueryGetSessionByIdArgs = {
 
 
 export type QueryGetAssessmentByIdArgs = {
+  assessmentId: Scalars['Float'];
+};
+
+
+export type QueryGetRecordsByAssessmentIdArgs = {
   assessmentId: Scalars['Float'];
 };
 
@@ -551,6 +568,21 @@ export type GetAssessmentByIdQuery = (
     { __typename?: 'Assessment' }
     & Pick<Assessment, 'name' | 'id' | 'description' | 'dataPoints' | 'testMethod' | 'assessmentType'>
   ) }
+);
+
+export type EditAssessmentMutationVariables = Exact<{
+  assessmentId: Scalars['Float'];
+  type: Scalars['String'];
+  dataPoints: Scalars['String'];
+  description: Scalars['String'];
+  tools: Scalars['String'];
+  name: Scalars['String'];
+}>;
+
+
+export type EditAssessmentMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'editAssessment'>
 );
 
 export type GetAthleteQueryVariables = Exact<{
@@ -851,6 +883,30 @@ export type CreateRecordMutation = (
   & Pick<Mutation, 'createRecord'>
 );
 
+export type GetRecordsByAssessmentIdQueryVariables = Exact<{
+  assessmentId: Scalars['Float'];
+}>;
+
+
+export type GetRecordsByAssessmentIdQuery = (
+  { __typename?: 'Query' }
+  & { getRecordsByAssessmentId: Array<(
+    { __typename?: 'Record' }
+    & Pick<Record, 'data' | 'date'>
+    & { athlete: (
+      { __typename?: 'Athlete' }
+      & Pick<Athlete, 'id' | 'birthYear'>
+      & { user: (
+        { __typename?: 'User' }
+        & Pick<User, 'lastName' | 'firstName' | 'id' | 'active'>
+      ) }
+    ), assessment: (
+      { __typename?: 'Assessment' }
+      & Pick<Assessment, 'dataPoints' | 'id' | 'name' | 'description' | 'testMethod' | 'assessmentType'>
+    ) }
+  )> }
+);
+
 export type EditRunningOrderMutationVariables = Exact<{
   runningOrderId: Scalars['String'];
   unordered: Array<Scalars['Int']> | Scalars['Int'];
@@ -1148,6 +1204,49 @@ export function useGetAssessmentByIdLazyQuery(baseOptions?: Apollo.LazyQueryHook
 export type GetAssessmentByIdQueryHookResult = ReturnType<typeof useGetAssessmentByIdQuery>;
 export type GetAssessmentByIdLazyQueryHookResult = ReturnType<typeof useGetAssessmentByIdLazyQuery>;
 export type GetAssessmentByIdQueryResult = Apollo.QueryResult<GetAssessmentByIdQuery, GetAssessmentByIdQueryVariables>;
+export const EditAssessmentDocument = gql`
+    mutation EditAssessment($assessmentId: Float!, $type: String!, $dataPoints: String!, $description: String!, $tools: String!, $name: String!) {
+  editAssessment(
+    assessmentId: $assessmentId
+    type: $type
+    dataPoints: $dataPoints
+    description: $description
+    tools: $tools
+    name: $name
+  )
+}
+    `;
+export type EditAssessmentMutationFn = Apollo.MutationFunction<EditAssessmentMutation, EditAssessmentMutationVariables>;
+
+/**
+ * __useEditAssessmentMutation__
+ *
+ * To run a mutation, you first call `useEditAssessmentMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useEditAssessmentMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [editAssessmentMutation, { data, loading, error }] = useEditAssessmentMutation({
+ *   variables: {
+ *      assessmentId: // value for 'assessmentId'
+ *      type: // value for 'type'
+ *      dataPoints: // value for 'dataPoints'
+ *      description: // value for 'description'
+ *      tools: // value for 'tools'
+ *      name: // value for 'name'
+ *   },
+ * });
+ */
+export function useEditAssessmentMutation(baseOptions?: Apollo.MutationHookOptions<EditAssessmentMutation, EditAssessmentMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<EditAssessmentMutation, EditAssessmentMutationVariables>(EditAssessmentDocument, options);
+      }
+export type EditAssessmentMutationHookResult = ReturnType<typeof useEditAssessmentMutation>;
+export type EditAssessmentMutationResult = Apollo.MutationResult<EditAssessmentMutation>;
+export type EditAssessmentMutationOptions = Apollo.BaseMutationOptions<EditAssessmentMutation, EditAssessmentMutationVariables>;
 export const GetAthleteDocument = gql`
     query GetAthlete($AthleteId: Float!) {
   getAthleteById(athleteId: $AthleteId) {
@@ -1850,6 +1949,60 @@ export function useCreateRecordMutation(baseOptions?: Apollo.MutationHookOptions
 export type CreateRecordMutationHookResult = ReturnType<typeof useCreateRecordMutation>;
 export type CreateRecordMutationResult = Apollo.MutationResult<CreateRecordMutation>;
 export type CreateRecordMutationOptions = Apollo.BaseMutationOptions<CreateRecordMutation, CreateRecordMutationVariables>;
+export const GetRecordsByAssessmentIdDocument = gql`
+    query GetRecordsByAssessmentId($assessmentId: Float!) {
+  getRecordsByAssessmentId(assessmentId: $assessmentId) {
+    data
+    date
+    athlete {
+      id
+      birthYear
+      user {
+        lastName
+        firstName
+        id
+        active
+      }
+    }
+    assessment {
+      dataPoints
+      id
+      name
+      description
+      testMethod
+      assessmentType
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetRecordsByAssessmentIdQuery__
+ *
+ * To run a query within a React component, call `useGetRecordsByAssessmentIdQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetRecordsByAssessmentIdQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetRecordsByAssessmentIdQuery({
+ *   variables: {
+ *      assessmentId: // value for 'assessmentId'
+ *   },
+ * });
+ */
+export function useGetRecordsByAssessmentIdQuery(baseOptions: Apollo.QueryHookOptions<GetRecordsByAssessmentIdQuery, GetRecordsByAssessmentIdQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetRecordsByAssessmentIdQuery, GetRecordsByAssessmentIdQueryVariables>(GetRecordsByAssessmentIdDocument, options);
+      }
+export function useGetRecordsByAssessmentIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetRecordsByAssessmentIdQuery, GetRecordsByAssessmentIdQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetRecordsByAssessmentIdQuery, GetRecordsByAssessmentIdQueryVariables>(GetRecordsByAssessmentIdDocument, options);
+        }
+export type GetRecordsByAssessmentIdQueryHookResult = ReturnType<typeof useGetRecordsByAssessmentIdQuery>;
+export type GetRecordsByAssessmentIdLazyQueryHookResult = ReturnType<typeof useGetRecordsByAssessmentIdLazyQuery>;
+export type GetRecordsByAssessmentIdQueryResult = Apollo.QueryResult<GetRecordsByAssessmentIdQuery, GetRecordsByAssessmentIdQueryVariables>;
 export const EditRunningOrderDocument = gql`
     mutation editRunningOrder($runningOrderId: String!, $unordered: [Int!]!, $first: [Int!]!, $second: [Int!]!, $third: [Int!]!) {
   editRunningOrder(

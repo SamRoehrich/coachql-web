@@ -82,7 +82,7 @@ const AssessmentsPage: FC = () => {
                 className="border rounded border-gray-600 p-2 hover:border-blue-600"
                 onClick={() =>
                   openRecordAssessmentWindow(
-                    `record/assessment/${assessmentData?.getAssessmentById.id}`
+                    `edit/assessment/${assessmentData?.getAssessmentById.id}`
                   )
                 }
               >

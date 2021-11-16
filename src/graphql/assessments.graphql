@@ -31,3 +31,21 @@ query GetAssessmentById($assessmentId: Float!) {
     assessmentType
   }
 }
+
+mutation EditAssessment(
+  $assessmentId: Float!
+  $type: String!
+  $dataPoints: String!
+  $description: String!
+  $tools: String!
+  $name: String!
+) {
+  editAssessment(
+    assessmentId: $assessmentId
+    type: $type
+    dataPoints: $dataPoints
+    description: $description
+    tools: $tools
+    name: $name
+  )
+}

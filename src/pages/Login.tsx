@@ -1,5 +1,4 @@
 import React from "react";
-import { Link } from "react-router-dom";
 
 import { RouteComponentProps, useHistory } from "react-router";
 import { setAccessToken } from "../accessToken";
@@ -14,7 +13,7 @@ const Login: React.FC<RouteComponentProps> = () => {
 
   return (
     <div className="flex h-screen">
-      <div className="flex bg-blue-500 w-1/3 items-center flex-col">
+      {/* <div className="flex bg-blue-500 w-1/3 items-center flex-col">
         <div className="p-10 ">
           <h1 className="text-gray-100 text-4xl">Coachql</h1>
         </div>
@@ -27,7 +26,7 @@ const Login: React.FC<RouteComponentProps> = () => {
             <Link to="/register">Create your coach account now!</Link>
           </button>
         </div>
-      </div>
+      </div> */}
 
       <Formik
         initialValues={{
@@ -70,7 +69,7 @@ const Login: React.FC<RouteComponentProps> = () => {
         })}
       >
         {({ errors, touched, isSubmitting }) => (
-          <div className="flex text-center justify-center bg-gray-300 w-2/3 items-center">
+          <div className="flex text-center justify-center bg-gray-300 w-full items-center">
             <Form className="flex flex-col items-center">
               <div className="w-full">
                 <span className="text-gray-700">Email</span>

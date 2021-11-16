@@ -11,3 +11,28 @@ mutation CreateRecord(
     athleteId: $athleteId
   )
 }
+
+query GetRecordsByAssessmentId($assessmentId: Float!) {
+  getRecordsByAssessmentId(assessmentId: $assessmentId) {
+    data
+    date
+    athlete {
+      id
+      birthYear
+      user {
+        lastName
+        firstName
+        id
+        active
+      }
+    }
+    assessment {
+      dataPoints
+      id
+      name
+      description
+      testMethod
+      assessmentType
+    }
+  }
+}

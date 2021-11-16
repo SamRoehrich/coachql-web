@@ -17,7 +17,7 @@ const AthleteRecentWorkouts: FC<Props> = ({ sessions }) => {
   }, [sessions]);
 
   return (
-    <div className="bg-gray-100 rounded-md shadow-md overflow-auto w-1/2">
+    <div className="bg-gray-100 rounded-md shadow-md overflow-auto w-1/2 h-96">
       {sessions.getCompletedSessionsForAthlete.map((item, idx) => (
         <button
           key={idx}

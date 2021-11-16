@@ -16,6 +16,7 @@ import CreateAssessment from "./Dashboard/CreateAssessment";
 import AssessmentsPage from "../pages/AssessmentsPage";
 import ByePage from "../pages/bye";
 import RecordAssessment from "./RecordAssessment";
+import EditAssessment from "./Dashboard/EditAssessment";
 
 const Navigation = [
   {
@@ -266,6 +267,10 @@ const Laay: FC = () => {
           <Route path={`${path}/logout`} component={ByePage} />
           <Route path={`${path}/roster`} component={RosterPage} />
           <Route path={`${path}/assessments`} component={AssessmentsPage} />
+          <Route
+            path={`${path}/edit/assessment/:assessmentId`}
+            component={EditAssessment}
+          />
           <Route
             path={`${path}/record/assessment/:assessmentId`}
             component={RecordAssessment}
