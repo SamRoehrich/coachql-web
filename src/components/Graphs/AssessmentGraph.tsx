@@ -1,5 +1,5 @@
 import { useReactiveVar } from "@apollo/client";
-import { Chart } from "chart.js";
+// import { Chart } from "chart.js";
 import { FC, useEffect } from "react";
 import {
   GetAssessmentByIdQuery,
@@ -31,8 +31,8 @@ const AssessmentGraph: FC<Props> = ({ data }) => {
   }, [data, getRecordsByAssessmentId, currentAssessment]);
 
   useEffect(() => {
-    const parent = document.getElementById("assessment-graph");
-    var ctx = document.createElement("canvas");
+    // const parent = document.getElementById("assessment-graph");
+    // var ctx = document.createElement("canvas");
 
     if (recordData) {
       const labels = JSON.parse(
